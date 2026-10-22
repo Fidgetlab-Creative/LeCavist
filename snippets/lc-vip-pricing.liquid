@@ -37,6 +37,15 @@
     "LCSOD46VX":170,"LCSOD33VX":80,"LCFDOD152X":80,"LCS458VN2DP":630,"LCIMOD80X":80,
     "LCS230VN2Z1D":30,"LJ17VN2ZBU":30,"LJ20VNBU":30
   };
+  // Full RRP per SKU: the struck-through price shown next to the VIP price
+  var RRP = {
+    "LEK168PV":1699,"LKS56VN2Z":849,"LKCV63N":699,"LCS100VN":1099,"LEK1403ZPV":1899,"LEK168PVX":1749,
+    "LEK1052ZPV":1499,"LJ52VNBU":1649,"LJ294VN":3199,"LJ44VN2ZBU":1899,"LCS300VN2Z1D":3899,"LEK14PV":499,
+    "LKV168PNDX":1899,"LCS200VN2Z2D":3999,"LEK1403ZPVX":1999,"LJ268VN2Z":3349,"LJBC238MN":1649,"LCS300VX1ZPRO":4449,
+    "LCS155VN1ZPRO":3599,"LJ140BC":1469,"LJ40VN2Z2DBU":2149,"LCS140VN2Z2D":3099,"LCS210VN2ZBI":3559,"LCS600VX2DP":5299,
+    "LCS220VN1ZBI":3359,"LCS36VN2ZBI":1879,"LCSOD126VX2Z":1899,"LCSOD46VX":1549,"LCSOD33VX":1399,"LCFDOD152X":2199,
+    "LCS458VN2DP":3599,"LCIMOD80X":2199,"LCS230VN2Z1D":2899,"LJ17VN2ZBU":1349,"LJ20VNBU":1299
+  };
   var PAGE_SKU = {{ lc_vip_sku | json }};
 
   function cookie(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
@@ -79,11 +88,13 @@
     if (el.dataset.vipNew && el.textContent.trim() === el.dataset.vipNew) return;
     var p = parse(el.textContent); if (p == null) return;
     var v = p - off; if (v <= 0) return;
+    var was = (RRP[sku] && RRP[sku] > v) ? RRP[sku] : p;
     var dec = /\.\d\d/.test(el.textContent) ? 2 : 0;
-    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(p, dec) + '</s>' + (opts && opts.tag ? '<span class="lc-vip-tag">VIP price</span>' : '');
+    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(was, dec) + '</s>' + (opts && opts.tag ? '<span class="lc-vip-tag">VIP price</span>' : '');
     if (opts && opts.simple) el.textContent = fmt(v, dec);
     el.dataset.vipOrig = fmt(p, dec);
     el.dataset.vipNew = fmt(v, dec);
+    el.dataset.vipSave = String(Math.round(was - v));
   }
 
   function run(){
@@ -101,7 +112,8 @@
           Array.prototype.forEach.call(block.children, function(ch){ if (ch !== el && /line-through/.test(ch.getAttribute('style') || '')) ch.classList.add('lc-vip-hide'); });
           var note = document.createElement('div');
           note.className = 'lc-vip-note';
-          note.textContent = 'VIP price: you save $' + GRID[PAGE_SKU].toLocaleString('en-AU') + ' — applied automatically at checkout.';
+          var sv = parseInt(el.dataset.vipSave || GRID[PAGE_SKU], 10);
+          note.textContent = 'VIP price: you save $' + sv.toLocaleString('en-AU') + ' off RRP — applied automatically at checkout.';
           el.insertAdjacentElement('afterend', note);
         }
       });
