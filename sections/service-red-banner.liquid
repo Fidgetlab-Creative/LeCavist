@@ -1,0 +1,99 @@
+<div class="thin-banner" style="height: {{ section.settings.banner_height }}px;">
+  <div class="banner-item">
+    <a href="https://lecavist.com/pages/signature-service" class="banner-link">
+        <img src="https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_delivery_Icon_af0ba902-6539-4dea-afb2-c232894157f9.png?v=1709013778" alt="Icon 1">
+    </a>
+    <a href="https://lecavist.com/pages/signature-service" class="thin-banner-link">Free Delivery*</a>
+  </div>
+  <div class="banner-item">
+    <a href="https://lecavist.com/pages/signature-service" class="banner-link">
+        <img src="https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_removal_Icon_ed76b409-f1ac-4766-893c-20e90432f59b.png?v=1709013778" alt="Icon 3">
+    </a>
+    <a href="https://lecavist.com/pages/signature-service" class="thin-banner-link">Free Removal</a>
+  </div>
+  <div class="banner-item">
+    <a href="https://lecavist.com/pages/signature-service" class="banner-link">
+        <img src="https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_match_guarantee_Icon_48dd8d59-30e9-4a5e-8516-ff3ae9da7a13.png?v=1709013778" alt="Icon 4">
+    </a>
+    <a href="https://lecavist.com/pages/signature-service" class="thin-banner-link">Price Match Guarantee</a>
+  </div>
+  <div class="banner-item">
+    <a href="https://lecavist.com/pages/signature-service" class="banner-link">
+        <img src="https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Flexible_payment_options_Icon_b2f8c9b8-e613-4bda-9c22-4a5dff409ed9.png?v=1709013778" alt="Icon 5">
+    </a>
+    <a href="https://lecavist.com/pages/signature-service" class="thin-banner-link">Flexible Payment</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Service Red Banner",  // Change this to the desired name for your section
+  "settings": [
+    {
+      "type": "range",
+      "label": "Banner Height",
+      "id": "banner_height",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "default": 95
+    }
+  ],
+  "presets": [
+    {
+      "name": "Service Red Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .thin-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #7C3030;
+    padding: 10px 0px;
+  }
+
+  .banner-item {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    color: #ffffff;
+  }
+
+  .banner-item img {
+    width: auto;
+    height: 45px;
+  }
+
+  .banner-link {
+    display: inline-block;
+  }
+
+  .thin-banner-link {
+    display: block;
+    margin-top: 0px;
+    text-decoration: none;
+    color: #ffffff;
+  }
+
+  .thin-banner-link:hover {
+    text-decoration: underline;
+  }
+
+  .comment {
+    background-color: #7C3030;
+    padding: 0px 10px;
+    font-size: 8px;
+    font-style: italic;
+    color: #ffffff;
+  }
+  
+  .comment p {
+  margin: 0;
+}
+
+</style>

@@ -1,0 +1,169 @@
+{%- comment -%}
+  LeCavist — Full-bleed cinematic video hero for the homepage.
+  Edge-to-edge video under the (transparent) header, content overlaid, gentle
+  zoom + scroll fade. Add a Shopify-hosted video in the editor; falls back to a
+  poster image, then to a deep burgundy-black gradient.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+{%- assign vid = s.video -%}
+{%- assign poster = s.poster -%}
+{%- comment -%} lock the hero height to the video's own aspect ratio → no letterbox bands {%- endcomment -%}
+{%- assign ar = 1.7778 -%}
+{%- if vid != blank and vid.aspect_ratio != blank and vid.aspect_ratio > 0 -%}{%- assign ar = vid.aspect_ratio -%}
+{%- elsif poster != blank and poster.aspect_ratio != blank and poster.aspect_ratio > 0 -%}{%- assign ar = poster.aspect_ratio -%}{%- endif -%}
+
+<section class="lc-vhero" id="lc-vhero-{{ section.id }}" data-lc-vhero>
+  <div class="lc-vhero__track" style="--lc-vhero-len: {{ s.scroll_length }}; --lc-vhero-ar: {{ ar }};">
+    <div class="lc-vhero__sticky">
+      <div class="lc-vhero__media" data-lc-media>
+        {%- if vid != blank -%}
+          {%- assign best_w = 0 -%}{%- assign best_url = '' -%}
+          {%- for src in vid.sources -%}
+            {%- if src.format == 'mp4' and src.width > best_w -%}{%- assign best_w = src.width -%}{%- assign best_url = src.url -%}{%- endif -%}
+          {%- endfor -%}
+          {%- assign poster_url = '' -%}
+          {%- if poster != blank -%}{%- assign poster_url = poster | image_url: width: 1600 -%}
+          {%- elsif vid.preview_image != blank -%}{%- assign poster_url = vid.preview_image | image_url: width: 1600 -%}{%- endif -%}
+          <video class="lc-vhero__video" autoplay muted loop playsinline preload="auto" {% if poster_url != blank %}poster="{{ poster_url }}"{% endif %}>
+            {%- if best_url != '' -%}<source src="{{ best_url }}" type="video/mp4">{%- endif -%}
+          </video>
+        {%- elsif poster != blank -%}
+          <img class="lc-vhero__video" src="{{ poster | image_url: width: 2400 }}" alt="{{ s.title | escape }}" width="2400" height="1350" loading="eager" fetchpriority="high">
+        {%- else -%}
+          <div class="lc-vhero__video lc-vhero__video--ph"></div>
+        {%- endif -%}
+      </div>
+
+      <div class="lc-vhero__scrim" style="--lc-scrim: {{ s.overlay_opacity | divided_by: 100.0 }};"></div>
+
+      <div class="lc-vhero__inner lc-vhero__inner--{{ s.alignment }}">
+        <div class="lc-vhero__content" data-lc-content>
+          {%- if s.eyebrow != blank -%}<p class="lc-vhero__eyebrow" data-lc-reveal>{{ s.eyebrow }}</p>{%- endif -%}
+          {%- if s.title != blank -%}<h1 class="lc-vhero__title" data-lc-reveal>{{ s.title | newline_to_br }}</h1>{%- endif -%}
+          {%- if s.subtitle != blank -%}<p class="lc-vhero__subtitle" data-lc-reveal>{{ s.subtitle }}</p>{%- endif -%}
+          {%- if s.cta1_label != blank or s.cta2_label != blank -%}
+            <div class="lc-vhero__actions" data-lc-reveal>
+              {%- if s.cta1_label != blank -%}<a class="lc-vhero__btn lc-vhero__btn--solid" href="{{ s.cta1_link | default: '#' }}">{{ s.cta1_label }}</a>{%- endif -%}
+              {%- if s.cta2_label != blank -%}<a class="lc-vhero__btn lc-vhero__btn--ghost" href="{{ s.cta2_link | default: '#' }}">{{ s.cta2_label }}
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>{%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+        {%- if s.show_scroll_cue -%}<div class="lc-vhero__cue" data-lc-cue aria-hidden="true"><span class="lc-vhero__cue-line"></span></div>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #lc-vhero-{{ section.id }} { --cream:#F5F0E8; --line:rgba(245,240,232,0.30); --disp:'Cormorant Garamond','Times New Roman',serif; --body:'Inter Tight',-apple-system,sans-serif; }
+  #lc-vhero-{{ section.id }} * { box-sizing: border-box; }
+  #lc-vhero-{{ section.id }} .lc-vhero__track { position: relative; width: 100vw; margin-left: calc(50% - 50vw); background: transparent; }
+  #lc-vhero-{{ section.id }} .lc-vhero__sticky { position: relative; width: 100%; aspect-ratio: var(--lc-vhero-ar, 1.7778); max-height: 100svh; overflow: hidden; background: transparent; }
+  #lc-vhero-{{ section.id }} .lc-vhero__media { position: absolute; inset: 0; z-index: 0; will-change: transform; }
+  #lc-vhero-{{ section.id }} .lc-vhero__video { width: 100%; height: 100%; object-fit: cover; object-position: {{ s.focal_point }}; display: block; }
+  #lc-vhero-{{ section.id }} .lc-vhero__video--ph { background: radial-gradient(120% 100% at 50% 0%, #3a1620 0%, #1a0d10 52%, #050303 100%); }
+  #lc-vhero-{{ section.id }} .lc-vhero__scrim { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      linear-gradient(to bottom, rgba(6,4,5,0.5) 0%, rgba(6,4,5,0.06) 18%, rgba(6,4,5,0) 42%),
+      linear-gradient(to top, rgba(6,4,5,calc(var(--lc-scrim) + 0.14)) 0%, rgba(6,4,5,calc(var(--lc-scrim) * 0.5)) 44%, rgba(6,4,5,0) 74%); }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner { position: relative; z-index: 2; height: 100%; max-width: 1440px; margin: 0 auto; padding: clamp(28px,6vw,88px) clamp(22px,5vw,72px); display: flex; flex-direction: column; }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner--center { justify-content: center; align-items: center; text-align: center; }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner--left { justify-content: flex-end; align-items: flex-start; text-align: left; padding-bottom: clamp(70px,12vh,150px); }
+  #lc-vhero-{{ section.id }} .lc-vhero__content { max-width: 760px; color: var(--cream); will-change: transform, opacity; }
+
+  #lc-vhero-{{ section.id }} .lc-vhero__eyebrow { font-family: var(--body); font-size: clamp(11px,1vw,13px); font-weight: 600; letter-spacing: 0.34em; text-transform: uppercase; color: var(--cream); opacity: 0.9; margin: 0 0 clamp(16px,2vw,24px); }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner--left .lc-vhero__eyebrow::before { content:""; display:inline-block; vertical-align:middle; width:28px; height:1px; background:currentColor; opacity:.75; margin-right:14px; margin-bottom:3px; }
+  #lc-vhero-{{ section.id }} .lc-vhero__title { font-family: var(--disp); font-weight: 300; font-size: clamp(2.8rem,7vw,6rem); line-height: 1.0; letter-spacing: -0.005em; margin: 0 0 clamp(18px,2.4vw,28px); text-wrap: balance; color: var(--cream); text-shadow: 0 2px 50px rgba(0,0,0,0.45); }
+  #lc-vhero-{{ section.id }} .lc-vhero__subtitle { font-family: var(--body); font-weight: 300; font-size: clamp(1rem,1.5vw,1.26rem); line-height: 1.6; color: var(--cream); opacity: 0.9; max-width: 32em; margin: 0 0 clamp(28px,3.4vw,40px); }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner--center .lc-vhero__subtitle { margin-left:auto; margin-right:auto; }
+  #lc-vhero-{{ section.id }} .lc-vhero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  #lc-vhero-{{ section.id }} .lc-vhero__inner--center .lc-vhero__actions { justify-content: center; }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn { display: inline-flex; align-items: center; gap: 9px; font-family: var(--body); font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 34px; border-radius: 2px; text-decoration: none; border: 1px solid transparent; transition: transform .3s, background .3s, color .3s, box-shadow .3s, border-color .3s; }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--solid { background: var(--cream); color: #1a1512; }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--solid:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,0.45); }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--ghost { background: rgba(255,255,255,0.05); color: var(--cream); border-color: var(--line); backdrop-filter: blur(3px); }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--ghost:hover { background: rgba(255,255,255,0.14); border-color: var(--cream); }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--ghost svg { transition: transform .3s; }
+  #lc-vhero-{{ section.id }} .lc-vhero__btn--ghost:hover svg { transform: translateX(4px); }
+
+  #lc-vhero-{{ section.id }} .lc-vhero__cue { position: absolute; left: 50%; bottom: clamp(20px,3vh,32px); transform: translateX(-50%); z-index: 2; }
+  #lc-vhero-{{ section.id }} .lc-vhero__cue-line { display:block; width: 1px; height: 52px; background: linear-gradient(to bottom, rgba(245,240,232,0.75), transparent); position: relative; overflow: hidden; }
+  #lc-vhero-{{ section.id }} .lc-vhero__cue-line::after { content:""; position:absolute; top:-52px; left:0; width:1px; height:52px; background: var(--cream); animation: lc-cue 2.4s cubic-bezier(.7,0,.3,1) infinite; }
+  @keyframes lc-cue { 0%{transform:translateY(0);} 60%,100%{transform:translateY(104px);} }
+
+  #lc-vhero-{{ section.id }} [data-lc-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
+  #lc-vhero-{{ section.id }}.is-ready [data-lc-reveal] { opacity: 1; transform: none; }
+  #lc-vhero-{{ section.id }}.is-ready .lc-vhero__title { transition-delay:.12s; }
+  #lc-vhero-{{ section.id }}.is-ready .lc-vhero__subtitle { transition-delay:.22s; }
+  #lc-vhero-{{ section.id }}.is-ready .lc-vhero__actions { transition-delay:.32s; }
+
+  @media (max-width: 749px) {
+    /* Mobile: tall immersive hero — video fills the frame (cover), content overlaid bottom-left */
+    #lc-vhero-{{ section.id }} .lc-vhero__sticky { aspect-ratio: auto; height: 78svh; min-height: 480px; max-height: none; }
+    #lc-vhero-{{ section.id }} .lc-vhero__inner { padding: 26px 22px; }
+    #lc-vhero-{{ section.id }} .lc-vhero__inner--left { justify-content: flex-end; padding-bottom: 42px; }
+    #lc-vhero-{{ section.id }} .lc-vhero__title { font-size: clamp(2.4rem,9.5vw,3.4rem); }
+    #lc-vhero-{{ section.id }} .lc-vhero__subtitle { font-size: 1rem; line-height: 1.5; max-width: 30em; margin-bottom: 24px; }
+    #lc-vhero-{{ section.id }} .lc-vhero__eyebrow { margin-bottom: 14px; }
+    #lc-vhero-{{ section.id }} .lc-vhero__actions { gap: 10px; width: 100%; flex-direction: column; }
+    #lc-vhero-{{ section.id }} .lc-vhero__btn { width: 100%; justify-content: center; padding: 15px 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #lc-vhero-{{ section.id }} [data-lc-reveal] { transition:none !important; opacity:1 !important; transform:none !important; } #lc-vhero-{{ section.id }} .lc-vhero__cue-line::after { animation:none; } }
+{% endstyle %}
+
+<script>
+  (function(){
+    var root=document.getElementById('lc-vhero-{{ section.id }}');
+    if(!root) return;
+    var track=root.querySelector('.lc-vhero__track');
+    var media=root.querySelector('[data-lc-media]');
+    var content=root.querySelector('[data-lc-content]');
+    var cue=root.querySelector('[data-lc-cue]');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ root.classList.add('is-ready'); }); });
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ticking=false;
+    function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+    function upd(){
+      var r=track.getBoundingClientRect(); var total=track.offsetHeight-window.innerHeight;
+      var p=total>0?clamp(-r.top/total,0,1):0;
+      if(media && '{{ s.video_fit }}' == 'cover') media.style.transform='scale('+(1+p*0.10).toFixed(3)+')';
+      if(content){ var f=clamp(p/0.65,0,1); content.style.opacity=(1-f).toFixed(3); content.style.transform='translateY('+(-f*60).toFixed(1)+'px)'; }
+      if(cue) cue.style.opacity=(0.75*(1-clamp(p/0.25,0,1))).toFixed(3);
+      ticking=false;
+    }
+    window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd);}},{passive:true});
+    window.addEventListener('resize',upd,{passive:true}); upd();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC Video Hero",
+  "tag": "section",
+  "class": "lc-video-hero-section",
+  "settings": [
+    { "type": "header", "content": "Background video" },
+    { "type": "video", "id": "video", "label": "Background video (MP4, muted loop)" },
+    { "type": "image_picker", "id": "poster", "label": "Poster / fallback image" },
+    { "type": "select", "id": "video_fit", "label": "Video fit", "default": "contain", "options": [ {"value":"contain","label":"Contain (show whole video)"}, {"value":"cover","label":"Cover (fill, may crop)"} ] },
+    { "type": "select", "id": "focal_point", "label": "Focus (Cover only)", "default": "center", "options": [ {"value":"center","label":"Center"}, {"value":"center top","label":"Top"}, {"value":"center bottom","label":"Bottom"} ] },
+    { "type": "range", "id": "overlay_opacity", "min": 0, "max": 90, "step": 5, "unit": "%", "label": "Overlay darkness", "default": 45 },
+    { "type": "range", "id": "scroll_length", "min": 100, "max": 240, "step": 10, "unit": "vh", "label": "Scroll animation length", "default": 180 },
+    { "type": "header", "content": "Content" },
+    { "type": "select", "id": "alignment", "label": "Position", "default": "left", "options": [ {"value":"left","label":"Bottom left"}, {"value":"center","label":"Center"} ] },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "French wine cabinets" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "The art of keeping wine." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Premium wine cabinets designed in France — engineered to store your collection in perfect conditions, all year round." },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "cta1_label", "label": "Primary button", "default": "Shop the range" },
+    { "type": "url", "id": "cta1_link", "label": "Primary link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Find my cabinet" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link" },
+    { "type": "header", "content": "Scroll cue" },
+    { "type": "checkbox", "id": "show_scroll_cue", "label": "Show scroll indicator", "default": true }
+  ],
+  "presets": [ { "name": "LC Video Hero" } ]
+}
+{% endschema %}

@@ -1,0 +1,106 @@
+{%- comment -%}
+  LeCavist - rectangular badge for the product information column.
+
+  Rendered from sections/main-product.liquid at three possible anchors, on both
+  the mobile and the desktop layout. The section settings decide which anchor
+  actually prints it, so the snippet is called at every anchor and stays silent
+  unless the chosen position matches.
+
+  Params
+    product : product object
+    st      : section.settings
+    pos     : the anchor currently being rendered
+              ('under_title' | 'under_dimensions' | 'above_configuration')
+{%- endcomment -%}
+
+{%- liquid
+  assign lc_db_pos = st.pdp_duo_badge_position | default: 'under_dimensions'
+  assign lc_db_show = false
+
+  if st.pdp_duo_badge_enable and lc_db_pos == pos
+    comment
+      Collection gate - comma separated handles, blank means "every product".
+    endcomment
+    assign lc_db_handles = st.pdp_duo_badge_collections | downcase | replace: ' ', '' | split: ','
+    if lc_db_handles.size == 0
+      assign lc_db_show = true
+    else
+      for lc_db_col in product.collections
+        if lc_db_handles contains lc_db_col.handle
+          assign lc_db_show = true
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign lc_db_text = st.pdp_duo_badge_text
+  assign lc_db_img = st.pdp_duo_badge_image
+  assign lc_db_asset = st.pdp_duo_badge_asset | strip
+
+  if lc_db_img == blank and lc_db_asset == blank and lc_db_text == blank
+    assign lc_db_show = false
+  endif
+-%}
+
+{%- if lc_db_show -%}
+  {%- comment -%}
+    Largest font size that still keeps the sentence on a single line.
+
+    Widths are in em, measured against the badge's own width (100 cqi):
+      text    = characters x 0.515em   (bold grotesque average advance, taken
+                                        from the widest likely fallback so the
+                                        line never overflows if Inter Tight
+                                        fails to load)
+      padding = 1.8em, icon = 2.8em, gap = 0.45em, safety = 0.3em
+    font-size(cqi) = 100 / (0.515 x characters + fixed)
+  {%- endcomment -%}
+  {%- liquid
+    assign lc_db_fixed = 5.35
+    unless st.pdp_duo_badge_show_icon
+      assign lc_db_fixed = 2.10
+    endunless
+    assign lc_db_den = lc_db_text | size | times: 0.515 | plus: lc_db_fixed
+    assign lc_db_cqi = 100.0 | divided_by: lc_db_den | round: 3
+  -%}
+  {%- capture lc_db_style -%}--lc-duo-badge-bg:{{ st.pdp_duo_badge_bg | default: '#4a2c31' }};--lc-duo-badge-fg:{{ st.pdp_duo_badge_text_color | default: '#ffffff' }};--lc-duo-badge-fs:clamp(9px, {{ lc_db_cqi }}cqi, 20px);{%- endcapture -%}
+
+  {%- capture lc_db_inner -%}
+    {%- if lc_db_img != blank -%}
+      <img class="lc-duo-badge__img"
+           src="{{ lc_db_img | image_url: width: 1200 }}"
+           srcset="{{ lc_db_img | image_url: width: 600 }} 600w, {{ lc_db_img | image_url: width: 900 }} 900w, {{ lc_db_img | image_url: width: 1200 }} 1200w"
+           sizes="(min-width: 990px) 480px, 92vw"
+           width="{{ lc_db_img.width }}" height="{{ lc_db_img.height }}"
+           alt="{{ lc_db_text | default: lc_db_img.alt | escape }}"
+           loading="lazy">
+    {%- elsif lc_db_asset != blank -%}
+      <img class="lc-duo-badge__img" src="{{ lc_db_asset | asset_url }}" alt="{{ lc_db_text | escape }}" loading="lazy">
+    {%- else -%}
+      {%- if st.pdp_duo_badge_show_icon -%}
+        <svg class="lc-duo-badge__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="23 4 23 10 17 10"/>
+          <polyline points="1 20 1 14 7 14"/>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/>
+          <path d="M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+        </svg>
+      {%- endif -%}
+      <span class="lc-duo-badge__text">{{ lc_db_text }}</span>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- assign lc_db_class = 'lc-duo-badge' -%}
+  {%- if lc_db_img != blank or lc_db_asset != blank -%}{%- assign lc_db_class = 'lc-duo-badge lc-duo-badge--image' -%}{%- endif -%}
+
+  {%- comment -%}
+    The container query has to be declared on a wrapper: cqi units on the
+    container itself would resolve against its ancestor, not against the badge.
+  {%- endcomment -%}
+  <div class="lc-duo-badge-wrap">
+    {%- if st.pdp_duo_badge_link != blank -%}
+      <a class="{{ lc_db_class }}" href="{{ st.pdp_duo_badge_link }}" style="{{ lc_db_style }}">{{ lc_db_inner }}</a>
+    {%- else -%}
+      <div class="{{ lc_db_class }}" style="{{ lc_db_style }}">{{ lc_db_inner }}</div>
+    {%- endif -%}
+  </div>
+{%- endif -%}

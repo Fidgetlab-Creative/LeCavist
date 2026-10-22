@@ -1,0 +1,288 @@
+{%- comment -%}
+  LeCavist — Signature Duo coverflow carousel (infinite wheel, draggable, centre-focused).
+  Uses detoured (transparent) product images stored as theme assets. The block set is
+  rendered 3× so the track loops seamlessly (wrap by one set width). A gentle auto-drift
+  rotates the wheel; it pauses on hover and while dragging.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+
+<section class="lc-duocar" id="lc-duocar-{{ section.id }}" data-lc-duocar
+         data-autoplay="{% if s.autoplay %}1{% else %}0{% endif %}"
+         data-speed="{{ s.speed }}"
+         data-dir="{{ s.direction }}"
+         style="--lc-duocar-bg: {{ s.bg_color }};">
+  <span id="explore" class="lc-duocar__anchor" aria-hidden="true"></span>
+  {%- if s.eyebrow != blank or s.title != blank -%}
+    <div class="lc-duocar__head" data-lc-reveal>
+      {%- if s.eyebrow != blank -%}<p class="lc-duocar__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h2 class="lc-duocar__title">{{ s.title }}</h2>{%- endif -%}
+      {%- if s.show_rating -%}
+        {%- assign pct = s.rating_value | times: 20.0 -%}
+        <div class="lc-duocar__rating" aria-label="Rated {{ s.rating_value }} out of 5">
+          <span class="lc-duocar__stars" style="--pct: {{ pct }}%;"><span class="lc-duocar__stars-bg">★★★★★</span><span class="lc-duocar__stars-fg">★★★★★</span></span>
+          <span class="lc-duocar__rate-v">{{ s.rating_value }}/5</span>
+          {%- if s.rating_count != blank -%}<span class="lc-duocar__rate-c">· {{ s.rating_count }} {{ s.rating_text }}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  <div class="lc-duocar__stage">
+    <button class="lc-duocar__nav lc-duocar__nav--prev" type="button" aria-label="Previous" data-lc-prev>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"/></svg>
+    </button>
+
+    <div class="lc-duocar__viewport" data-lc-viewport>
+      <div class="lc-duocar__track" data-lc-track>
+        {%- for rep in (1..3) -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'duo' -%}
+            {%- assign product = block.settings.product -%}
+            {%- assign prod_title = product.title | replace: 'LECAVIST', 'LeCavist' | replace: 'Lecavist', 'LeCavist' -%}
+            {%- assign disp_title = block.settings.title | default: prod_title -%}
+            {%- assign href = product.url | default: block.settings.link -%}
+            {%- assign img = '' -%}
+            {%- if block.settings.image_asset != blank -%}{%- assign img = block.settings.image_asset | asset_url -%}
+            {%- elsif product.featured_image != blank -%}{%- assign img = product.featured_image | image_url: width: 900 -%}{%- endif -%}
+            <a class="lc-duocar__card" href="{{ href | default: '#' }}" data-lc-card aria-hidden="{% if rep == 1 %}false{% else %}true{% endif %}"{% if rep == 1 %} {{ block.shopify_attributes }}{% endif %}>
+              <div class="lc-duocar__media">
+                {%- if img != blank -%}
+                  <img src="{{ img }}" alt="{{ disp_title | escape }}" loading="lazy" width="900" height="900" draggable="false">
+                {%- else -%}
+                  <span class="lc-duocar__ph">{{ disp_title | slice: 0 }}</span>
+                {%- endif -%}
+              </div>
+              <div class="lc-duocar__info">
+                <h3 class="lc-duocar__name">{{ disp_title }}</h3>
+                {%- assign rate_product = block.settings.single_product | default: product -%}
+                <div class="lc-duocar__cardrate">{%- render 'lc-product-rating', product: rate_product, mode: 'stars' -%}</div>
+                {%- if product != blank -%}
+                  <span class="lc-duocar__price">
+                    {%- if product.compare_at_price > product.price -%}<span class="lc-duocar__was">{{ product.compare_at_price | money }}</span> {%- endif -%}
+                    {{ product.price | money }}
+                  </span>
+                {%- elsif block.settings.price_text != blank -%}
+                  <span class="lc-duocar__price">{{ block.settings.price_text }}</span>
+                {%- endif -%}
+              </div>
+            </a>
+          {%- endif -%}
+        {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    <button class="lc-duocar__nav lc-duocar__nav--next" type="button" aria-label="Next" data-lc-next>
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+    </button>
+  </div>
+
+  {%- if s.show_hint -%}
+    <p class="lc-duocar__hint" data-lc-reveal>
+      <svg class="lc-duocar__hint-arw lc-duocar__hint-arw--l" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 6 9 12 15 18"/></svg>
+      <span class="lc-duocar__hint-tx">{{ s.hint_text }}</span>
+      <svg class="lc-duocar__hint-arw lc-duocar__hint-arw--r" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 6 15 12 9 18"/></svg>
+    </p>
+  {%- endif -%}
+</section>
+
+{% style %}
+  #lc-duocar-{{ section.id }}.lc-duocar {
+    --cream:#F5F0E8; --ink:#1A1512; --muted:rgba(26,21,18,0.55); --acc:#6B1F2E; --line:rgba(26,21,18,0.14);
+    --disp:'Cormorant Garamond','Times New Roman',serif; --body:'Inter Tight',-apple-system,sans-serif;
+    --card-w: clamp(230px, 27vw, 380px);
+    background: var(--lc-duocar-bg, #F5F0E8); color: var(--ink);
+    padding: clamp(48px,6vw,80px) 0 clamp(16px,2vw,28px); overflow: hidden;
+  }
+  #lc-duocar-{{ section.id }} * { box-sizing: border-box; }
+  #lc-duocar-{{ section.id }} .lc-duocar__head { max-width: 1360px; margin: 0 auto clamp(30px,3.6vw,50px); padding: 0 clamp(20px,5vw,64px); text-align: center; }
+  #lc-duocar-{{ section.id }} .lc-duocar__eyebrow { font-family: var(--body); font-size: clamp(11px,1vw,13px); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--acc); margin: 0 0 16px; }
+  #lc-duocar-{{ section.id }} .lc-duocar__title { font-family: var(--disp); font-weight: 300; font-size: clamp(2.2rem,4.4vw,3.8rem); letter-spacing: -0.01em; line-height: 1.03; margin: 0; color: var(--ink); }
+  #lc-duocar-{{ section.id }} .lc-duocar__rating { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 10px; margin: 16px 0 0; font-family: var(--body); }
+  #lc-duocar-{{ section.id }} .lc-duocar__stars { position: relative; display: inline-block; font-size: 18px; line-height: 1; letter-spacing: 2px; }
+  #lc-duocar-{{ section.id }} .lc-duocar__stars-bg { color: rgba(26,21,18,0.20); }
+  #lc-duocar-{{ section.id }} .lc-duocar__stars-fg { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; width: var(--pct,96%); color: #E0A93F; }
+  #lc-duocar-{{ section.id }} .lc-duocar__rate-v { font-weight: 700; font-size: 15px; color: var(--ink); }
+  #lc-duocar-{{ section.id }} .lc-duocar__rate-c { font-weight: 500; font-size: 14px; color: var(--muted); }
+
+  #lc-duocar-{{ section.id }} .lc-duocar__stage { position: relative; }
+  #lc-duocar-{{ section.id }} .lc-duocar__viewport {
+    display: flex; overflow-x: auto; overflow-y: hidden; scroll-snap-type: none; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; cursor: grab; padding: 24px calc(50% - var(--card-w)/2);
+    -webkit-user-select: none; user-select: none;
+  }
+  #lc-duocar-{{ section.id }} .lc-duocar__viewport::-webkit-scrollbar { display: none; }
+  #lc-duocar-{{ section.id }} .lc-duocar__viewport.is-grabbing { cursor: grabbing; }
+  #lc-duocar-{{ section.id }} .lc-duocar__track { display: flex; gap: clamp(16px,2vw,30px); align-items: center; }
+
+  #lc-duocar-{{ section.id }} .lc-duocar__card { flex: 0 0 var(--card-w); width: var(--card-w); text-decoration: none; color: inherit; transform-origin: center center; will-change: transform, opacity; transition: none; }
+  #lc-duocar-{{ section.id }} .lc-duocar__media { position: relative; aspect-ratio: 3 / 4; overflow: visible; }
+  #lc-duocar-{{ section.id }} .lc-duocar__media img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; filter: drop-shadow(0 28px 46px rgba(26,21,18,0.22)); }
+  #lc-duocar-{{ section.id }} .lc-duocar__ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family: var(--disp); font-size: 90px; color: rgba(245,240,232,0.12); }
+  #lc-duocar-{{ section.id }} .lc-duocar__info { text-align: center; padding: 20px 8px 0; }
+  /* Match the site product-card labels: Inter Tight (menu font), weight 600, normal case — sized up proportionally for the large carousel cards */
+  #lc-duocar-{{ section.id }} .lc-duocar__name { font-family: var(--body); font-weight: 600; font-size: clamp(1.05rem,1.35vw,1.4rem); line-height: normal; text-transform: none; letter-spacing: 0; margin: 0 0 8px; color: var(--ink); }
+  #lc-duocar-{{ section.id }} .lc-duocar__price { font-family: var(--body); font-weight: 500; font-size: clamp(0.95rem,1.1vw,1.12rem); line-height: normal; color: var(--ink); }
+  #lc-duocar-{{ section.id }} .lc-duocar__cardrate { min-height: 20px; margin: 0 0 8px; }
+  #lc-duocar-{{ section.id }} .lc-rate { display: inline-flex; align-items: center; gap: 7px; }
+  #lc-duocar-{{ section.id }} .lc-rate__stars { position: relative; display: inline-block; font-size: 16px; line-height: 1; letter-spacing: 1.5px; }
+  #lc-duocar-{{ section.id }} .lc-rate__bg { color: rgba(26,21,18,0.20); }
+  #lc-duocar-{{ section.id }} .lc-rate__fg { position: absolute; left: 0; top: 0; overflow: hidden; white-space: nowrap; width: var(--pct,100%); color: #E0A93F; }
+  #lc-duocar-{{ section.id }} .lc-rate__c { font-family: var(--body); font-weight: 500; font-size: 13px; color: var(--muted); }
+  #lc-duocar-{{ section.id }} .lc-duocar__was { text-decoration: line-through; opacity: 0.55; margin-right: 6px; }
+
+  #lc-duocar-{{ section.id }} .lc-duocar__nav { position: absolute; top: 40%; transform: translateY(-50%); z-index: 5; width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255,255,255,0.82); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(6px); box-shadow: 0 6px 20px rgba(26,21,18,0.10); transition: background .3s, color .3s, transform .3s; }
+  #lc-duocar-{{ section.id }} .lc-duocar__nav:hover { background: var(--acc); border-color: var(--acc); color: #fff; }
+  #lc-duocar-{{ section.id }} .lc-duocar__nav--prev { left: clamp(10px,3vw,44px); }
+  #lc-duocar-{{ section.id }} .lc-duocar__nav--next { right: clamp(10px,3vw,44px); }
+  #lc-duocar-{{ section.id }} .lc-duocar__hint { display: flex; align-items: center; justify-content: center; gap: 10px; margin: clamp(8px,1.4vw,16px) 0 0; font-family: var(--body); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  #lc-duocar-{{ section.id }} .lc-duocar__hint-arw { flex: none; color: var(--acc); }
+  #lc-duocar-{{ section.id }} .lc-duocar__hint-arw--l { animation: lc-duohint-l 1.6s ease-in-out infinite; }
+  #lc-duocar-{{ section.id }} .lc-duocar__hint-arw--r { animation: lc-duohint-r 1.6s ease-in-out infinite; }
+  @keyframes lc-duohint-l { 0%,100%{ transform: translateX(0); opacity:.7; } 50%{ transform: translateX(-4px); opacity:1; } }
+  @keyframes lc-duohint-r { 0%,100%{ transform: translateX(0); opacity:.7; } 50%{ transform: translateX(4px); opacity:1; } }
+  @media (prefers-reduced-motion: reduce) { #lc-duocar-{{ section.id }} .lc-duocar__hint-arw { animation: none !important; } }
+  @media (max-width: 749px) { #lc-duocar-{{ section.id }} .lc-duocar__hint { font-size: 13px; gap: 12px; } #lc-duocar-{{ section.id }} .lc-duocar__hint-arw { width: 17px; height: 17px; } }
+
+  #lc-duocar-{{ section.id }} [data-lc-reveal] { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  #lc-duocar-{{ section.id }} [data-lc-reveal].is-in { opacity: 1; transform: none; }
+  @media (max-width: 749px) { #lc-duocar-{{ section.id }} .lc-duocar__nav { display: none; } #lc-duocar-{{ section.id }}.lc-duocar { --card-w: clamp(220px,74vw,300px); } }
+  @media (prefers-reduced-motion: reduce) { #lc-duocar-{{ section.id }} [data-lc-reveal] { transition:none !important; opacity:1 !important; transform:none !important; } }
+
+  /* ── "Explore" hero button jumps here; smooth scroll + offset for the sticky header (duo page only) ── */
+  html { scroll-behavior: smooth; }
+  #explore { display: block; position: absolute; scroll-margin-top: clamp(80px, 12vw, 110px); }
+
+  /* ── Kill any empty band between the carousel and the footer (duo page only) ── */
+  html, body { background: #F5F0E8; }
+  #MainContent { padding-bottom: 0 !important; margin-bottom: 0 !important; }
+  #MainContent > .shopify-section:last-child { margin-bottom: 0 !important; padding-bottom: 0 !important; }
+  #MainContent > .shopify-section:last-child .lc-duocar { margin-bottom: 0 !important; }
+  .shopify-section-group-footer-group { margin-top: 0 !important; }
+
+  /* ── Duo page only: blend solid/white photo backgrounds in the testimonials so every author image reads as transparent ── */
+  .sec__testimonials .testimonials-author-image img { mix-blend-mode: multiply; background: transparent; }
+{% endstyle %}
+
+<script>
+  (function(){
+    var root=document.getElementById('lc-duocar-{{ section.id }}');
+    if(!root) return;
+    var vp=root.querySelector('[data-lc-viewport]');
+    var cards=Array.prototype.slice.call(root.querySelectorAll('[data-lc-card]'));
+    if(!vp||!cards.length) return;
+
+    /* reveal animation */
+    var reveals=root.querySelectorAll('[data-lc-reveal]');
+    if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{threshold:.14}); reveals.forEach(function(el){io.observe(el);}); } else { reveals.forEach(function(el){el.classList.add('is-in');}); }
+
+    var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var perSet=Math.max(1,Math.round(cards.length/3));   /* blocks in one set (rendered 3x) */
+    var autoplay=root.getAttribute('data-autoplay')==='1' && !reduce;
+    var baseSpeed=parseFloat(root.getAttribute('data-speed')||'0.6'); if(isNaN(baseSpeed))baseSpeed=0.6;
+    var dir=root.getAttribute('data-dir')==='ltr'?-1:1;   /* rtl (default): content flows right→left */
+
+    var setW=0, cardStep=0;
+    function measure(){
+      setW=cards[perSet].offsetLeft-cards[0].offsetLeft;      /* exact distance for one loop */
+      cardStep=(cards[1]?cards[1].offsetLeft-cards[0].offsetLeft:setW/perSet);
+    }
+    function wrap(){
+      if(setW<=0)return;
+      if(vp.scrollLeft < setW*0.5) vp.scrollLeft += setW;
+      else if(vp.scrollLeft > setW*1.5) vp.scrollLeft -= setW;
+    }
+    function focus(){
+      var r=vp.getBoundingClientRect(); var center=r.left+r.width/2; var maxD=r.width/2+120;
+      for(var i=0;i < cards.length;i++){
+        var cr=cards[i].getBoundingClientRect(); var cc=cr.left+cr.width/2;
+        var t=Math.min(Math.abs(cc-center)/maxD,1);
+        cards[i].style.transform='scale('+(reduce?1:(1-t*0.36)).toFixed(3)+')';
+        cards[i].style.opacity=(1-t*0.66).toFixed(3);
+        cards[i].style.filter=reduce?'none':'blur('+(t*t*2.0).toFixed(2)+'px)';
+        cards[i].style.zIndex=String(Math.round((1-t)*100));
+      }
+    }
+
+    /* pause conditions */
+    var paused=false, dragging=false, inView=true;
+    root.addEventListener('mouseenter',function(){paused=true;});
+    root.addEventListener('mouseleave',function(){paused=false;});
+    if('IntersectionObserver' in window){ var vo=new IntersectionObserver(function(es){inView=es[0].isIntersecting;},{threshold:0}); vo.observe(root); }
+
+    /* animation loop: gentle drift + seamless wrap + centre focus */
+    function tick(){
+      if(autoplay && !paused && !dragging && inView && setW>0){ vp.scrollLeft += dir*baseSpeed; }
+      wrap(); focus();
+      requestAnimationFrame(tick);
+    }
+
+    /* drag */
+    var down=false,startX=0,startScroll=0,moved=false,captured=false,pid=null;
+    vp.addEventListener('pointerdown',function(e){ if(e.button && e.button!==0)return; down=true;moved=false;startX=e.clientX;startScroll=vp.scrollLeft;pid=e.pointerId; });
+    vp.addEventListener('pointermove',function(e){
+      if(!down)return;
+      var dx=e.clientX-startX;
+      if(!moved){ if(Math.abs(dx) > 5){ moved=true;dragging=true;vp.classList.add('is-grabbing');try{vp.setPointerCapture(pid);captured=true;}catch(_){ } } else { return; } }
+      vp.scrollLeft=startScroll-dx; wrap();
+    });
+    function endDrag(){ if(!down)return; down=false; dragging=false; vp.classList.remove('is-grabbing'); if(captured){try{vp.releasePointerCapture(pid);}catch(_){ } captured=false;} }
+    vp.addEventListener('pointerup',endDrag); vp.addEventListener('pointercancel',endDrag);
+    cards.forEach(function(c){c.addEventListener('click',function(e){ if(moved){ e.preventDefault(); e.stopPropagation(); } });});
+
+    /* wheel/trackpad horizontal scroll should not fight the loop */
+    vp.addEventListener('scroll',function(){ if(!dragging) wrap(); },{passive:true});
+
+    /* arrows nudge the wheel by one card */
+    var prev=root.querySelector('[data-lc-prev]'), next=root.querySelector('[data-lc-next]');
+    function nudge(d){ vp.scrollLeft += d*(cardStep||260); wrap(); focus(); }
+    if(prev)prev.addEventListener('click',function(){nudge(-1);});
+    if(next)next.addEventListener('click',function(){nudge(1);});
+
+    window.addEventListener('resize',function(){var f=setW>0?vp.scrollLeft/setW:1;measure();if(setW>0)vp.scrollLeft=f*setW;focus();},{passive:true});
+
+    /* init: start inside the middle set so there is buffer on both sides */
+    function start(){ measure(); vp.scrollLeft=setW; focus(); requestAnimationFrame(tick); }
+    if(document.readyState==='complete'){ start(); } else { window.addEventListener('load',start); requestAnimationFrame(start); }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC Duo Carousel",
+  "tag": "section",
+  "class": "lc-duo-carousel-section",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F5F0E8" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Signature Duo" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Matched pairs, twice the collection" },
+    { "type": "header", "content": "Rating badge (store-wide)" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show overall rating", "default": true },
+    { "type": "text", "id": "rating_value", "label": "Average rating (out of 5)", "default": "4.8" },
+    { "type": "text", "id": "rating_count", "label": "Number of reviews", "default": "1,415" },
+    { "type": "text", "id": "rating_text", "label": "Reviews label", "default": "verified reviews" },
+    { "type": "header", "content": "Infinite wheel" },
+    { "type": "checkbox", "id": "autoplay", "label": "Auto-rotate (infinite wheel)", "default": true },
+    { "type": "range", "id": "speed", "min": 0, "max": 3, "step": 0.1, "unit": "px", "label": "Rotation speed (per frame)", "default": 0.6 },
+    { "type": "select", "id": "direction", "label": "Direction", "default": "rtl", "options": [ { "value": "rtl", "label": "Right → left" }, { "value": "ltr", "label": "Left → right" } ] },
+    { "type": "range", "id": "max", "min": 4, "max": 24, "step": 1, "label": "Max cards", "default": 12 },
+    { "type": "checkbox", "id": "show_hint", "label": "Show drag hint", "default": true },
+    { "type": "text", "id": "hint_text", "label": "Hint text", "default": "Drag to explore" }
+  ],
+  "blocks": [
+    {
+      "type": "duo",
+      "name": "Duo card",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product (the Duo)" },
+        { "type": "product", "id": "single_product", "label": "Single product (for reviews/stars)" },
+        { "type": "text", "id": "image_asset", "label": "Image asset filename (e.g. duo-premium-0.png)" },
+        { "type": "text", "id": "title", "label": "Label (blank = product title)" }
+      ]
+    }
+  ],
+  "max_blocks": 16,
+  "presets": [ { "name": "LC Duo Carousel" } ]
+}
+{% endschema %}

@@ -1,0 +1,146 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "enable_sticky_content_on_desktop": true,
+        "enable_skeleton_loading": false,
+        "desktop_media_width": 50,
+        "desktop_layout": "thumbnail_left",
+        "image_zoom": "open_lightbox",
+        "enable_video_looping": true,
+        "enable_video_autoplay": true,
+        "enable_frequently_bought_together": true,
+        "enable_on_desktop": true,
+        "enable_on_mobile": true,
+        "mobile_options": "hidden_thumbnail",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product-set": {
+      "type": "product-set",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Combination Styles",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "items_per_row": 2,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots",
+        "infinite": false,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "1716793714ce89e457": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_KFVR47": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_KFVR47"
+      ],
+      "disabled": true,
+      "settings": {}
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "eyebrow": "— Our Range —",
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "People Also Bought",
+        "description": "Here’s some of our most similar products people are buying. Click to discover trending style.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 4,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_GdCNUL": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "custom_liquid_yEDeKT": {
+      "type": "custom-liquid",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "custom_liquid": "<!-- Calendly inline widget begin -->\n<div class=\"calendly-inline-widget\" data-url=\"https://calendly.com/lecavist/15min\" style=\"min-width:320px;height:630px;\"></div>\n<script type=\"text/javascript\" src=\"https://assets.calendly.com/assets/external/widget.js\" async></script>\n<!-- Calendly inline widget end -->",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "product-set",
+    "1716793714ce89e457",
+    "related_products",
+    "products_recently_viewed_GdCNUL",
+    "custom_liquid_yEDeKT"
+  ]
+}

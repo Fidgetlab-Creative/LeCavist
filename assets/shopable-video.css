@@ -1,0 +1,129 @@
+.video-item__product .product-item__wrapper {
+  align-items: center;
+  gap: 10px;
+  --product-item__price-top: 6px;
+  --col-width: 5rem;
+}
+.video-item__product .product-item__inner {
+  z-index: 2;
+}
+.video-item__product .product-item__information {
+  z-index: 2;
+  padding: 8px 0;
+  padding-inline-end: 8px;
+  position: absolute;
+  left: 60px;
+  top: 0;
+  right: 8px;
+  bottom: 0;
+  --color-heading: var(--color-white);
+  --color-primary: var(--color-white);
+}
+.video-item__product .product-item__name {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rounded-style .video-item__product .product-item__media--ratio {
+  border-radius: 5px 0 0 5px;
+}
+.video-item__product {
+  --color-heading: #fff;
+  --dark-grey: #fff;
+  --color-primary: #fff;
+}
+.video-item__product .product-item__wrapper:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: rgba(245, 240, 232, 0.3);
+  backdrop-filter: blur(5px);
+}
+.rounded-style .video-item__product .product-item__wrapper:after {
+  border-radius: 5px;
+}
+.video-item__popup-media--ratio::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  content: "";
+}
+@media (min-width: 768px) {
+  .shopable-video .video-item__product {
+    display: none;
+  }
+}
+@media (max-width: 767.98px) {
+  .shopable-video .video-item__product .product-item__information {
+    padding-right: 10rem;
+    --color-heading: var(--color-white);
+    --color-primary: var(--color-white);
+  }
+  .btn-shopable {
+    position: absolute;
+    z-index: 1;
+    right: 1rem;
+  }
+  .shopable-video__product-information {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    width: 100%;
+    transform: translateY(0);
+    transition: var(--transition);
+  }
+}
+
+/* ── Social-proof product mini-card — fit price without cut-off ─────
+   The "They Trust Us" cards anchor a product chip to the bottom of each
+   tile. The default price block (regular + strikethrough compare) was
+   overflowing the chip and getting clipped. We compress the type so the
+   regular price reads cleanly and hide the secondary strikethrough,
+   since this section is about social proof, not pricing comparison. */
+.video-item__product .product-item__information {
+  padding: 6px 10px;
+}
+.video-item__product .product-item__name {
+  font-size: 11px;
+  line-height: 1.25;
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+.video-item__product .product-item__price {
+  --font-size: 12px;
+  gap: 6px;
+  line-height: 1.2;
+  flex-wrap: nowrap;
+}
+.video-item__product .price-same-style {
+  font-size: 12px;
+  font-weight: 600;
+}
+.video-item__product .compare-price,
+.video-item__product .price-item.compare-price,
+.video-item__product s.price-item {
+  display: none;
+}
+
+/* Hide LeCavist merch badges (.lc-mbadges / .lc-mbadge — New / Best Seller /
+   Cashback / Bonus Bottle / Extra) inside shopable-video product previews.
+   They show up on the cabinet cards overlaid on each video; visually noisy. */
+.sec__shopable-video .lc-mbadges,
+.sec__shopable-video .lc-mbadge,
+.video-item__product .lc-mbadges,
+.video-item__product .lc-mbadge {
+  display: none !important;
+}

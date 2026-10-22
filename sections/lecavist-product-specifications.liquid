@@ -1,0 +1,198 @@
+{% comment %}LeCavist — Product Specifications Section{% endcomment %}
+
+{%- liquid
+  assign ns = 'lecavist_specs'
+  assign m  = product.metafields[ns]
+
+  assign spec_range     = m.range.value
+  assign spec_zone      = m.cooling_zone.value
+  assign spec_install   = m.installation_type.value
+  assign spec_capacity  = m.bottle_capacity.value
+  # Capacity: if it's just a number (e.g. "63") suffix " Bottles"; if it
+  # already has text/units (e.g. "600L", "63 bottles") leave it untouched.
+  assign lc_cap_str = spec_capacity | strip
+  assign lc_cap_rt  = lc_cap_str | plus: 0 | append: ''
+  if lc_cap_str != blank and lc_cap_str == lc_cap_rt
+    assign spec_capacity = lc_cap_str | append: ' Bottles'
+  endif
+  assign spec_temp      = m.temperature_range.value
+  assign spec_noise     = m.noise_level_db.value
+  assign spec_shelves   = m.shelves.value
+  assign spec_door      = m.door_type.value
+  assign spec_lock      = m.lock.value
+  assign spec_vibration = m.anti_vibration.value
+  assign spec_led       = m.led_display.value
+  assign spec_charcoal  = m.charcoal_filter.value
+  assign spec_winter    = m.winter_heating.value
+  assign spec_energy    = m.energy_efficiency_kwh.value
+  assign spec_width     = m.width_mm.value
+  assign spec_height    = m.height_mm.value
+  assign spec_depth     = m.depth_mm.value
+
+  assign has_specs = false
+  if spec_capacity or spec_temp or spec_noise or spec_shelves
+    assign has_specs = true
+  endif
+
+  if spec_temp
+    assign spec_temp = spec_temp | replace: '&#65533;', '°' | replace: ' ', '°' | replace: '°', '°'
+  endif
+
+  assign title_parts  = product.title | split: '- '
+  assign product_base = title_parts[0] | strip
+  assign product_size = title_parts[1] | strip
+  if product_size != blank
+    assign short_title = 'The ' | append: product_size | append: ' ' | append: product_base
+  else
+    assign short_title = 'The ' | append: product_base
+  endif
+-%}
+
+{%- if has_specs -%}
+
+{%- comment -%} Brand fonts (Cormorant Garamond + Inter Tight) load globally from theme.liquid {%- endcomment -%}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap">
+
+<style>
+  :root{--lc-surface:#ffffff;--lc-surface-low:#faf3e9;--lc-surface-high:#eee7de;--lc-primary:#5f1a1c;--lc-on-tertiary-fixed:#111f13;--lc-on-surface:#1e1b16;--lc-on-surface-variant:#544241;--lc-outline-variant:#dac1bf;--lc-shadow:rgba(23,37,25,0.06);--lc-font-serif:'Cormorant Garamond','Times New Roman',serif;--lc-font-body:'Inter Tight',-apple-system,sans-serif;--lc-radius-lg:0.5rem;--lc-radius-xl:0.75rem;--lc-transition:cubic-bezier(0.2,0,0,1)}
+  .lc-specs-section{background:var(--lc-surface);padding:5rem 1.5rem;font-family:var(--lc-font-body);color:var(--lc-on-surface)}
+  .lc-specs-inner{max-width:75rem;margin:0 auto}
+  .lc-specs-header{text-align:center;margin-bottom:4rem}
+  .lc-specs-header .lc-kicker{font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--lc-primary);display:block;margin-bottom:0.75rem}
+  .lc-specs-header h2{font-family:var(--lc-font-serif);font-size:clamp(28px,4vw,48px);font-weight:400;color:var(--lc-on-tertiary-fixed);line-height:1.1;margin:0 0 1rem}
+  .lc-specs-header p{font-size:16px;color:var(--lc-on-surface-variant);font-weight:300;line-height:1.7;max-width:38rem;margin:0 auto}
+  .lc-specs-grid{display:grid;grid-template-columns:1fr;gap:4rem;align-items:start}
+  @media(min-width:1024px){.lc-specs-grid{grid-template-columns:5fr 7fr}.lc-specs-sticky{position:sticky;top:7rem}}
+  .lc-image-card{background:var(--lc-surface-low);border-radius:var(--lc-radius-xl);padding:2rem;box-shadow:0 12px 32px var(--lc-shadow);aspect-ratio:3/4;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end}
+  .lc-image-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.9;mix-blend-mode:multiply;transition:transform 1s var(--lc-transition)}
+  .lc-image-card:hover img{transform:scale(1.04)}
+  .lc-image-card .lc-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(255,248,241,0.92) 0%,rgba(255,248,241,0.15) 55%,transparent 100%);pointer-events:none}
+  .lc-image-card .lc-img-caption{position:relative;z-index:1}
+  .lc-image-card .lc-img-caption .lc-kicker{font-size:10px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--lc-primary);display:block;margin-bottom:0.4rem}
+  .lc-image-card .lc-img-caption h3{font-family:var(--lc-font-serif);font-size:22px;font-weight:400;color:var(--lc-on-tertiary-fixed);margin:0}
+  .lc-specs-table-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem;padding-bottom:1rem;border-bottom:1px solid rgba(218,193,191,0.15)}
+  .lc-specs-table-header span{font-family:var(--lc-font-serif);font-size:19px;font-weight:400;color:var(--lc-on-tertiary-fixed)}
+  .lc-specs-rows{display:flex;flex-direction:column;gap:0.4rem}
+  .lc-spec-row{display:flex;flex-direction:column;padding:1.1rem 1.25rem;border-radius:var(--lc-radius-lg);transition:background 0.2s var(--lc-transition)}
+  @media(min-width:640px){.lc-spec-row{flex-direction:row;align-items:center;justify-content:space-between}}
+  .lc-spec-row:nth-child(odd){background:var(--lc-surface-low)}
+  .lc-spec-row:nth-child(even){background:var(--lc-surface)}
+  .lc-spec-row--accent{border-left:3px solid var(--lc-primary)}
+  .lc-spec-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--lc-on-surface-variant);flex:0 0 38%;margin-bottom:0.2rem}
+  @media(min-width:640px){.lc-spec-label{margin-bottom:0}}
+  .lc-spec-value{font-size:16px;font-weight:500;color:var(--lc-on-surface);flex:1}
+  @media(min-width:640px){.lc-spec-value{text-align:right}}
+  .lc-spec-row--accent .lc-spec-value{font-family:var(--lc-font-serif);font-size:18px;color:var(--lc-primary)}
+  .lc-bool-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.4rem;margin-top:0.4rem}
+  @media(min-width:480px){.lc-bool-grid{grid-template-columns:repeat(4,1fr)}}
+  .lc-bool-card{background:var(--lc-surface);border-radius:var(--lc-radius-lg);padding:1rem 0.75rem;display:flex;flex-direction:column;align-items:center;text-align:center;gap:0.35rem}
+  .lc-bool-card .material-symbols-outlined{font-size:20px;color:var(--lc-primary);opacity:0.8;font-variation-settings:'FILL' 0}
+  .lc-bool-card .lc-bool-label{font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--lc-on-surface-variant)}
+  .lc-bool-card .lc-bool-val{font-size:13px;font-weight:600;color:var(--lc-on-surface)}
+  .lc-bool-card.lc-bool--yes .lc-bool-val{color:#2d6a3f}
+  .lc-bool-card.lc-bool--no .lc-bool-val{color:var(--lc-on-surface-variant)}
+  .lc-dimensions-block{background:var(--lc-surface-high);border-radius:var(--lc-radius-xl);padding:2rem;margin-top:0.75rem;position:relative;overflow:hidden}
+  .lc-dimensions-block .lc-dim-label{font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--lc-on-surface-variant);display:block;margin-bottom:0.6rem}
+  .lc-dimensions-block .lc-dim-value{font-family:var(--lc-font-serif);font-size:26px;font-weight:400;color:var(--lc-on-tertiary-fixed);line-height:1.1}
+  .lc-dimensions-block .lc-dim-value sub{font-family:var(--lc-font-body);font-size:11px;color:var(--lc-on-surface-variant);font-weight:500;margin:0 0.2rem;vertical-align:middle}
+  .lc-dimensions-block .lc-dim-icon{position:absolute;right:-1rem;bottom:-1rem;font-size:112px;color:var(--lc-primary);opacity:0.07;pointer-events:none;font-variation-settings:'FILL' 0}
+</style>
+
+<section class="lc-specs-section" id="specifications">
+  <div class="lc-specs-inner">
+
+    <header class="lc-specs-header">
+      <span class="lc-kicker">Technical Precision</span>
+      <h2>Model Specifications</h2>
+      <p>
+        {{ short_title }} is engineered for optimal wine preservation{%- if spec_temp %}, maintaining precise temperatures between {{ spec_temp }}{%- endif %}.
+      </p>
+    </header>
+
+    <div class="lc-specs-grid">
+
+      <div class="lc-specs-sticky">
+        <div class="lc-image-card">
+          {%- if product.featured_image %}
+            {{ product.featured_image | image_url: width: 800 | image_tag: alt: product.title, loading: 'lazy' }}
+          {%- endif %}
+          <div class="lc-img-overlay"></div>
+          <div class="lc-img-caption">
+            <span class="lc-kicker">The Anatomy of Preservation</span>
+            <h3>{{ product_base }}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="lc-specs-table-header"><span>Model Specifications</span></div>
+        <div class="lc-specs-rows">
+
+          {%- capture lc_spec_sku -%}{%- render 'lc-product-sku', product: product, variant: product.variants.first -%}{%- endcapture -%}
+          {%- assign lc_spec_sku = lc_spec_sku | strip -%}
+          {%- if lc_spec_sku != blank %}
+            <div class="lc-spec-row"><span class="lc-spec-label">SKU</span><span class="lc-spec-value">{{ lc_spec_sku }}</span></div>
+          {%- endif %}
+
+          {%- unless spec_range == blank or spec_range == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Range</span><span class="lc-spec-value">{{ spec_range }}</span></div>{%- endunless %}
+          {%- unless spec_zone == blank or spec_zone == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Cooling Zone</span><span class="lc-spec-value">{{ spec_zone }}</span></div>{%- endunless %}
+          {%- unless spec_install == blank or spec_install == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Installation Type</span><span class="lc-spec-value">{{ spec_install }}</span></div>{%- endunless %}
+
+          {%- unless spec_capacity == blank or spec_capacity == '—' %}
+            <div class="lc-spec-row lc-spec-row--accent"><span class="lc-spec-label">Bottle Capacity</span><span class="lc-spec-value">{{ spec_capacity }}</span></div>
+          {%- endunless %}
+
+          {%- unless spec_temp == blank or spec_temp == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Temperature Range</span><span class="lc-spec-value">{{ spec_temp }}</span></div>{%- endunless %}
+          {%- unless spec_noise == blank or spec_noise == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Noise Level</span><span class="lc-spec-value">{{ spec_noise }} dB</span></div>{%- endunless %}
+          {%- unless spec_shelves == blank or spec_shelves == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Shelves / Storage</span><span class="lc-spec-value">{{ spec_shelves }}</span></div>{%- endunless %}
+          {%- unless spec_door == blank or spec_door == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Door Type</span><span class="lc-spec-value">{{ spec_door }}</span></div>{%- endunless %}
+
+          {%- assign show_bools = false %}
+          {%- if spec_lock != blank and spec_lock != '—' %}{%- assign show_bools = true %}{%- endif %}
+          {%- if spec_vibration != blank and spec_vibration != '—' %}{%- assign show_bools = true %}{%- endif %}
+          {%- if spec_charcoal != blank and spec_charcoal != '—' %}{%- assign show_bools = true %}{%- endif %}
+          {%- if spec_winter != blank and spec_winter != '—' %}{%- assign show_bools = true %}{%- endif %}
+
+          {%- if show_bools %}
+            <div class="lc-bool-grid">
+              {%- unless spec_lock == blank or spec_lock == '—' %}<div class="lc-bool-card {% if spec_lock == 'Yes' %}lc-bool--yes{% else %}lc-bool--no{% endif %}"><span class="material-symbols-outlined">lock</span><span class="lc-bool-label">Lock</span><span class="lc-bool-val">{{ spec_lock }}</span></div>{%- endunless %}
+              {%- unless spec_vibration == blank or spec_vibration == '—' %}<div class="lc-bool-card {% if spec_vibration == 'Yes' %}lc-bool--yes{% else %}lc-bool--no{% endif %}"><span class="material-symbols-outlined">vibration</span><span class="lc-bool-label">Anti-Vibration</span><span class="lc-bool-val">{{ spec_vibration }}</span></div>{%- endunless %}
+              {%- unless spec_charcoal == blank or spec_charcoal == '—' %}<div class="lc-bool-card {% if spec_charcoal == 'Yes' %}lc-bool--yes{% else %}lc-bool--no{% endif %}"><span class="material-symbols-outlined">air_purifier_gen</span><span class="lc-bool-label">Charcoal Filter</span><span class="lc-bool-val">{{ spec_charcoal }}</span></div>{%- endunless %}
+              {%- unless spec_winter == blank or spec_winter == '—' %}<div class="lc-bool-card {% if spec_winter == 'Yes' %}lc-bool--yes{% else %}lc-bool--no{% endif %}"><span class="material-symbols-outlined">thermostat</span><span class="lc-bool-label">Winter Heating</span><span class="lc-bool-val">{{ spec_winter }}</span></div>{%- endunless %}
+            </div>
+          {%- endif %}
+
+          {%- unless spec_led == blank or spec_led == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">LED Display</span><span class="lc-spec-value">{{ spec_led }}</span></div>{%- endunless %}
+          {%- unless spec_energy == blank or spec_energy == '—' %}<div class="lc-spec-row"><span class="lc-spec-label">Energy Efficiency</span><span class="lc-spec-value">{{ spec_energy }} kWh/p.a</span></div>{%- endunless %}
+
+        </div>
+
+        {%- if spec_height or spec_width or spec_depth %}
+          <div class="lc-dimensions-block">
+            <span class="lc-dim-label">Physical Dimensions</span>
+            <div class="lc-dim-value">
+              {%- if spec_height %}{{ spec_height }}<sub>H</sub>{%- endif %}
+              {%- if spec_width %} × {{ spec_width }}<sub>W</sub>{%- endif %}
+              {%- if spec_depth %} × {{ spec_depth }}<sub>D</sub> mm{%- endif %}
+            </div>
+            <span class="material-symbols-outlined lc-dim-icon">straighten</span>
+          </div>
+        {%- endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LeCavist Specifications",
+  "tag": "section",
+  "class": "lc-specifications",
+  "settings": [],
+  "presets": [{ "name": "LeCavist Specifications" }]
+}
+{% endschema %}

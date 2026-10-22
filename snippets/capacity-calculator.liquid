@@ -1,0 +1,866 @@
+{%- comment -%}
+  Capacity Calculator — shared modal, styles, JS and cabinet dataset.
+  Render this snippet exactly ONCE per page. Render
+  `capacity-calculator-button` (with variant: 'mobile' or 'desktop')
+  wherever a trigger button should appear.
+{%- endcomment -%}
+
+{%- assign lc_cap_cabs = collections['all-cabinets'].products -%}
+{%- if lc_cap_cabs.size == 0 -%}
+  {%- assign lc_cap_cabs = collections.all.products -%}
+{%- endif -%}
+
+<script>
+  // Asset URL for the loading-comparison diagram. Resolves to the empty string
+  // until the file is added to /assets — the diagram is then hidden by the JS.
+  window.lcCCLoadingDiagramUrl = {{ 'loading-comparison.png' | asset_url | json }};
+</script>
+
+<div class="lc-cc-modal" id="lc-cc-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lc-cc-heading">
+  <div class="lc-cc-modal__backdrop" data-lc-cc-close></div>
+  <div class="lc-cc-modal__inner" role="document">
+    <button type="button" class="lc-cc-modal__close" data-lc-cc-close aria-label="Close calculator">✕</button>
+
+    <div class="lc-cc-modal__header">
+      <span class="lc-cc-modal__eyebrow">— Capacity Calculator —</span>
+      <h2 class="lc-cc-modal__heading" id="lc-cc-heading">How many bottles do you have?</h2>
+      <p class="lc-cc-modal__sub">Enter the size of your collection and we'll suggest the cabinets that fit it comfortably.</p>
+    </div>
+
+    <form class="lc-cc-modal__form" id="lc-cc-form" novalidate>
+      <input
+        type="number"
+        id="lc-cc-input"
+        class="lc-cc-modal__input"
+        min="1"
+        max="9999"
+        step="1"
+        placeholder="e.g. 80"
+        inputmode="numeric"
+        aria-label="Number of bottles in your collection"
+        required
+      >
+      <button type="submit" class="lc-cc-modal__submit" id="lc-cc-submit">Find Cabinets</button>
+    </form>
+
+    <div class="lc-cc-modal__body" id="lc-cc-body">
+      <p class="lc-cc-modal__placeholder">Type a number above to see matching cabinets.</p>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" id="lc-cc-data">
+[
+  {%- assign lc_cc_first = true -%}
+  {%- for lc_cc_p in lc_cap_cabs -%}
+    {%- liquid
+      assign lc_cc_cap = lc_cc_p.metafields.lecavist_specs.bottle_capacity.value
+      if lc_cc_cap == blank
+        assign lc_cc_cap = lc_cc_p.metafields.custom.bottle_capacity.value
+      endif
+      assign lc_cc_cap_num = lc_cc_cap | plus: 0
+    -%}
+    {%- if lc_cc_cap_num > 0 -%}
+      {%- unless lc_cc_first -%},{%- endunless -%}
+      {%- assign lc_cc_first = false -%}
+      {%- assign lc_cc_sku = lc_cc_p.variants.first.sku -%}
+      {%- if lc_cc_sku == blank -%}
+        {%- assign lc_cc_sku = lc_cc_p.metafields.custom.fs_sku.value -%}
+      {%- endif -%}
+      {%- assign lc_cc_sku = lc_cc_sku | upcase -%}
+      {%- assign lc_cc_img = '' -%}
+      {%- if lc_cc_p.featured_image != blank -%}
+        {%- assign lc_cc_img = lc_cc_p.featured_image | image_url: width: 600 -%}
+      {%- endif -%}
+      {%- assign lc_cc_zone_label = '' -%}
+      {%- assign lc_cc_inst_label = '' -%}
+      {%- for lc_cc_col in lc_cc_p.collections -%}
+        {%- assign lc_cc_ct = lc_cc_col.title | downcase -%}
+        {%- if lc_cc_zone_label == blank -%}
+          {%- if lc_cc_ct contains 'single' and lc_cc_ct contains 'zone' -%}{%- assign lc_cc_zone_label = 'Single Zone' -%}
+          {%- elsif lc_cc_ct contains 'dual' and lc_cc_ct contains 'zone' -%}{%- assign lc_cc_zone_label = 'Dual Zone' -%}
+          {%- elsif lc_cc_ct contains 'triple' and lc_cc_ct contains 'zone' -%}{%- assign lc_cc_zone_label = 'Triple Zone' -%}
+          {%- endif -%}
+        {%- endif -%}
+        {%- if lc_cc_inst_label == blank -%}
+          {%- if lc_cc_ct contains 'built' -%}{%- assign lc_cc_inst_label = 'Built-in' -%}
+          {%- elsif lc_cc_ct contains 'freestanding' or lc_cc_ct contains 'free standing' -%}{%- assign lc_cc_inst_label = 'Freestanding' -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {"id":{{ lc_cc_p.id }},"title":{{ lc_cc_p.title | json }},"url":{{ lc_cc_p.url | json }},"image":{{ lc_cc_img | json }},"price":{{ lc_cc_p.price | money_without_trailing_zeros | json }},"capacity":{{ lc_cc_cap_num }},"sku":{{ lc_cc_sku | json }},"zone":{{ lc_cc_zone_label | json }},"inst":{{ lc_cc_inst_label | json }}}
+    {%- endif -%}
+  {%- endfor -%}
+]
+</script>
+
+<style>
+  /* ── Trigger button (mobile variant — third row under wishlist + email) ── */
+  .lc-cc-row {
+    margin-bottom: 16px;
+  }
+  .lc-cc-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid var(--lc-border, #d4cfc7);
+    border-radius: 4px;
+    color: var(--lc-dark, #1A1512);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 12px 14px;
+    min-height: 46px;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    letter-spacing: 0.02em;
+  }
+  .lc-cc-trigger:hover {
+    border-color: var(--lc-accent, #6B1F2E);
+    background: rgba(107,31,46,0.04);
+    color: var(--lc-accent, #6B1F2E);
+  }
+  .lc-cc-trigger svg { flex-shrink: 0; }
+
+  /* ── Modal ─────────────────────────────────────────────────────── */
+  .lc-cc-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .lc-cc-modal.is-open { display: flex; }
+  .lc-cc-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,21,18,0.55);
+    backdrop-filter: blur(2px);
+  }
+  .lc-cc-modal__inner {
+    position: relative;
+    width: 100%;
+    max-width: 920px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    background: #F5F0E8;
+    border-radius: 8px;
+    padding: clamp(28px, 4vw, 48px);
+    box-shadow: 0 24px 64px rgba(26,21,18,0.28);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+  }
+  .lc-cc-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(26,21,18,0.06);
+    color: #1A1512;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    z-index: 2;
+  }
+  .lc-cc-modal__close:hover { background: rgba(26,21,18,0.14); }
+
+  .lc-cc-modal__header { text-align: center; margin-bottom: 22px; }
+  .lc-cc-modal__eyebrow {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #6B1F2E;
+    text-transform: uppercase;
+    font-size: 12px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .lc-cc-modal__heading {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(26px, 3.4vw, 38px);
+    font-weight: 400;
+    color: #1A1512;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+  .lc-cc-modal__sub {
+    font-size: 16px;
+    color: rgba(26,21,18,0.6);
+    line-height: 1.6;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .lc-cc-modal__form {
+    display: flex;
+    gap: 10px;
+    max-width: 460px;
+    margin: 0 auto 28px;
+  }
+  .lc-cc-modal__input {
+    flex: 1;
+    border: 1.5px solid rgba(26,21,18,0.18);
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 16px;
+    color: #1A1512;
+    background: #F5F0E8;
+    outline: none;
+    transition: border-color 0.15s;
+    min-height: 48px;
+    font-family: inherit;
+  }
+  .lc-cc-modal__input:focus { border-color: #6B1F2E; }
+  .lc-cc-modal__submit {
+    background: #6B1F2E;
+    color: #F5F0E8;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 24px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: background 0.15s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .lc-cc-modal__submit:hover { background: #4A1420; }
+
+  .lc-cc-modal__placeholder {
+    text-align: center;
+    color: rgba(26,21,18,0.45);
+    font-size: 16px;
+    padding: 32px 0;
+    margin: 0;
+  }
+  .lc-cc-modal__error {
+    text-align: center;
+    color: #b3261e;
+    font-size: 16px;
+    margin: 0;
+    padding: 16px 0;
+  }
+
+  /* ── Results — mirrors "Our Range" card design ─────────────────── */
+  .lc-cc-results {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 8px;
+  }
+  @media (max-width: 760px) {
+    .lc-cc-results {
+      grid-auto-flow: column;
+      grid-auto-columns: 78%;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 6px;
+    }
+    .lc-cc-card { scroll-snap-align: start; }
+  }
+  .lc-cc-card {
+    position: relative;
+    background: #FAF6EE;
+    border: 1px solid rgba(26,21,18,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .lc-cc-card:hover {
+    border-color: rgba(26,21,18,0.18);
+    box-shadow: 0 8px 28px rgba(26,21,18,0.06);
+  }
+  .lc-cc-card__image {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: radial-gradient(ellipse 62% 52% at 50% 55%, #E8DFD0 0%, #FAF6EE 70%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .lc-cc-card__image img {
+    width: 88%;
+    height: 92%;
+    object-fit: contain;
+    display: block;
+  }
+  .lc-cc-card__badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: #6B1F2E;
+    color: #F5F0E8;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 5px 10px;
+    border-radius: 2px;
+  }
+  .lc-cc-card__body {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+  .lc-cc-card__title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: #1A1512;
+  }
+  .lc-cc-card__title-type {
+    display: block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: rgba(26,21,18,0.55);
+    margin-top: 4px;
+  }
+  .lc-cc-card__specs {
+    border-top: 1px solid rgba(26,21,18,0.08);
+    border-bottom: 1px solid rgba(26,21,18,0.08);
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .lc-cc-card__spec-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .lc-cc-card__spec-label { color: rgba(26,21,18,0.55); }
+  .lc-cc-card__spec-val { color: #1A1512; font-weight: 500; }
+  .lc-cc-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  .lc-cc-card__price {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: #1A1512;
+    letter-spacing: -0.015em;
+  }
+  .lc-cc-card__view {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,21,18,0.55);
+    font-weight: 500;
+  }
+  .lc-cc-card:hover .lc-cc-card__view { color: #6B1F2E; }
+
+  /* ── "Fully stocked" tighter-fit card — dimmed ─────────────────── */
+  .lc-cc-tight-wrap { margin-top: 22px; }
+  .lc-cc-tight-note {
+    background: #FAF6EE;
+    border: 1px solid rgba(26,21,18,0.1);
+    border-left: 3px solid #6B1F2E;
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .lc-cc-tight-note__heading {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(20px, 2.4vw, 26px);
+    font-weight: 400;
+    color: #1A1512;
+    line-height: 1.2;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+  }
+  .lc-cc-tight-note__body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(26,21,18,0.78);
+    margin: 0;
+  }
+  .lc-cc-tight-note__body strong { color: #1A1512; }
+  .lc-cc-tight-note__body ul { margin: 8px 0 0; padding-left: 18px; }
+  .lc-cc-tight-note__body li { margin-bottom: 4px; }
+  .lc-cc-tight-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 28px;
+    align-items: start;
+  }
+  .lc-cc-tight-card-wrap {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    max-width: 320px;
+  }
+  .lc-cc-card--tight {
+    opacity: 0.55;
+    filter: saturate(0.85);
+  }
+  .lc-cc-card--tight:hover { opacity: 0.85; }
+  .lc-cc-card--tight .lc-cc-card__badge {
+    background: rgba(26,21,18,0.55);
+  }
+
+  /* ── Loading comparison diagram (desktop-only) ─────────────────── */
+  .lc-cc-loading-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 0;
+  }
+  .lc-cc-loading-diagram__title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6B1F2E;
+    text-align: center;
+    margin: 0;
+  }
+  .lc-cc-loading-diagram__img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: contain;
+  }
+  .lc-cc-loading-diagram__pills {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    justify-items: center;
+  }
+  .lc-cc-loading-diagram__pills .lc-cc-load {
+    align-self: center;
+  }
+
+  /* ── Loading type disclosure (open on desktop, collapsible on mobile) ─ */
+  .lc-cc-loading { margin: 0; }
+  .lc-cc-loading > summary { display: none; }
+
+  .lc-cc-results-heading {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(26,21,18,0.55);
+    margin: 0 0 12px;
+  }
+
+  /* ── Loading tag (Max / Standard / Comfort / Plenty of room) ───── */
+  .lc-cc-load {
+    display: inline-block;
+    align-self: flex-start;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+    border-radius: 100px;
+    border: 1px solid;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .lc-cc-load--max  { background: #fdf0f2; color: #7c1f2e; border-color: #e8b4bc; }
+  .lc-cc-load--std  { background: #faf5ee; color: #5a3510; border-color: #d4b896; }
+  .lc-cc-load--comf { background: #eef4ec; color: #2c5b3a; border-color: #b4d2bc; }
+  .lc-cc-load--room { background: #f0eef8; color: #4a2878; border-color: #c0aae0; }
+
+  /* ── Colour-swatch badge (Black / Stainless) ───────────────────── */
+  .lc-cc-swatch {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    padding: 4px 6px;
+    background: rgba(245,240,232,0.92);
+    border: 1px solid rgba(26,21,18,0.1);
+    border-radius: 100px;
+    box-shadow: 0 2px 6px rgba(26,21,18,0.08);
+  }
+  .lc-cc-swatch__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,21,18,0.25);
+    display: inline-block;
+  }
+  .lc-cc-swatch__dot + .lc-cc-swatch__dot { margin-left: -4px; }
+  .lc-cc-swatch__dot--black { background: #1A1512; }
+  .lc-cc-swatch__dot--steel {
+    background: linear-gradient(135deg, #d8d8d8 0%, #b0b0b0 45%, #e6e6e6 60%, #a8a8a8 100%);
+  }
+
+  /* Lock body scroll while modal open */
+  /* Lock the page behind the calculator. position:fixed (not just overflow)
+     is required so the product page can't scroll underneath on mobile. */
+  body.lc-cc-locked {
+    position: fixed;
+    width: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+  .lc-cc-modal__inner { overscroll-behavior: contain; }
+
+  /* Stack the tight grid below the desktop breakpoint */
+  @media (max-width: 900px) {
+    .lc-cc-tight-grid { grid-template-columns: 1fr; }
+    /* Loading type becomes a tap-to-expand line on mobile, moved to the top of
+       the grid so it sits just under the "Want a fully stocked fridge?" note,
+       above the product cards. */
+    .lc-cc-loading {
+      order: -1;
+      border-top: 1px solid rgba(26,21,18,0.12);
+      margin-top: 4px;
+    }
+    .lc-cc-loading > summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 2px;
+      font-family: 'Inter Tight', -apple-system, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(26,21,18,0.75);
+    }
+    .lc-cc-loading > summary::-webkit-details-marker { display: none; }
+    .lc-cc-loading > summary::after {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .lc-cc-loading[open] > summary::after { transform: rotate(-135deg); }
+  }
+
+  @media (max-width: 600px) {
+    /* Full-screen sheet anchored to the top so the whole results list
+       (incl. the Loading type diagram) is reachable by scrolling. Uses
+       dvh so the height tracks the *visible* viewport, not the area behind
+       the mobile address bar (which 100vh overshoots, hiding the bottom). */
+    .lc-cc-modal { padding: 0; align-items: flex-start; }
+    .lc-cc-modal__inner {
+      max-height: 100vh;
+      max-height: 100dvh;
+      height: 100vh;
+      height: 100dvh;
+      border-radius: 0;
+      padding: 60px 18px 32px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .lc-cc-modal__form { flex-direction: column; }
+    .lc-cc-modal__submit { padding: 14px 16px; }
+    .lc-cc-tight-card-wrap { max-width: 100%; }
+  }
+</style>
+
+<script>
+(function() {
+  if (window.__lcCCInit) return;
+  window.__lcCCInit = true;
+
+  function init() {
+    var modal  = document.getElementById('lc-cc-modal');
+    var form   = document.getElementById('lc-cc-form');
+    var input  = document.getElementById('lc-cc-input');
+    var body   = document.getElementById('lc-cc-body');
+    var dataEl = document.getElementById('lc-cc-data');
+
+    if (!modal || !form || !input || !body || !dataEl) return;
+
+    var rawCabinets = [];
+    try { rawCabinets = JSON.parse(dataEl.textContent || '[]'); } catch (err) { rawCabinets = []; }
+
+    // ── SKU dedup: group variants of the same model so we only ever recommend
+    //    the "base" (= black, normal shelves). Stainless variants append 'X'
+    //    to the base SKU; full-shelves variants append 'FS'. Combined: 'XFS'.
+    //    NB: '-2' / 'X2' / 'XX2' are NOT modifiers — those are duo products
+    //    with a different capacity, so we leave them as their own groups.
+    function baseSku(sku) {
+      if (!sku) return '';
+      var s = String(sku).toUpperCase().trim();
+      if (s.length > 3 && s.slice(-3) === 'XFS') return s.slice(0, -3);
+      if (s.length > 2 && s.slice(-2) === 'FS')  return s.slice(0, -2);
+      // Only strip a trailing 'X' if the previous char is a letter, so we
+      // don't accidentally turn 'LJ52VNBUX2' into 'LJ52VNBUX' (the '2' guards
+      // against duo SKUs like X2 / XX2 from being demoted).
+      if (s.length > 1 && s.slice(-1) === 'X' && /[A-Z]$/.test(s.slice(-2, -1))) return s.slice(0, -1);
+      return s;
+    }
+
+    var groups = {};
+    rawCabinets.forEach(function(c) {
+      var b = baseSku(c.sku) || ('id:' + c.id);
+      if (!groups[b]) groups[b] = [];
+      groups[b].push(c);
+    });
+
+    var cabinets = Object.keys(groups).map(function(b) {
+      var group = groups[b];
+      // Canonical = the SKU that equals the base (black + normal shelves).
+      // Fallback = the shortest SKU in the group.
+      var canonical = null;
+      for (var i = 0; i < group.length; i++) {
+        if ((group[i].sku || '').toUpperCase() === b) { canonical = group[i]; break; }
+      }
+      if (!canonical) {
+        canonical = group.slice().sort(function(a, c) {
+          return (a.sku || '').length - (c.sku || '').length;
+        })[0];
+      }
+      // Detect sibling colour variant (stainless = base + X, or base + XFS)
+      var hasStainless = group.some(function(c) {
+        var s = (c.sku || '').toUpperCase();
+        return s === b + 'X' || s === b + 'XFS';
+      });
+      // Clone with extra fields so we don't mutate raw data
+      return Object.assign({}, canonical, { hasStainless: hasStainless });
+    });
+
+    // ── Loading tag based on target ÷ canonical capacity ────────────
+    function loadingTag(target, capacity) {
+      if (!capacity || capacity <= 0) return null;
+      var ratio = target / capacity;
+      if (ratio >= 0.95) return { label: 'Max Loading',      cls: 'lc-cc-load--max' };
+      if (ratio >= 0.85) return { label: 'Standard Loading', cls: 'lc-cc-load--std' };
+      if (ratio >= 0.65) return { label: 'Comfort Loading',  cls: 'lc-cc-load--comf' };
+      return { label: 'Plenty of Room', cls: 'lc-cc-load--room' };
+    }
+
+    var lcCCScrollY = 0;
+    function openModal() {
+      lcCCScrollY = window.scrollY || window.pageYOffset || 0;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.top = '-' + lcCCScrollY + 'px';
+      document.body.classList.add('lc-cc-locked');
+      setTimeout(function() { input.focus(); }, 50);
+    }
+    function closeModal() {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('lc-cc-locked');
+      document.body.style.top = '';
+      window.scrollTo(0, lcCCScrollY);
+    }
+
+    document.querySelectorAll('[data-lc-cc-open]').forEach(function(el) {
+      el.addEventListener('click', openModal);
+    });
+    modal.querySelectorAll('[data-lc-cc-close]').forEach(function(el) {
+      el.addEventListener('click', closeModal);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    function escapeHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function parseTitle(title) {
+      var base = (title || '').split(' - ')[0];
+      var parts = base.split(/\s+/);
+      var bottles = '';
+      var typeWord = 'Wine';
+      var container = 'Cabinet';
+      for (var i = 0; i < parts.length; i++) {
+        var p = parts[i].toLowerCase().replace(/-/g, '');
+        if (p === 'bottle' || p === 'bottles') {
+          if (i > 0) bottles = parts[i - 1].replace(/-/g, '');
+        }
+        if (p === 'wine') typeWord = 'Wine';
+        if (p === 'beverage') typeWord = 'Beverage';
+        if (p === 'cabinet') container = 'Cabinet';
+        if (p === 'fridge') container = 'Fridge';
+      }
+      return { bottles: bottles, typeWord: typeWord, container: container };
+    }
+
+    function cardHTML(cab, target, opts) {
+      opts = opts || {};
+      var parsed = parseTitle(cab.title);
+      var bottles = parsed.bottles || cab.capacity;
+      var titleLine = bottles + ' Bottle' + (cab.sku ? ' - ' + escapeHtml(cab.sku) : '');
+      var typeLine = (parsed.typeWord + ' ' + parsed.container).toUpperCase();
+      var img = cab.image
+        ? '<img src="' + escapeHtml(cab.image) + '" alt="' + escapeHtml(cab.title) + '" loading="lazy">'
+        : '';
+      var rows = [];
+      rows.push('<div class="lc-cc-card__spec-row"><span class="lc-cc-card__spec-label">Capacity</span><span class="lc-cc-card__spec-val">' + cab.capacity + ' bottles</span></div>');
+      if (cab.zone) rows.push('<div class="lc-cc-card__spec-row"><span class="lc-cc-card__spec-label">Zone</span><span class="lc-cc-card__spec-val">' + escapeHtml(cab.zone) + '</span></div>');
+      if (cab.inst) rows.push('<div class="lc-cc-card__spec-row"><span class="lc-cc-card__spec-label">Install</span><span class="lc-cc-card__spec-val">' + escapeHtml(cab.inst) + '</span></div>');
+
+      // Loading tag (e.g. "Max Loading", "Standard Loading"). Skipped for the
+      // dimmed "fully stocked" example since it always sits at/above capacity.
+      var loadHtml = '';
+      if (!opts.tight) {
+        var lt = loadingTag(target, cab.capacity);
+        if (lt) {
+          loadHtml = '<span class="lc-cc-load ' + lt.cls + '">' + escapeHtml(lt.label) + '</span>';
+        }
+      }
+      var badgeHtml = opts.badge ? '<span class="lc-cc-card__badge">' + escapeHtml(opts.badge) + '</span>' : '';
+
+      // Round colour-swatch badge — shown only when a stainless variant also exists
+      var swatchHtml = cab.hasStainless
+        ? '<span class="lc-cc-swatch" title="Available in Black or Stainless Steel" aria-label="Available in Black or Stainless Steel">'
+          + '<span class="lc-cc-swatch__dot lc-cc-swatch__dot--black"></span>'
+          + '<span class="lc-cc-swatch__dot lc-cc-swatch__dot--steel"></span>'
+          + '</span>'
+        : '';
+
+      return '<a href="' + escapeHtml(cab.url) + '" class="lc-cc-card' + (opts.tight ? ' lc-cc-card--tight' : '') + '">'
+        + '<div class="lc-cc-card__image">' + badgeHtml + swatchHtml + img + '</div>'
+        + '<div class="lc-cc-card__body">'
+        +   loadHtml
+        +   '<h3 class="lc-cc-card__title">' + escapeHtml(titleLine) + '<span class="lc-cc-card__title-type">' + escapeHtml(typeLine) + '</span></h3>'
+        +   '<div class="lc-cc-card__specs">' + rows.join('') + '</div>'
+        +   '<div class="lc-cc-card__footer">'
+        +     '<span class="lc-cc-card__price">' + escapeHtml(cab.price) + '</span>'
+        +     '<span class="lc-cc-card__view">View →</span>'
+        +   '</div>'
+        + '</div>'
+        + '</a>';
+    }
+
+    function renderResults(target) {
+      if (!cabinets.length) {
+        body.innerHTML = '<p class="lc-cc-modal__error">No cabinets available right now. Please try again later.</p>';
+        return;
+      }
+      var sortedAsc = cabinets.slice().sort(function(a, b) { return a.capacity - b.capacity; });
+      var bigger = sortedAsc.filter(function(c) { return c.capacity > target; });
+      var smaller = sortedAsc.filter(function(c) { return c.capacity <= target; });
+      var comfy = bigger.slice(0, 3);
+      var tight = smaller.length ? smaller[smaller.length - 1] : null;
+
+      if (!comfy.length && !tight) {
+        body.innerHTML = '<p class="lc-cc-modal__error">We couldn’t find a cabinet for that number. Try a different value.</p>';
+        return;
+      }
+
+      var html = '';
+      if (comfy.length) {
+        html += '<p class="lc-cc-results-heading">Cabinets that fit ' + target + ' bottles</p>';
+        html += '<div class="lc-cc-results">';
+        for (var i = 0; i < comfy.length; i++) html += cardHTML(comfy[i], target, {});
+        html += '</div>';
+      }
+      if (tight) {
+        var diagramUrl = (window.lcCCLoadingDiagramUrl || '');
+        var ccIsDesktop = window.matchMedia('(min-width: 901px)').matches;
+        var diagramHtml = diagramUrl
+          ? '<details class="lc-cc-loading"' + (ccIsDesktop ? ' open' : '') + '>'
+            +   '<summary class="lc-cc-loading__summary">Loading type</summary>'
+            +   '<div class="lc-cc-loading-diagram" aria-hidden="false">'
+            +     '<div class="lc-cc-loading-diagram__title">Example of loading types for the LEK168PV</div>'
+            +     '<img class="lc-cc-loading-diagram__img" src="' + escapeHtml(diagramUrl) + '" alt="Three cabinets showing comfort, standard and max loading" onerror="this.closest(\'.lc-cc-loading-diagram\').style.display=\'none\'">'
+            +     '<div class="lc-cc-loading-diagram__pills">'
+            +       '<span class="lc-cc-load lc-cc-load--comf">Comfort Loading</span>'
+            +       '<span class="lc-cc-load lc-cc-load--std">Standard Loading</span>'
+            +       '<span class="lc-cc-load lc-cc-load--max">Max Loading</span>'
+            +     '</div>'
+            +   '</div>'
+            + '</details>'
+          : '';
+        // Fully-stocked card(s). Special-case a 168-bottle result: show the two
+        // 168 models in a fixed order — LEK168PV (keeps its stainless tag) then
+        // LKV168PNDX (no colour variant exists, so force its colour tag off).
+        var tightCardsHtml = '';
+        if (tight.capacity === 168) {
+          var lek168 = null, lkv168 = null;
+          for (var t = 0; t < cabinets.length; t++) {
+            if (cabinets[t].sku === 'LEK168PV')   lek168 = cabinets[t];
+            if (cabinets[t].sku === 'LKV168PNDX') lkv168 = cabinets[t];
+          }
+          if (lek168) tightCardsHtml += cardHTML(lek168, target, { badge: 'Fully Stocked', tight: true });
+          if (lkv168) tightCardsHtml += cardHTML(Object.assign({}, lkv168, { hasStainless: false }), target, { badge: 'Fully Stocked', tight: true });
+        }
+        if (!tightCardsHtml) {
+          tightCardsHtml = cardHTML(tight, target, { badge: 'Fully Stocked', tight: true });
+        }
+        html += '<div class="lc-cc-tight-wrap">'
+          +   '<div class="lc-cc-tight-note">'
+          +     '<h3 class="lc-cc-tight-note__heading">Want a fully stocked fridge instead?</h3>'
+          +     '<p class="lc-cc-tight-note__body">'
+          +       'All LeCavist capacities are calculated using the international 750 mL Bordeaux bottle, with shelves removed and bottles stacked end-to-end. '
+          +       'For a more comfortable operating capacity, with a mixed collection of bottle shapes, you’ll typically fit <strong>around 80%</strong> of the advertised maximum, depending on:'
+          +       '<ul>'
+          +         '<li><strong>Bottle shape</strong> : Burgundy and Champagne bottles are wider than Bordeaux and take up more space.</li>'
+          +         '<li><strong>How many shelves you keep in</strong> : more shelves means easier access but lower total capacity.</li>'
+          +       '</ul>'
+          +     '</p>'
+          +   '</div>'
+          +   '<div class="lc-cc-tight-grid">'
+          +     '<div class="lc-cc-tight-card-wrap">' + tightCardsHtml + '</div>'
+          +     diagramHtml
+          +   '</div>'
+          + '</div>';
+      }
+      body.innerHTML = html;
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var raw = input.value.trim();
+      var n = parseInt(raw, 10);
+      if (!raw || isNaN(n) || n < 1) {
+        body.innerHTML = '<p class="lc-cc-modal__error">Please enter a number of bottles (1 or more).</p>';
+        return;
+      }
+      renderResults(n);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>

@@ -1,0 +1,135 @@
+{%- comment -%}
+  Judge.me review widget for Full-Shelves (FS) product variants.
+  Renders Judge.me's standard manual widget div BUT pointed at the
+  parent product so reviews are pooled with the parent (non-FS) cabinet.
+
+  Resolves the parent via `metafields['website-rev'].parent_product`.
+  Falls back to the current product if no parent reference is set.
+{%- endcomment -%}
+
+{%- liquid
+  assign jdg_product = product
+  assign jdg_fs_sku = product.metafields.custom.fs_sku.value
+  if jdg_fs_sku != blank
+    assign jdg_parent = product.metafields['website-rev'].parent_product.value
+    if jdg_parent != blank
+      assign jdg_product = jdg_parent
+    endif
+  endif
+-%}
+
+<div class="lc-jdgm-fs-section{% if section.settings.padding_top < 30 %} pt-min{% endif %}{% if section.settings.padding_bottom < 30 %} pb-min{% endif %}"
+     style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="lc-jdgm-fs-container">
+    {%- if section.settings.heading != blank -%}
+      <header class="lc-jdgm-fs-header">
+        <span class="lc-jdgm-fs-eyebrow">{{ section.settings.eyebrow | default: '— Reviews —' }}</span>
+        <h2 class="lc-jdgm-fs-heading">{{ section.settings.heading }}</h2>
+      </header>
+    {%- endif -%}
+
+    {%- comment -%}
+      Judge.me's manual widget container. Their JS picks up the data-id and
+      renders the review widget for that product specifically.
+    {%- endcomment -%}
+    <div class="jdgm-widget jdgm-review-widget"
+         data-id="{{ jdg_product.id }}"
+         data-product-title="{{ jdg_product.title | escape }}"
+         data-product-handle="{{ jdg_product.handle }}"
+         data-template="product">
+    </div>
+  </div>
+</div>
+
+<style>
+  .lc-jdgm-fs-section {
+    background: transparent;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+  }
+  .lc-jdgm-fs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .lc-jdgm-fs-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .lc-jdgm-fs-eyebrow {
+    display: inline-block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #1A1512;
+    margin-bottom: 14px;
+  }
+  .lc-jdgm-fs-heading {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: #1A1512;
+    margin: 0;
+  }
+  /* Hide Judge.me's own title — we use our own header above */
+  .lc-jdgm-fs-section .jdgm-rev-widg__title { display: none !important; }
+</style>
+
+{% schema %}
+{
+  "name": "Reviews (FS-aware)",
+  "tag": "section",
+  "class": "section-judgeme-fs-reviews",
+  "settings": [
+    {
+      "type": "header",
+      "content": "About this section"
+    },
+    {
+      "type": "paragraph",
+      "content": "Renders the Judge.me Review Widget. On Full-Shelves (FS) variants — products whose `custom.fs_sku` metafield is set — the widget shows reviews from the parent product (`website-rev.parent_product`) so reviews are pooled. On standard products it shows the current product's reviews."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "— Reviews —"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Customer Reviews"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Reviews (FS-aware)"
+    }
+  ]
+}
+{% endschema %}

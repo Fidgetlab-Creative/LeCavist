@@ -1,0 +1,130 @@
+<div class="glozin-logo-banner" style="background-color: {{ section.settings.bg_color }}; overflow: hidden; position: relative;">
+  <style>
+  .glozin-logo-banner {
+    overflow: hidden; /* masque ce qui dépasse */
+    width: 100%;
+  }
+
+  .glozin-logo-row {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    height: {{ section.settings.logo_height }}px;
+    will-change: transform;
+    user-select: none;
+  }
+
+  .glozin-logo-row img {
+    height: {{ section.settings.logo_height }}px;
+    width: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+    display: block;
+  }
+</style>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const logoRow = document.getElementById('logoRow');
+    const speed = {{ section.settings.scroll_speed }}; // durée du cycle complet en secondes
+    const gap = 40; // doit correspondre au gap CSS entre les logos
+
+    // Récupérer tous les logos (images)
+    const logos = logoRow.querySelectorAll('img');
+    const halfCount = logos.length / 2;
+
+    // Calculer la largeur totale du premier groupe (logos + gaps)
+    let widthToScroll = 0;
+    for(let i = 0; i < halfCount; i++) {
+      widthToScroll += logos[i].offsetWidth;
+      if (i < halfCount - 1) {
+        widthToScroll += gap;
+      }
+    }
+
+    let start = null;
+    function step(timestamp) {
+      if (!start) start = timestamp;
+      const elapsed = (timestamp - start) / 1000; // secondes écoulées
+
+      // Translation proportionnelle au temps écoulé
+      let translateX = -(elapsed / speed) * widthToScroll;
+
+      // Reset la boucle quand on a défilé toute la largeur
+      if (translateX <= -widthToScroll) {
+        start = timestamp;
+        translateX = 0;
+      }
+
+      logoRow.style.transform = `translateX(${translateX}px)`;
+
+      requestAnimationFrame(step);
+    }
+
+    requestAnimationFrame(step);
+  });
+</script>
+
+  
+  <div class="glozin-logo-row" id="logoRow">
+    {% for block in section.blocks %}
+      <img src="{{ block.settings.logo | image_url: width: 300 }}" alt="Partner logo">
+    {% endfor %}
+    {% for block in section.blocks %}
+      <img src="{{ block.settings.logo | image_url: width: 300 }}" alt="Partner logo duplicate">
+    {% endfor %}
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Partner Logo Marquee",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#1c1c1c"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "label": "Logo height (px)",
+      "min": 20,
+      "max": 120,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "label": "Scroll speed (seconds per loop)",
+      "min": 10,
+      "max": 120,
+      "step": 5,
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Partner logo"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    {
+      "name": "Partner Logo Marquee",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,54 @@
+{%- comment -%}
+  LeCavist — simple centred section heading (eyebrow + title), matched to the
+  Duo carousel header styling (burgundy eyebrow + Cormorant title on cream).
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+
+<section class="lc-heading" id="lc-heading-{{ section.id }}" style="--lc-heading-bg: {{ s.bg_color }}; --lc-pt: {{ s.padding_top }}px; --lc-pb: {{ s.padding_bottom }}px;">
+  <div class="lc-heading__wrap" data-lc-reveal>
+    {%- if s.eyebrow != blank -%}<p class="lc-heading__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+    {%- if s.title != blank -%}<h2 class="lc-heading__title">{{ s.title }}</h2>{%- endif -%}
+  </div>
+</section>
+
+{% style %}
+  #lc-heading-{{ section.id }}.lc-heading {
+    --ink:#1A1512; --acc:#6B1F2E;
+    --disp:'Cormorant Garamond','Times New Roman',serif; --body:'Inter Tight',-apple-system,sans-serif;
+    background: var(--lc-heading-bg, #F5F0E8);
+    padding: var(--lc-pt, 40px) clamp(20px,5vw,64px) var(--lc-pb, 20px);
+  }
+  #lc-heading-{{ section.id }} .lc-heading__wrap { max-width: 1360px; margin: 0 auto; text-align: center; }
+  #lc-heading-{{ section.id }} .lc-heading__eyebrow { font-family: var(--body); font-size: clamp(11px,1vw,13px); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--acc); margin: 0 0 16px; }
+  #lc-heading-{{ section.id }} .lc-heading__title { font-family: var(--disp); font-weight: 300; font-size: clamp(2.2rem,4.4vw,3.8rem); letter-spacing: -0.01em; line-height: 1.03; margin: 0; color: var(--ink); }
+
+  #lc-heading-{{ section.id }} [data-lc-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  #lc-heading-{{ section.id }} [data-lc-reveal].is-in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { #lc-heading-{{ section.id }} [data-lc-reveal] { transition:none !important; opacity:1 !important; transform:none !important; } }
+{% endstyle %}
+
+<script>
+  (function(){
+    var root=document.getElementById('lc-heading-{{ section.id }}');
+    if(!root) return;
+    var el=root.querySelector('[data-lc-reveal]');
+    if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{threshold:.2}); io.observe(el); } else { el.classList.add('is-in'); }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC Heading",
+  "tag": "section",
+  "class": "lc-heading-section",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#F5F0E8" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Testimonials" },
+    { "type": "text", "id": "title", "label": "Title", "default": "They trust us." },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding top", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "Padding bottom", "default": 8 }
+  ],
+  "presets": [ { "name": "LC Heading" } ]
+}
+{% endschema %}

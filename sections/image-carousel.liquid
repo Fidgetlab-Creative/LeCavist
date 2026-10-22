@@ -1,0 +1,111 @@
+{{ 'image-carousel.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign autoplay = section.settings.autoplay
+  assign autorotate_speed = section.settings.autorotate_speed
+  assign infinite = section.settings.infinite
+  assign show_arrow = section.settings.show_arrow
+  assign show_dots = section.settings.show_dots
+  assign slides_desktop = 3
+  assign slides_tablet = 2
+  assign slides_mobile = 1
+%}
+
+<div id="{{ section.id }}" class="section image-carousel-section">
+  <slide-section
+    id="swiper-{{ section.id }}"
+    class="swiper"
+    data-loop="{{ infinite }}"
+    data-speed="500"
+    data-autoplay="{{ autoplay }}"
+    data-autoplay-speed="{{ autorotate_speed | times: 1000 }}"
+    data-slides-per-view-desktop="{{ slides_desktop }}"
+    data-slides-per-view-tablet="{{ slides_tablet }}"
+    data-slides-per-view-mobile="{{ slides_mobile }}"
+  >
+    <div class="swiper-wrapper">
+      {% for block in section.blocks %}
+        <div class="swiper-slide">
+          {% if block.settings.image != blank %}
+            <img src="{{ block.settings.image | img_url: '1024x' }}" alt="Carousel Image">
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if show_arrow %}
+      {% render 'swiper-navigation' %}
+    {% endif %}
+
+    {% if show_dots %}
+      <div class="swiper-pagination"></div>
+    {% endif %}
+  </slide-section>
+</div>
+
+{% schema %}
+{
+  "name": "Image Carousel (Simple)",
+  "max_blocks": 25,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.all.carousel_settings.auto_change.label",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "label": "t:sections.all.carousel_settings.change_slides_every.label",
+      "max": 6,
+      "min": 2,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "Infinite loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show pagination dots",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Carousel",
+      "category": "Media",
+      "blocks": [
+        { "type": "image" },
+        { "type": "image" },
+        { "type": "image" }
+      ]
+    }
+  ]
+}
+{% endschema %}

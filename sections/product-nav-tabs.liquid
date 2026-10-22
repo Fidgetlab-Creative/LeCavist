@@ -1,0 +1,867 @@
+{% comment %}
+  ════════════════════════════════════════════════════════════
+  LeCavist — Product Navigation Tabs
+  File: sections/product-nav-tabs.liquid
+
+  TABS available (block types):
+    • description  — product description
+    • features     — 3×3 clickable icon grid with content panel
+    • specs        — auto specs by SKU from brochure data
+    • delivery     — hardcoded delivery + service content
+    • richtext     — any custom rich text
+    • documents    — up to 3 downloadable PDFs
+
+  Works on both mobile AND desktop (no display:none wrappers).
+  ════════════════════════════════════════════════════════════
+{% endcomment %}
+
+{%- liquid
+  assign section_st = section.settings
+  assign sw         = section_st.section_width
+  assign lc_sku     = product.selected_or_first_available_variant.sku | upcase | strip
+-%}
+
+{%- if section.blocks.size > 0 -%}
+{%- comment %} Anchor target for in-page links (e.g. from FAQ → "view spec sheet"). scroll-margin-top accounts for the sticky header. {%- endcomment %}
+<a id="product-manuals" aria-hidden="true" tabindex="-1" style="display:block;position:relative;top:-90px;visibility:hidden"></a>
+<div class="lc-tabs-section" id="lc-tabs-{{ section.id }}">
+
+  {%- comment %} ── Sticky tab bar ──────────────────────────── {%- endcomment %}
+  <div class="lc-tabs-nav" id="lc-tabs-nav-{{ section.id }}" role="tablist">
+    <div class="{{ sw }}">
+      <div class="lc-tabs-nav__inner">
+        {%- for block in section.blocks -%}
+          <button
+            class="lc-tabs-nav__tab{% if forloop.first %} is-active{% endif %}"
+            role="tab"
+            aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+            aria-controls="lc-tab-panel-{{ section.id }}-{{ forloop.index }}"
+            id="lc-tab-btn-{{ section.id }}-{{ forloop.index }}"
+            data-tab="{{ forloop.index }}"
+            type="button"
+            {{ block.shopify_attributes }}
+          >{%- if block.type == 'delivery' -%}<span class="lc-navtab-label--desk">Delivery And Service</span><span class="lc-navtab-label--mob">Service</span>{%- else -%}{{ block.settings.heading }}{%- endif -%}</button>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="lc-tabs-nav__line-track">
+      <div class="lc-tabs-nav__line" id="lc-tabs-line-{{ section.id }}"></div>
+    </div>
+  </div>
+
+  {%- comment %} ── Panels ──────────────────────────────────── {%- endcomment %}
+  <div class="{{ sw }}">
+    {%- for block in section.blocks -%}
+      <div
+        class="lc-tab-panel{% if forloop.first %} is-active{% endif %}"
+        role="tabpanel"
+        id="lc-tab-panel-{{ section.id }}-{{ forloop.index }}"
+        aria-labelledby="lc-tab-btn-{{ section.id }}-{{ forloop.index }}"
+        {% unless forloop.first %}hidden{% endunless %}
+        {{ block.shopify_attributes }}
+      >
+
+        {%- case block.type -%}
+
+          {%- when 'description' -%}
+            {%- liquid
+              assign lc_ov_sp    = product.metafields.lecavist_specs
+              assign lc_ov_cap   = lc_ov_sp.bottle_capacity.value
+              assign lc_ov_noise = lc_ov_sp.noise_level_db.value
+              assign lc_ov_temp  = lc_ov_sp.temperature_range.value
+              assign lc_ov_head  = block.settings.overview_headline
+              assign lc_ov_eye   = block.settings.overview_eyebrow | default: '◇ A Closer Look'
+              # Beverage centres / mixed wine-beverage units never show a "Bottles" label
+              assign lc_title_dc = product.title | downcase
+              assign lc_is_bev   = false
+              if lc_title_dc contains 'beverage cent' or lc_title_dc contains 'wine and beverage'
+                assign lc_is_bev = true
+              endif
+            -%}
+            <style>
+              @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap');
+              .lc-ov-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 0 72px; padding: 48px 0 32px; align-items: start; }
+              @media (max-width: 767px) { .lc-ov-wrap { grid-template-columns: 1fr; gap: 28px; } }
+              .lc-ov-left { padding-right: 8px; }
+              .lc-ov-eyebrow { font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #7c3030; margin-bottom: 18px; display: block;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B1F2E;
+  }
+              .lc-ov-headline { font-family: 'Cormorant Garamond','Times New Roman',serif; font-size: clamp(24px, 2.8vw, 38px); font-weight: 400; line-height: 1.15; color: #1A1512; margin: 0; letter-spacing: -0.01em; }
+              .lc-ov-right { border-top: 1px solid rgba(26,21,18,0.12); padding-top: 0; }
+              .lc-ov-desc { font-size: 16px; line-height: 1.75; color: rgba(26,21,18,0.7); padding: 20px 0 24px; border-bottom: 1px solid rgba(26,21,18,0.08); }
+              .lc-ov-desc p { margin: 0 0 10px; }
+              .lc-ov-desc p:last-child { margin-bottom: 0; }
+              .lc-ov-stats { display: flex; gap: 32px; padding-top: 24px; flex-wrap: wrap; }
+              .lc-ov-stat__val { font-family: 'Cormorant Garamond','Times New Roman',serif; font-size: 28px; font-weight: 300; color: #1A1512; display: block; line-height: 1; margin-bottom: 6px; }
+              .lc-ov-stat__key { font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(26,21,18,0.45); }
+            </style>
+            <div class="lc-ov-wrap">
+              <div class="lc-ov-left">
+                <span class="lc-ov-eyebrow">{{ lc_ov_eye }}</span>
+                {%- if lc_ov_head != blank -%}
+                  <h2 class="lc-ov-headline">{{ lc_ov_head }}</h2>
+                {%- else -%}
+                  {%- comment -%} Auto-headline from product title if none set {%- endcomment -%}
+                  <h2 class="lc-ov-headline">{{ product.title }}</h2>
+                {%- endif -%}
+              </div>
+              <div class="lc-ov-right">
+                {%- if block.settings.overview_custom_content != blank -%}
+                  <div class="lc-ov-desc">
+                    {{ block.settings.overview_custom_content }}
+                  </div>
+                {%- elsif product.description != blank -%}
+                  <div class="lc-ov-desc">
+                    {%- assign lc_ov_paras = product.description | split: '</p>' -%}
+                    {%- assign lc_ov_count = 0 -%}
+                    {%- for lc_ov_p in lc_ov_paras limit: 6 -%}
+                      {%- assign lc_ov_pt = lc_ov_p | strip_html | strip -%}
+                      {%- if lc_ov_pt != blank and lc_ov_count < 4 -%}
+                        <p>{{ lc_ov_pt }}</p>
+                        {%- assign lc_ov_count = lc_ov_count | plus: 1 -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+                <div class="lc-ov-stats">
+                  {%- if lc_ov_cap != blank -%}
+                    <div class="lc-ov-stat"><span class="lc-ov-stat__val">{{ lc_ov_cap }}</span>{%- unless lc_is_bev -%}<span class="lc-ov-stat__key">Bottles</span>{%- endunless -%}</div>
+                  {%- endif -%}
+                  {%- if lc_ov_noise != blank -%}
+                    <div class="lc-ov-stat"><span class="lc-ov-stat__val">{{ lc_ov_noise }} dB</span><span class="lc-ov-stat__key">Noise</span></div>
+                  {%- endif -%}
+                  {%- if lc_ov_temp != blank -%}
+                    <div class="lc-ov-stat"><span class="lc-ov-stat__val">{{ lc_ov_temp }}</span><span class="lc-ov-stat__key">Range</span></div>
+                  {%- endif -%}
+                  <div class="lc-ov-stat"><span class="lc-ov-stat__val">5 yr</span><span class="lc-ov-stat__key">Warranty</span></div>
+                </div>
+              </div>
+            </div>
+
+          {%- when 'features' -%}
+            <div class="lc-feat-wrap">
+              <div class="lc-feat-layout">
+                <div class="lc-feat-icons" role="tablist" aria-label="Product features">
+                  {%- for i in (1..15) -%}
+                    {%- assign f_title = 'feat_title_' | append: i -%}
+                    {%- assign f_icon  = 'feat_icon_'  | append: i -%}
+                    {%- if block.settings[f_title] != blank -%}
+                      <button
+                        class="lc-feat-card{% if forloop.first %} is-active{% endif %}"
+                        data-feat-idx="{{ i }}"
+                        data-feat-section="{{ section.id }}-{{ forloop.index }}"
+                        role="tab"
+                        aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                        type="button"
+                      >
+                        <span class="lc-feat-card__icon" aria-hidden="true">
+                          {%- assign lc_icon = block.settings[f_icon] | default: 'bottle' -%}
+                          {%- case lc_icon -%}
+                            {%- when 'glass-holder' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M49 46 C51 57 55 64 60 64 C65 64 69 57 71 46 C67 49 53 49 49 46 Z" fill="currentColor" stroke="none"/><ellipse cx="60" cy="30" rx="15" ry="3.4"/><path d="M45 30 C45 52 53 64 60 64 C67 64 75 52 75 30"/><line x1="60" y1="64" x2="60" y2="92"/><ellipse cx="60" cy="94" rx="13" ry="3"/></g></svg>
+                            {%- when 'led-lighting' -%}<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="13" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M16 19v4M13 23h6M16 4v2M6 13H4M12 7l-2-2M20 7l2-2M28 13h-2M20 19l2 2M12 19l-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            {%- when 'temperature' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="45" y="26" width="10" height="54" rx="5"/><circle cx="50" cy="88" r="9"/><circle cx="50" cy="88" r="5.5" fill="currentColor" stroke="none"/><line x1="50" y1="83" x2="50" y2="52" stroke="currentColor" stroke-width="5"/><line x1="57" y1="38" x2="62" y2="38"/><line x1="57" y1="48" x2="62" y2="48"/><line x1="57" y1="58" x2="62" y2="58"/><g stroke-width="2.2"><line x1="86" y1="40" x2="86" y2="72"/><line x1="72" y1="48" x2="100" y2="64"/><line x1="100" y1="48" x2="72" y2="64"/><polyline points="82,44 86,40 90,44"/><polyline points="82,68 86,72 90,68"/><polyline points="75,45 72,48 76,51"/><polyline points="96,45 100,48 96,51"/><polyline points="75,61 72,64 76,67"/><polyline points="96,61 100,64 96,67"/></g></g></svg>
+                            {%- when 'air-flow' -%}<svg viewBox="0 0 32 32" fill="none"><path d="M4 12h16a4 4 0 000-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 16h20a4 4 0 010 8H22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4 20h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            {%- when 'humidity' -%}<svg viewBox="0 0 32 32" fill="none"><path d="M16 4l8 12a8 8 0 11-16 0L16 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 20a4 4 0 004 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            {%- when 'bottle' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="55" y="18" width="10" height="9" rx="1.5"/><path d="M56 27 L56 46 C56 51 47 51 47 61 L47 104 Q47 110 53 110 L67 110 Q73 110 73 104 L73 61 C73 51 64 51 64 46 L64 27"/><rect x="49" y="76" width="22" height="20" rx="1.5"/></g></svg>
+                            {%- when 'lock' -%}<svg viewBox="0 0 32 32" fill="none"><rect x="7" y="15" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M11 15v-4a5 5 0 0110 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="21" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M16 23v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                            {%- when 'glass-door' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="38" y="20" width="44" height="80" rx="3"/><rect x="45" y="27" width="30" height="60" rx="2"/><line x1="70" y1="46" x2="70" y2="68"/><line x1="51" y1="78" x2="66" y2="47"/><line x1="58" y1="79" x2="69" y2="57"/><line x1="46" y1="100" x2="46" y2="107"/><line x1="74" y1="100" x2="74" y2="107"/></g></svg>
+                            {%- when 'anti-vibration' -%}<svg viewBox="0 0 32 32" fill="none"><path d="M4 16h2M26 16h2M7 9l1.5 1.5M23.5 9L22 10.5M7 23l1.5-1.5M23.5 23L22 21.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M16 13v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            {%- when 'shelf' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="28" y="22" width="64" height="7" rx="2"/><rect x="28" y="90" width="64" height="7" rx="2"/><line x1="40" y1="30" x2="40" y2="90"/><line x1="50" y1="30" x2="50" y2="90"/><line x1="60" y1="30" x2="60" y2="90"/><line x1="70" y1="30" x2="70" y2="90"/><line x1="80" y1="30" x2="80" y2="90"/><line x1="32" y1="60" x2="88" y2="60"/></g></svg>
+                            {%- when 'reversible-door' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="62" y="34" width="34" height="62" rx="2.5"/><line x1="68" y1="50" x2="90" y2="50"/><line x1="68" y1="65" x2="90" y2="65"/><line x1="68" y1="80" x2="90" y2="80"/><line x1="67" y1="58" x2="67" y2="72"/><g stroke="currentColor" stroke-opacity="0.5" stroke-width="2" stroke-dasharray="4 3"><rect x="24" y="34" width="34" height="62" rx="2.5"/></g><path d="M86 26 Q60 8 34 26" stroke-width="2.4"/><polyline points="40,20 34,26 41,31"/></g></svg>
+                            {%- when 'filter' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="42" y="46" width="36" height="28" rx="5"/><polyline points="48,54 54,68 60,54 66,68 72,54"/><polyline points="48,68 54,54 60,68 66,54 72,68"/><line x1="18" y1="60" x2="38" y2="60"/><polyline points="32,55 38,60 32,65"/><line x1="82" y1="60" x2="102" y2="60"/><polyline points="96,55 102,60 96,65"/></g></svg>
+                            {%- when 'uv-resistant' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="34" cy="50" r="9"/><line x1="34" y1="34" x2="34" y2="38"/><line x1="22" y1="38" x2="25" y2="41"/><line x1="18" y1="50" x2="22" y2="50"/><line x1="22" y1="62" x2="25" y2="59"/><line x1="34" y1="66" x2="34" y2="62"/><line x1="49" y1="45" x2="60" y2="45"/><line x1="49" y1="50" x2="60" y2="50"/><line x1="49" y1="55" x2="60" y2="55"/><path d="M84 28 L102 34 V58 C102 76 93 86 84 92 C75 86 66 76 66 58 V34 Z"/><text x="84" y="64" text-anchor="middle" font-family="Montserrat, Arial, sans-serif" font-size="16" font-weight="600" stroke="none" fill="currentColor">UV</text></g></svg>
+                            {%- when 'winter' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="60" y1="60" x2="60.0" y2="33.0"/><line x1="60.0" y1="33.0" x2="64.2" y2="26.2"/><line x1="60.0" y1="33.0" x2="55.8" y2="26.2"/><line x1="60.0" y1="44.3" x2="63.2" y2="39.3"/><line x1="60.0" y1="44.3" x2="56.8" y2="39.3"/><line x1="60" y1="60" x2="36.6" y2="46.5"/><line x1="36.6" y1="46.5" x2="32.9" y2="39.4"/><line x1="36.6" y1="46.5" x2="28.6" y2="46.8"/><line x1="46.4" y1="52.2" x2="43.6" y2="46.9"/><line x1="46.4" y1="52.2" x2="40.4" y2="52.4"/><line x1="60" y1="60" x2="36.6" y2="73.5"/><line x1="36.6" y1="73.5" x2="28.6" y2="73.2"/><line x1="36.6" y1="73.5" x2="32.9" y2="80.6"/><line x1="46.4" y1="67.8" x2="40.4" y2="67.6"/><line x1="46.4" y1="67.8" x2="43.6" y2="73.1"/><line x1="60" y1="60" x2="60.0" y2="87.0"/><line x1="60.0" y1="87.0" x2="55.8" y2="93.8"/><line x1="60.0" y1="87.0" x2="64.2" y2="93.8"/><line x1="60.0" y1="75.7" x2="56.8" y2="80.7"/><line x1="60.0" y1="75.7" x2="63.2" y2="80.7"/><line x1="60" y1="60" x2="83.4" y2="73.5"/><line x1="83.4" y1="73.5" x2="87.1" y2="80.6"/><line x1="83.4" y1="73.5" x2="91.4" y2="73.2"/><line x1="73.6" y1="67.8" x2="76.4" y2="73.1"/><line x1="73.6" y1="67.8" x2="79.6" y2="67.6"/><line x1="60" y1="60" x2="83.4" y2="46.5"/><line x1="83.4" y1="46.5" x2="91.4" y2="46.8"/><line x1="83.4" y1="46.5" x2="87.1" y2="39.4"/><line x1="73.6" y1="52.2" x2="79.6" y2="52.4"/><line x1="73.6" y1="52.2" x2="76.4" y2="46.9"/></g></svg>
+                            {%- when 'installation' -%}<svg viewBox="0 0 120 120" fill="none"><g fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="38" y="16" width="44" height="88" rx="3"/><rect x="44" y="22" width="32" height="66" rx="2"/><line x1="46" y1="38" x2="74" y2="38"/><line x1="46" y1="54" x2="74" y2="54"/><line x1="46" y1="70" x2="74" y2="70"/><circle cx="52" cy="34" r="2.4"/><circle cx="60" cy="34" r="2.4"/><circle cx="68" cy="34" r="2.4"/><circle cx="52" cy="50" r="2.4"/><circle cx="60" cy="50" r="2.4"/><circle cx="68" cy="50" r="2.4"/><circle cx="52" cy="66" r="2.4"/><circle cx="60" cy="66" r="2.4"/><circle cx="68" cy="66" r="2.4"/><line x1="72" y1="48" x2="72" y2="62"/><line x1="50" y1="95" x2="70" y2="95"/><line x1="46" y1="104" x2="46" y2="111"/><line x1="74" y1="104" x2="74" y2="111"/></g></svg>
+                            {%- else -%}<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="currentColor" stroke-width="1.5"/><path d="M16 11v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          {%- endcase -%}
+                        </span>
+                        <span class="lc-feat-card__label">{{ block.settings[f_title] }}</span>
+                      </button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+
+                <div class="lc-feat-panels" id="lc-feat-panels-{{ section.id }}-{{ forloop.index }}">
+                  {%- for i in (1..15) -%}
+                    {%- assign f_title   = 'feat_title_'   | append: i -%}
+                    {%- assign f_content = 'feat_content_' | append: i -%}
+                    {%- assign f_image   = 'feat_image_'   | append: i -%}
+                    {%- if block.settings[f_title] != blank -%}
+                      <div
+                        class="lc-feat-panel{% if forloop.first %} is-active{% endif %}"
+                        data-feat-panel="{{ i }}"
+                        {% unless forloop.first %}hidden{% endunless %}
+                      >
+                        {%- if block.settings[f_image] != blank -%}
+                          <div class="lc-feat-panel__image">
+                            <img
+                              src="{{ block.settings[f_image] | image_url: width: 900 }}"
+                              alt="{{ block.settings[f_image].alt | default: block.settings[f_title] | escape }}"
+                              width="900"
+                              height="600"
+                              loading="lazy"
+                            >
+                          </div>
+                        {%- endif -%}
+                        <div class="lc-feat-panel__text">
+                          <h3 class="lc-feat-panel__heading">{{ block.settings[f_title] }}</h3>
+                          <div class="lc-feat-panel__body">{{ block.settings[f_content] }}</div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+
+          {%- when 'specs' -%}
+            <div class="lc-tab-panel__content">
+
+              {%- comment -%} Pull lecavist_specs metafields first, then fall back to SKU lookup {%- endcomment -%}
+              {%- liquid
+                assign lc_ns            = product.metafields.lecavist_specs
+                assign lc_spec_capacity = lc_ns.bottle_capacity.value
+                # Capacity: if it's just a number (e.g. "168") suffix " Bottles";
+                # if it already has text/units (e.g. "133 + 200 Cans", "600L") leave it.
+                assign lc_cap_str = lc_spec_capacity | strip
+                assign lc_cap_rt  = lc_cap_str | plus: 0 | append: ''
+                if lc_cap_str != blank and lc_cap_str == lc_cap_rt
+                  assign lc_spec_capacity = lc_cap_str | append: ' Bottles'
+                endif
+                assign lc_spec_zone     = lc_ns.cooling_zone.value
+                assign lc_spec_install  = lc_ns.installation_type.value
+                assign lc_spec_temp     = lc_ns.temperature_range.value
+                assign lc_spec_noise    = lc_ns.noise_level_db.value
+                assign lc_spec_shelves  = lc_ns.shelves.value
+                assign lc_spec_door     = lc_ns.door_type.value
+                assign lc_spec_lock     = lc_ns.lock.value
+                assign lc_spec_vibration = lc_ns.anti_vibration.value
+                assign lc_spec_led      = lc_ns.led_display.value
+                assign lc_spec_charcoal = lc_ns.charcoal_filter.value
+                assign lc_spec_winter   = lc_ns.winter_heating.value
+                assign lc_spec_energy   = lc_ns.energy_efficiency_kwh.value
+                assign lc_spec_width    = lc_ns.width_mm.value
+                assign lc_spec_height   = lc_ns.height_mm.value
+                assign lc_spec_depth    = lc_ns.depth_mm.value
+                assign lc_spec_range    = lc_ns.range.value
+                assign lc_has_meta_specs = false
+                if lc_spec_capacity or lc_spec_temp or lc_spec_noise or lc_spec_shelves
+                  assign lc_has_meta_specs = true
+                endif
+              -%}
+
+              {%- comment -%} ── Editorial two-column specs layout (matches design screenshot) ── {%- endcomment -%}
+              <style>
+                .lc-ed-specs-wrap { padding: 48px 0; }
+                .lc-ed-specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 80px; }
+                .lc-ed-spec-row { display: grid; grid-template-columns: 140px 1fr; padding: 20px 0; border-bottom: 1px solid rgba(26,21,18,0.1); align-items: baseline; gap: 12px; }
+                .lc-ed-spec-key { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(26,21,18,0.5); }
+                .lc-ed-spec-val { font-family: 'Inter Tight', -apple-system, sans-serif; font-size: 16px; font-weight: 400; color: #1A1512; }
+                .lc-ed-spec-sub { display: none; }
+                @media (max-width: 767px) {
+                  .lc-ed-specs-wrap { padding: 24px 0; }
+                  .lc-ed-specs-grid { grid-template-columns: 1fr; gap: 0; }
+                  .lc-ed-spec-row { grid-template-columns: 100px 1fr; padding: 12px 0; gap: 8px; }
+                  .lc-ed-spec-val { font-size: 16px; }
+                  .lc-ed-spec-sub { display: none; }
+                }
+                .lc-ed-spec-note { margin-top: 24px; font-size: 12px; color: rgba(26,21,18,0.45); line-height: 1.6; }
+                .lc-ed-spec-note a { color: #6B1F2E; }
+              </style>
+
+              {%- if lc_has_meta_specs -%}
+                <div class="lc-ed-specs-wrap">
+                  <div class="lc-ed-specs-grid">
+                    {%- comment -%} Left column {%- endcomment -%}
+                    <div>
+                      {%- unless lc_spec_capacity == blank or lc_spec_capacity == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Capacity</span><span class="lc-ed-spec-val">{{ lc_spec_capacity }}</span><span class="lc-ed-spec-sub">real-world · Bordeaux bottles</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_temp == blank or lc_spec_temp == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Temperature</span><span class="lc-ed-spec-val">{{ lc_spec_temp }}</span><span class="lc-ed-spec-sub">{{ lc_spec_zone | default: 'single zone' | downcase }}</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_shelves == blank or lc_spec_shelves == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Shelves</span><span class="lc-ed-spec-val">{{ lc_spec_shelves }}</span><span class="lc-ed-spec-sub">oiled finish · removable</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_led == blank or lc_spec_led == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Lighting</span><span class="lc-ed-spec-val">{{ lc_spec_led }}</span><span class="lc-ed-spec-sub">motion-activated</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_install == blank or lc_spec_install == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Installation</span><span class="lc-ed-spec-val">{{ lc_spec_install }}</span><span class="lc-ed-spec-sub"></span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_energy == blank or lc_spec_energy == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Energy use</span><span class="lc-ed-spec-val">{{ lc_spec_energy }} kWh / year</span><span class="lc-ed-spec-sub"></span></div>
+                      {%- endunless -%}
+                    </div>
+                    {%- comment -%} Right column {%- endcomment -%}
+                    <div>
+                      {%- if lc_spec_width and lc_spec_height and lc_spec_depth -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Dimensions</span><span class="lc-ed-spec-val">W {{ lc_spec_width }} × H {{ lc_spec_height }} × D {{ lc_spec_depth }} mm</span><span class="lc-ed-spec-sub"></span></div>
+                      {%- endif -%}
+                      {%- unless lc_spec_noise == blank or lc_spec_noise == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Noise</span><span class="lc-ed-spec-val">{{ lc_spec_noise }} dB</span><span class="lc-ed-spec-sub">quieter than a whisper</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_door == blank or lc_spec_door == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Door</span><span class="lc-ed-spec-val">{{ lc_spec_door }}</span><span class="lc-ed-spec-sub">{%- assign _inst_lc = lc_spec_install | downcase -%}{%- if _inst_lc contains 'freestanding' -%}reversible hinge{%- endif -%}</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_charcoal == blank or lc_spec_charcoal == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Charcoal filter</span><span class="lc-ed-spec-val">{{ lc_spec_charcoal }}</span><span class="lc-ed-spec-sub">replaceable annually</span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_winter == blank or lc_spec_winter == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Winter heating</span><span class="lc-ed-spec-val">{{ lc_spec_winter }}</span><span class="lc-ed-spec-sub"></span></div>
+                      {%- endunless -%}
+                      {%- unless lc_spec_lock == blank or lc_spec_lock == '—' -%}
+                        <div class="lc-ed-spec-row"><span class="lc-ed-spec-key">Lock</span><span class="lc-ed-spec-val">{{ lc_spec_lock }}</span><span class="lc-ed-spec-sub"></span></div>
+                      {%- endunless -%}
+                    </div>
+                  </div>
+                  <p class="lc-ed-spec-note">All LeCavist cabinets feature anti-vibration technology, LED display panel, and internal fan as standard. Contact us at <a href="mailto:hello@lecavist.com">hello@lecavist.com</a> for detailed technical queries.</p>
+                </div>
+
+              {%- else -%}
+                {%- comment -%} ── Fallback: SKU-based lookup ── {%- endcomment -%}
+                {%- assign lc_s = lc_sku -%}
+                {%- capture lc_spec_rows -%}
+                  {%- case lc_s -%}
+                    {%- when 'LEK14PV' -%}<tr><td>Model</td><td>LEK14PV</td></tr><tr><td>Bottle Capacity</td><td>14</td></tr><tr><td>Temperature Range</td><td>2–20°C (Single Zone)</td></tr><tr><td>Noise Level</td><td>45 dB(A)</td></tr><tr><td>Shelves</td><td>2 wire shelves with wood trim</td></tr><tr><td>Glass Door</td><td>Double-layer</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Dimensions (W×H×D)</td><td>445 × 500 × 470 mm</td></tr>
+                    {%- when 'LEK21PV' -%}<tr><td>Model</td><td>LEK21PV</td></tr><tr><td>Bottle Capacity</td><td>20</td></tr><tr><td>Temperature Range</td><td>2–20°C (Single Zone)</td></tr><tr><td>Noise Level</td><td>45 dB(A)</td></tr><tr><td>Shelves</td><td>3 wire shelves with wood trim</td></tr><tr><td>Glass Door</td><td>Double-layer</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Dimensions (W×H×D)</td><td>445 × 675 × 470 mm</td></tr>
+                    {%- when 'LEK33PV' -%}<tr><td>Model</td><td>LEK33PV</td></tr><tr><td>Bottle Capacity</td><td>33</td></tr><tr><td>Temperature Range</td><td>2–20°C (Single Zone)</td></tr><tr><td>Noise Level</td><td>45 dB(A)</td></tr><tr><td>Shelves</td><td>4 wire shelves with wood trim</td></tr><tr><td>Glass Door</td><td>Double-layer</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Dimensions (W×H×D)</td><td>445 × 830 × 470 mm</td></tr>
+                    {%- when 'LJ20VNBU' -%}<tr><td>Model</td><td>LJ20VNBU</td></tr><tr><td>Bottle Capacity</td><td>20</td></tr><tr><td>Temperature</td><td>5–20°C (Single Zone)</td></tr><tr><td>Noise</td><td>41 dB</td></tr><tr><td>Shelves</td><td>5 wooden shelves</td></tr><tr><td>Door</td><td>Double-layer tempered</td></tr><tr><td>Installation</td><td>Built-in or freestanding</td></tr><tr><td>Energy</td><td>132 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>295 × 820 × 575 mm</td></tr>
+                    {%- when 'LJ52VNBU' -%}<tr><td>Model</td><td>LJ52VNBU</td></tr><tr><td>Bottle Capacity</td><td>52</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>41 dB</td></tr><tr><td>Shelves</td><td>5 beech shelves</td></tr><tr><td>Installation</td><td>Built-in or freestanding</td></tr><tr><td>Energy</td><td>161 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 820 × 575 mm</td></tr>
+                    {%- when 'LKCV63N' -%}<tr><td>Bottle Capacity</td><td>63</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>43 dB</td></tr><tr><td>Shelves</td><td>3 metal shelves with wood trim</td></tr><tr><td>Door</td><td>Triple-layer</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Energy</td><td>159 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>500 × 874 × 575 mm</td></tr>
+                    {%- when 'LCS100VN' -%}<tr><td>Bottle Capacity</td><td>97</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>4 beech shelves + 1 display</td></tr><tr><td>Lock</td><td>Yes</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Energy</td><td>169 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>500 × 1250 × 560 mm</td></tr>
+                    {%- when 'LKV168PNDX','LKV168PDBX' -%}<tr><td>Bottle Capacity</td><td>168</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>43 dB</td></tr><tr><td>Shelves</td><td>6 steel shelves + humidity display</td></tr><tr><td>Lock · Winter Heating · Charcoal Filter</td><td>Yes</td></tr><tr><td>Installation</td><td>Freestanding only</td></tr><tr><td>Energy</td><td>120 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>545 × 1674 × 600 mm</td></tr>
+                    {%- when 'LCS155VN1ZPRO','LCS155VN1Z1PRO' -%}<tr><td>Bottle Capacity</td><td>157</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>42 dB</td></tr><tr><td>Shelves</td><td>12 zig-zag + sliding rack</td></tr><tr><td>Lock</td><td>Yes</td></tr><tr><td>Installation</td><td>Built-in or freestanding</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1870 × 680 mm</td></tr>
+                    {%- when 'LEK168PV' -%}<tr><td>Bottle Capacity</td><td>168</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>42 dB</td></tr><tr><td>Shelves</td><td>6 beech + 1 display + 1 multi-use</td></tr><tr><td>Door</td><td>Triple-layer</td></tr><tr><td>Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>183 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>545 × 1674 × 600 mm</td></tr>
+                    {%- when 'LCS240VN1Z1DFS' -%}<tr><td>Bottle Capacity</td><td>189</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>15 wire shelves with wood trim</td></tr><tr><td>Lock</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1830 × 675 mm</td></tr>
+                    {%- when 'LCS300VX1ZPRO' -%}<tr><td>Bottle Capacity</td><td>195</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>14 telescopic shelves</td></tr><tr><td>Lock</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>750 × 1870 × 690 mm</td></tr>
+                    {%- when 'LCS240VN1Z1D' -%}<tr><td>Bottle Capacity</td><td>248</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>6 wire shelves with wood trim</td></tr><tr><td>Lock</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1830 × 675 mm</td></tr>
+                    {%- when 'LJ294VN' -%}<tr><td>Bottle Capacity</td><td>294</td></tr><tr><td>Temperature</td><td>5–20°C</td></tr><tr><td>Noise</td><td>40 dB</td></tr><tr><td>Shelves</td><td>5 beech + 1 display + 1 multi-use</td></tr><tr><td>Energy</td><td>191 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>655 × 1892 × 700 mm</td></tr>
+                    {%- when 'LJ17VN2ZBU' -%}<tr><td>Bottle Capacity</td><td>17</td></tr><tr><td>Temperature</td><td>5–12°C / 12–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>41 dB</td></tr><tr><td>Shelves</td><td>4 beech shelves</td></tr><tr><td>Winter Heating</td><td>Yes</td></tr><tr><td>Energy</td><td>149 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>295 × 820 × 575 mm</td></tr>
+                    {%- when 'LJ40VN2Z2DBU' -%}<tr><td>Bottle Capacity</td><td>40</td></tr><tr><td>Temperature</td><td>5–12°C / 12–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>41 dB</td></tr><tr><td>Shelves</td><td>10 beech shelves</td></tr><tr><td>Winter Heating</td><td>Yes</td></tr><tr><td>Energy</td><td>143 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 820 × 575 mm</td></tr>
+                    {%- when 'LJ44VN2ZBU' -%}<tr><td>Bottle Capacity</td><td>44</td></tr><tr><td>Temperature</td><td>5–12°C / 12–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>41 dB</td></tr><tr><td>Shelves</td><td>4 beech shelves</td></tr><tr><td>Winter Heating</td><td>Yes</td></tr><tr><td>Energy</td><td>160 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 820 × 575 mm</td></tr>
+                    {%- when 'LKS56VN2Z' -%}<tr><td>Bottle Capacity</td><td>56</td></tr><tr><td>Temperature</td><td>5–12°C / 12–18°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>3 beech shelves</td></tr><tr><td>Energy</td><td>146 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>500 × 850 × 600 mm</td></tr>
+                    {%- when 'LEK1052ZPV','LEK1052ZPVX' -%}<tr><td>Bottle Capacity</td><td>105</td></tr><tr><td>Temperature</td><td>5–12°C / 12–18°C (Dual Zone)</td></tr><tr><td>Noise</td><td>42 dB</td></tr><tr><td>Door</td><td>Triple-layer</td></tr><tr><td>Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>181 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>545 × 1244 × 600 mm</td></tr>
+                    {%- when 'LCS140VN2Z2D' -%}<tr><td>Bottle Capacity</td><td>198</td></tr><tr><td>Temperature</td><td>5–20°C / 5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>4 telescopic beech + 4 glass shelves</td></tr><tr><td>Lock · Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1870 × 680 mm</td></tr>
+                    {%- when 'LCS230VN2Z1DFS' -%}<tr><td>Bottle Capacity</td><td>173</td></tr><tr><td>Temperature</td><td>5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Lock · Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1830 × 675 mm</td></tr>
+                    {%- when 'LCS200VN2Z2D' -%}<tr><td>Bottle Capacity</td><td>188</td></tr><tr><td>Temperature</td><td>5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Shelves</td><td>28 shelves with wood trim</td></tr><tr><td>Lock · Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>328 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>885 × 1750 × 600 mm</td></tr>
+                    {%- when 'LCS230VN2Z1D' -%}<tr><td>Bottle Capacity</td><td>226</td></tr><tr><td>Temperature</td><td>5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Lock · Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>180 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>595 × 1830 × 675 mm</td></tr>
+                    {%- when 'LJ268VN2Z','LJ268VX2Z' -%}<tr><td>Bottle Capacity</td><td>268</td></tr><tr><td>Temperature</td><td>5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>40 dB</td></tr><tr><td>Shelves</td><td>5 beech + 1 display + 1 multi-use</td></tr><tr><td>Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>190 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>655 × 1892 × 700 mm</td></tr>
+                    {%- when 'LCS300VN2Z1D' -%}<tr><td>Bottle Capacity</td><td>303</td></tr><tr><td>Temperature</td><td>5–20°C / 5–20°C (Dual Zone)</td></tr><tr><td>Noise</td><td>45 dB</td></tr><tr><td>Lock · Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>190 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>750 × 1870 × 690 mm</td></tr>
+                    {%- when 'LEK1403ZPV','LEK1403ZPVX' -%}<tr><td>Bottle Capacity</td><td>140</td></tr><tr><td>Temperature</td><td>5–12°C / 8–12°C / 12–18°C (Triple Zone)</td></tr><tr><td>Noise</td><td>42 dB</td></tr><tr><td>Door</td><td>Triple-layer</td></tr><tr><td>Charcoal Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>169 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>545 × 1244 × 600 mm</td></tr>
+                    {%- when 'LCS600VX2DP' -%}<tr><td>Capacity</td><td>133 bottles + 200 cans</td></tr><tr><td>Temperature</td><td>8–13°C / 13–18°C / 1–8°C (Triple Zone)</td></tr><tr><td>Noise</td><td>42 dB</td></tr><tr><td>Shelves</td><td>8 wire racks + wooden lids</td></tr><tr><td>Carbon Filter</td><td>Yes</td></tr><tr><td>Energy</td><td>70 kWh/year</td></tr><tr><td>Dimensions (W×H×D)</td><td>785 × 2060 × 741 mm</td></tr>
+                  {%- endcase -%}
+                {%- endcapture -%}
+                {%- if lc_spec_rows != blank -%}
+                  <div class="lc-ed-specs-wrap">
+                    <div class="lc-spec-table-wrap">
+                      <table class="lc-spec-table"><thead><tr><th>Specification</th><th>Detail</th></tr></thead><tbody>{{ lc_spec_rows }}</tbody></table>
+                    </div>
+                  </div>
+                {%- else -%}
+                  <div class="lc-prose"><p>Specifications for this model can be found in the Documents tab, or contact us at <a href="mailto:hello@lecavist.com">hello@lecavist.com</a>.</p></div>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          {%- when 'delivery' -%}
+            {%- comment -%}
+              Each of the 5 service cards (icon + title + body) is editable
+              from the Shopify theme editor → Product Nav Tabs → Delivery block.
+              The icon select maps to a small preset library of SVGs (below).
+              Defaults preserve the original copy so existing templates render
+              identically until staff edit them.
+            {%- endcomment -%}
+            <div class="lc-tab-panel__content">
+              <div class="lc-delivery-grid">
+                {%- for n in (1..5) -%}
+                  {%- assign lc_dt_key  = 'card' | append: n | append: '_title' -%}
+                  {%- assign lc_db_key  = 'card' | append: n | append: '_body'  -%}
+                  {%- assign lc_di_key  = 'card' | append: n | append: '_icon'  -%}
+                  {%- assign lc_d_title = block.settings[lc_dt_key] -%}
+                  {%- assign lc_d_body  = block.settings[lc_db_key] -%}
+                  {%- assign lc_d_icon  = block.settings[lc_di_key] -%}
+                  {%- if lc_d_title != blank or lc_d_body != blank -%}
+                    <div class="lc-delivery-card">
+                      <div class="lc-delivery-card__icon">
+                        {%- case lc_d_icon -%}
+                          {%- when 'truck' -%}<svg viewBox="0 0 40 40" fill="none"><rect x="2" y="14" width="26" height="16" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M28 20h6l4 6v4h-10V20z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="10" cy="32" r="3" stroke="currentColor" stroke-width="1.8"/><circle cx="32" cy="32" r="3" stroke="currentColor" stroke-width="1.8"/></svg>
+                          {%- when 'install' -%}<svg viewBox="0 0 40 40" fill="none"><path d="M8 20h24M20 8v24" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="4" y="4" width="32" height="32" rx="4" stroke="currentColor" stroke-width="1.8"/></svg>
+                          {%- when 'removal' -%}<svg viewBox="0 0 40 40" fill="none"><path d="M8 32l6-6m0 0l6-6m-6 6l-6-6m6 6l6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><rect x="4" y="4" width="32" height="32" rx="4" stroke="currentColor" stroke-width="1.8"/></svg>
+                          {%- when 'star' -%}<svg viewBox="0 0 40 40" fill="none"><path d="M20 4l4 12H36l-10 7 4 12-10-7-10 7 4-12L4 16h12z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                          {%- when 'payment' -%}<svg viewBox="0 0 40 40" fill="none"><rect x="4" y="8" width="32" height="24" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M4 16h32M12 24h6M24 24h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                          {%- when 'shield' -%}<svg viewBox="0 0 40 40" fill="none"><path d="M20 4l14 6v10c0 9-6 14-14 16-8-2-14-7-14-16V10l14-6z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 20l4 4 8-8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          {%- when 'phone' -%}<svg viewBox="0 0 40 40" fill="none"><path d="M8 6h7l3 8-4 3a18 18 0 0 0 9 9l3-4 8 3v7c0 2-2 4-4 4A28 28 0 0 1 4 10c0-2 2-4 4-4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                          {%- when 'clock' -%}<svg viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="16" stroke="currentColor" stroke-width="1.8"/><path d="M20 10v10l7 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                        {%- endcase -%}
+                      </div>
+                      {%- if lc_d_title != blank -%}<h3 class="lc-delivery-card__title">{{ lc_d_title | escape }}</h3>{%- endif -%}
+                      {%- if lc_d_body  != blank -%}<div class="lc-delivery-card__body">{{ lc_d_body }}</div>{%- endif -%}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            </div>
+
+          {%- when 'richtext' -%}
+            <div class="lc-tab-panel__content lc-prose">{{ block.settings.content }}</div>
+
+          {%- when 'documents' -%}
+            <div class="lc-tab-panel__content lc-manuals-wrap">
+              {%- comment -%} User Manual — doc1 {%- endcomment -%}
+              {%- if block.settings.doc1_url != blank -%}
+                <a href="{{ block.settings.doc1_url }}" class="lc-manual-row" target="_blank" rel="noopener">
+                  <div class="lc-manual-row__text">
+                    <span class="lc-manual-row__title">{{ block.settings.doc1_label | default: 'User Manual' }}</span>
+                    <span class="lc-manual-row__meta">PDF · EN</span>
+                  </div>
+                  <span class="lc-manual-row__dl" aria-label="Download">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                  </span>
+                </a>
+              {%- endif -%}
+              {%- comment -%} Spec Sheet — doc2 {%- endcomment -%}
+              {%- if block.settings.doc2_url != blank -%}
+                <a href="{{ block.settings.doc2_url }}" class="lc-manual-row" target="_blank" rel="noopener">
+                  <div class="lc-manual-row__text">
+                    <span class="lc-manual-row__title">{{ block.settings.doc2_label | default: 'Spec Sheet' }}</span>
+                    <span class="lc-manual-row__meta">PDF · EN</span>
+                  </div>
+                  <span class="lc-manual-row__dl" aria-label="Download">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+                  </span>
+                </a>
+              {%- endif -%}
+              {%- if block.settings.doc1_url == blank and block.settings.doc2_url == blank -%}
+                <p class="lc-prose" style="color:rgba(26,21,18,0.45);font-size:14px">No documents available for this model yet. Contact us at <a href="mailto:hello@lecavist.com">hello@lecavist.com</a>.</p>
+              {%- endif -%}
+            </div>
+
+        {%- endcase -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{%- comment -%} Cabinet Finder Quiz banner has been moved into its own section: sections/cabinet-finder-quiz.liquid {%- endcomment -%}
+
+<style>
+.lc-tabs-section { padding-bottom: 60px; }
+/* z-index kept below the site header (.shopify-section-header-sticky is z-index 11)
+   so the header's dropdown menus open ABOVE this sticky tab bar. Still positive,
+   so the bar stays above normal page content as it scrolls underneath. */
+.lc-tabs-nav { position: sticky; top: var(--header-height, 0px); z-index: 9; background: #fff; border-bottom: 1px solid #e5e0db; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.lc-tabs-nav__inner { display: flex; overflow-x: auto; scrollbar-width: none; }
+.lc-tabs-nav__inner::-webkit-scrollbar { display: none; }
+.lc-tabs-nav__tab { flex-shrink: 0; padding: 16px 22px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #7a5a5a; background: none; border: none; cursor: pointer; transition: color 0.2s; white-space: nowrap; }
+/* Delivery tab: "Delivery And Service" on desktop, "Service" on mobile */
+.lc-navtab-label--mob { display: none; }
+.lc-tabs-nav__tab.is-active, .lc-tabs-nav__tab:hover { color: #3a0d16; }
+.lc-tabs-nav__line-track { position: relative; height: 3px; }
+.lc-tabs-nav__line { position: absolute; bottom: 0; height: 3px; background: #7c3030; border-radius: 2px 2px 0 0; transition: left 0.25s ease, width 0.25s ease; }
+
+.lc-tab-panel { display: none; padding: 32px 0; }
+.lc-tab-panel.is-active { display: block; }
+.lc-tab-panel__content { max-width: 880px; }
+.lc-prose { font-size: 16px; line-height: 1.75; color: #3d2020; }
+.lc-prose p { margin: 0 0 12px; }
+.lc-prose ul, .lc-prose ol { margin: 0 0 12px; padding-left: 20px; }
+.lc-prose strong { color: #3a0d16; }
+.lc-prose a { color: #7c3030; }
+.lc-prose--sm { font-size: 16px; }
+
+/* Features */
+.lc-feat-layout { display: grid; grid-template-columns: 1fr; gap: 24px; }
+@media (min-width: 900px) { .lc-feat-layout { grid-template-columns: 320px 1fr; align-items: start; gap: 36px; } }
+.lc-feat-icons { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+@media (min-width: 900px) { .lc-feat-icons { grid-template-columns: repeat(3, 1fr); } }
+.lc-feat-card { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 14px 8px 12px; background: #fff; border: 1.5px solid #e5e0db; border-radius: 10px; cursor: pointer; transition: border-color 0.15s, box-shadow 0.15s, background 0.15s; text-align: center; }
+.lc-feat-card:hover { border-color: #d4b0b0; box-shadow: 0 3px 10px rgba(124,48,48,0.1); }
+.lc-feat-card.is-active { border-color: #7c3030; background: #f5ede5; }
+.lc-feat-card__icon { width: 36px; height: 36px; color: #7a5a5a; display: flex; align-items: center; justify-content: center; }
+.lc-feat-card__icon svg { width: 100%; height: 100%; }
+.lc-feat-card.is-active .lc-feat-card__icon { color: #7c3030; }
+.lc-feat-card__label { font-size: 11px; font-weight: 600; color: #3d2020; line-height: 1.3; }
+.lc-feat-panels { }
+.lc-feat-panel { display: none; }
+.lc-feat-panel.is-active { display: flex; flex-direction: column; border-radius: 14px; overflow: hidden; border: 1px solid #e5e0db; }
+.lc-feat-panel__image { flex-shrink: 0; min-height: 220px; overflow: hidden; }
+.lc-feat-panel__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lc-feat-panel__text { padding: 28px 30px; background: #3a0d16; flex: 1; }
+.lc-feat-panel__heading { font-family: 'Cormorant Garamond', 'Times New Roman', serif; font-size: 24px; font-weight: 400; color: #fff; margin: 0 0 12px; }
+.lc-feat-panel__body { font-size: 16px; line-height: 1.7; color: rgba(255,255,255,0.85); }
+.lc-feat-panel__body p { margin: 0 0 8px; }
+.lc-feat-panel__body strong { color: #fff; }
+
+/* Specs */
+.lc-spec-table-wrap { overflow-x: auto; margin-bottom: 16px; }
+.lc-spec-table { width: 100%; border-collapse: collapse; font-size: 16px; }
+.lc-spec-table th { background: #3a0d16; color: #fff; font-weight: 600; padding: 10px 16px; text-align: center; }
+.lc-spec-table td { padding: 10px 16px; border-bottom: 1px solid #f0e8e5; color: #3d2020; vertical-align: top; text-align: center; }
+.lc-spec-table tr:nth-child(even) td { background: #faf6f4; }
+.lc-spec-table td:first-child { font-weight: 600; width: 48%; color: #7a5a5a; white-space: nowrap; }
+.lc-spec-note { font-size: 12px; color: #9a7a7a; line-height: 1.5; margin-top: 8px; }
+.lc-spec-note a { color: #7c3030; }
+
+/* Delivery */
+.lc-delivery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+@media (min-width: 768px) { .lc-delivery-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 480px) { .lc-delivery-grid { grid-template-columns: 1fr; } }
+.lc-delivery-card { padding: 20px; background: #fff; border: 1px solid #e5e0db; border-radius: 12px; }
+.lc-delivery-card__icon { width: 40px; height: 40px; color: #7c3030; margin-bottom: 12px; }
+.lc-delivery-card__icon svg { width: 100%; height: 100%; }
+.lc-delivery-card__title { font-size: 15px; font-weight: 700; color: #3a0d16; margin: 0 0 8px; }
+.lc-delivery-card__body { font-size: 16px; line-height: 1.6; color: #5a3a3a; margin: 0; }
+.lc-delivery-times { border-top: 1px solid #e5e0db; padding-top: 32px; }
+.lc-delivery-times__heading { font-size: 18px; font-weight: 700; color: #3a0d16; margin: 0 0 8px; text-align: center; }
+.lc-delivery-times__intro { font-size: 16px; color: #5a3a3a; margin: 0 0 20px; line-height: 1.6; }
+.lc-delivery-times__table-wrap { overflow-x: auto; }
+
+/* Docs */
+.lc-doc-links { display: flex; flex-direction: column; gap: 10px; }
+.lc-doc-link { display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border: 1.5px solid #d4c4be; border-radius: 8px; font-size: 14px; font-weight: 600; color: #7c3030; text-decoration: none; transition: border-color 0.15s, background 0.15s; width: fit-content; }
+.lc-doc-link:hover { border-color: #7c3030; background: #f5ede5; }
+
+/* ── Manuals (redesigned documents tab) ── */
+.lc-manuals-wrap { max-width: 640px; }
+.lc-manual-row { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border: 1px solid rgba(26,21,18,0.12); border-radius: 6px; background: rgba(26,21,18,0.02); text-decoration: none; color: inherit; margin-bottom: 10px; transition: border-color 0.15s, background 0.15s; }
+.lc-manual-row:hover { border-color: #7c3030; background: #fdf5f0; }
+.lc-manual-row__text { display: flex; flex-direction: column; gap: 3px; }
+.lc-manual-row__title { font-size: 15px; font-weight: 600; color: #7c3030; }
+.lc-manual-row__meta { font-size: 11px; letter-spacing: 0.08em; color: rgba(26,21,18,0.45); }
+.lc-manual-row__dl { color: #7c3030; flex-shrink: 0; }
+
+/* ── Quiz Banner ── */
+/* lc-quiz-banner styles moved to sections/cabinet-finder-quiz.liquid */
+
+@media (max-width: 767px) {
+  .lc-tabs-nav__tab { padding: 14px 14px; font-size: 12px; }
+  .lc-navtab-label--desk { display: none; }
+  .lc-navtab-label--mob { display: inline; }
+  .lc-tab-panel { padding: 20px 0; }
+  .lc-feat-card__label { font-size: 10px; }
+  .lc-feat-panel__text { padding: 20px 18px; }
+  .lc-feat-panel__heading { font-size: 21px; }
+}
+</style>
+
+<script>
+(function() {
+  var sid    = '{{ section.id }}';
+  var navEl  = document.getElementById('lc-tabs-nav-' + sid);
+  var lineEl = document.getElementById('lc-tabs-line-' + sid);
+  if (!navEl) return;
+  var inner  = navEl.querySelector('.lc-tabs-nav__inner');
+  var tabs   = navEl.querySelectorAll('.lc-tabs-nav__tab');
+  var panels = document.querySelectorAll('[id^="lc-tab-panel-' + sid + '-"]');
+
+  function setLine(tab) {
+    if (!lineEl || !inner) return;
+    var lr = lineEl.parentElement.getBoundingClientRect();
+    var tr = tab.getBoundingClientRect();
+    lineEl.style.left  = (tr.left - lr.left) + 'px';
+    lineEl.style.width = tr.width + 'px';
+  }
+
+  function activateTab(idx) {
+    tabs.forEach(function(t, i) {
+      t.classList.toggle('is-active', i === idx);
+      t.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+    });
+    panels.forEach(function(p, i) {
+      p.classList.toggle('is-active', i === idx);
+      i === idx ? p.removeAttribute('hidden') : p.setAttribute('hidden', '');
+    });
+    setLine(tabs[idx]);
+    tabs[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    initFeatGrid(panels[idx]);
+  }
+
+  tabs.forEach(function(tab, i) { tab.addEventListener('click', function() { activateTab(i); }); });
+
+  function initFeatGrid(panel) {
+    if (!panel) return;
+    var cards = panel.querySelectorAll('.lc-feat-card');
+    var pw = panel.querySelector('[id^="lc-feat-panels-"]');
+    if (!cards.length || !pw) return;
+    cards.forEach(function(card) {
+      if (card._lcInit) return;
+      card._lcInit = true;
+      card.addEventListener('click', function() {
+        var idx = this.dataset.featIdx;
+        cards.forEach(function(c) { c.classList.remove('is-active'); c.setAttribute('aria-selected','false'); });
+        this.classList.add('is-active'); this.setAttribute('aria-selected','true');
+        pw.querySelectorAll('.lc-feat-panel').forEach(function(fp) {
+          var match = fp.dataset.featPanel == idx;
+          fp.classList.toggle('is-active', match);
+          match ? fp.removeAttribute('hidden') : fp.setAttribute('hidden','');
+        });
+        if (window.innerWidth < 768) pw.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+  }
+
+  if (panels.length) initFeatGrid(panels[0]);
+  window.addEventListener('load', function() { if (tabs.length) setLine(tabs[0]); });
+  window.addEventListener('resize', function() {
+    var ai = Array.from(tabs).findIndex(function(t) { return t.classList.contains('is-active'); });
+    if (ai >= 0) setLine(tabs[ai]);
+  });
+  if (tabs.length) setLine(tabs[0]);
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Product Nav Tabs",
+  "tag": "section",
+  "class": "lc-product-nav-tabs-section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section width",
+      "default": "container",
+      "options": [
+        { "value": "container",       "label": "Container" },
+        { "value": "fluid_container", "label": "Fluid container" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Cabinet Finder Quiz"
+    },
+    {
+      "type": "url",
+      "id": "quiz_url",
+      "label": "Quiz page URL",
+      "info": "When set, shows the 'Not sure if X is your number?' banner below the tabs. Leave blank to hide it."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "description",
+      "name": "Overview",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Overview" },
+        { "type": "text", "id": "overview_eyebrow", "label": "Eyebrow text", "default": "◇ A Closer Look", "info": "Small label shown above the headline on the left column." },
+        { "type": "textarea", "id": "overview_headline", "label": "Left-column headline", "info": "Leave blank to use the product title automatically." },
+        { "type": "richtext", "id": "overview_custom_content", "label": "Right-column custom content", "info": "Overrides product description in the overview. Use <p> tags for paragraphs. Leave blank to use product description." }
+      ]
+    },
+    {
+      "type": "features",
+      "name": "Features Grid",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Features" },
+        { "type": "header", "content": "Feature 1" },
+        { "type": "select", "id": "feat_icon_1", "label": "Icon", "default": "glass-holder", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_1", "label": "Title", "default": "Stable Glass Holder" },
+        { "type": "image_picker", "id": "feat_image_1", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_1", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 2" },
+        { "type": "select", "id": "feat_icon_2", "label": "Icon", "default": "led-lighting", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_2", "label": "Title", "default": "LED Lighting" },
+        { "type": "image_picker", "id": "feat_image_2", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_2", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 3" },
+        { "type": "select", "id": "feat_icon_3", "label": "Icon", "default": "temperature", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_3", "label": "Title", "default": "Optimal Temperature" },
+        { "type": "image_picker", "id": "feat_image_3", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_3", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 4" },
+        { "type": "select", "id": "feat_icon_4", "label": "Icon", "default": "air-flow", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_4", "label": "Title", "default": "Internal Air Flow" },
+        { "type": "image_picker", "id": "feat_image_4", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_4", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 5" },
+        { "type": "select", "id": "feat_icon_5", "label": "Icon", "default": "humidity", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_5", "label": "Title", "default": "Humidity Control" },
+        { "type": "image_picker", "id": "feat_image_5", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_5", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 6" },
+        { "type": "select", "id": "feat_icon_6", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_6", "label": "Title", "default": "Oversized Compartment" },
+        { "type": "image_picker", "id": "feat_image_6", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_6", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 7" },
+        { "type": "select", "id": "feat_icon_7", "label": "Icon", "default": "lock", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_7", "label": "Title", "default": "Lock" },
+        { "type": "image_picker", "id": "feat_image_7", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_7", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 8" },
+        { "type": "select", "id": "feat_icon_8", "label": "Icon", "default": "glass-door", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_8", "label": "Title", "default": "3-Layer Glass Door" },
+        { "type": "image_picker", "id": "feat_image_8", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_8", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "header", "content": "Feature 9" },
+        { "type": "select", "id": "feat_icon_9", "label": "Icon", "default": "anti-vibration", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_9", "label": "Title", "default": "Anti-Vibration" },
+        { "type": "image_picker", "id": "feat_image_9", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_9", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_10", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_10", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_10", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_10", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_11", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_11", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_11", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_11", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_12", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_12", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_12", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_12", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_13", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_13", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_13", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_13", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_14", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_14", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_14", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_14", "label": "Description", "default": "<p>Describe this feature.</p>" },
+        { "type": "select", "id": "feat_icon_15", "label": "Icon", "default": "bottle", "options": [{"value":"glass-holder","label":"Glass Holder"},{"value":"led-lighting","label":"LED Lighting"},{"value":"temperature","label":"Temperature"},{"value":"air-flow","label":"Air Flow"},{"value":"humidity","label":"Humidity"},{"value":"bottle","label":"Bottle / Compartment"},{"value":"lock","label":"Lock"},{"value":"glass-door","label":"Glass Door"},{"value":"anti-vibration","label":"Anti-Vibration"},{"value":"shelf","label":"Shelf"},{"value":"reversible-door","label":"Reversible Door"},{"value":"filter","label":"Air Filter"},{"value":"uv-resistant","label":"UV Resistant"},{"value":"winter","label":"Winter Function"},{"value":"installation","label":"Installation Type"}] },
+        { "type": "text", "id": "feat_title_15", "label": "Title" },
+        { "type": "image_picker", "id": "feat_image_15", "label": "Image" },
+        { "type": "richtext", "id": "feat_content_15", "label": "Description", "default": "<p>Describe this feature.</p>" }
+      ]
+    },
+    {
+      "type": "specs",
+      "name": "Specifications",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Specifications" },
+        { "type": "richtext", "id": "content", "label": "Additional content (above spec table)", "info": "Spec table is auto-populated from the variant SKU." }
+      ]
+    },
+    {
+      "type": "delivery",
+      "name": "Delivery & Service",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Delivery" },
+
+        { "type": "header", "content": "Card 1" },
+        { "type": "select", "id": "card1_icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck",   "label": "Truck (delivery)" },
+          { "value": "install", "label": "Installation" },
+          { "value": "removal", "label": "Removal / recycle" },
+          { "value": "star",    "label": "Star (guarantee)" },
+          { "value": "payment", "label": "Payment card" },
+          { "value": "shield",  "label": "Shield (warranty)" },
+          { "value": "phone",   "label": "Phone (support)" },
+          { "value": "clock",   "label": "Clock (timing)" },
+          { "value": "none",    "label": "No icon" }
+        ]},
+        { "type": "text",     "id": "card1_title", "label": "Title", "default": "Free Delivery" },
+        { "type": "richtext", "id": "card1_body",  "label": "Body",  "default": "<p>Complimentary delivery across 95% of Australian addresses, including upstairs and downstairs. Select your delivery date at checkout and we'll give you a precise time window.</p>" },
+
+        { "type": "header", "content": "Card 2" },
+        { "type": "select", "id": "card2_icon", "label": "Icon", "default": "install", "options": [
+          { "value": "truck",   "label": "Truck (delivery)" },
+          { "value": "install", "label": "Installation" },
+          { "value": "removal", "label": "Removal / recycle" },
+          { "value": "star",    "label": "Star (guarantee)" },
+          { "value": "payment", "label": "Payment card" },
+          { "value": "shield",  "label": "Shield (warranty)" },
+          { "value": "phone",   "label": "Phone (support)" },
+          { "value": "clock",   "label": "Clock (timing)" },
+          { "value": "none",    "label": "No icon" }
+        ]},
+        { "type": "text",     "id": "card2_title", "label": "Title", "default": "Free Installation" },
+        { "type": "richtext", "id": "card2_body",  "label": "Body",  "default": "<p>Every purchase includes complimentary installation in your room of choice. Our experts set up your cabinet properly, leaving no mess behind.</p>" },
+
+        { "type": "header", "content": "Card 3" },
+        { "type": "select", "id": "card3_icon", "label": "Icon", "default": "removal", "options": [
+          { "value": "truck",   "label": "Truck (delivery)" },
+          { "value": "install", "label": "Installation" },
+          { "value": "removal", "label": "Removal / recycle" },
+          { "value": "star",    "label": "Star (guarantee)" },
+          { "value": "payment", "label": "Payment card" },
+          { "value": "shield",  "label": "Shield (warranty)" },
+          { "value": "phone",   "label": "Phone (support)" },
+          { "value": "clock",   "label": "Clock (timing)" },
+          { "value": "none",    "label": "No icon" }
+        ]},
+        { "type": "text",     "id": "card3_title", "label": "Title", "default": "Free Old Unit Removal" },
+        { "type": "richtext", "id": "card3_body",  "label": "Body",  "default": "<p>We'll remove and recycle your old appliance at no charge, just have it disconnected, pulled out, and empty when we arrive. If not ready, we'll schedule a return pickup.</p>" },
+
+        { "type": "header", "content": "Card 4" },
+        { "type": "select", "id": "card4_icon", "label": "Icon", "default": "star", "options": [
+          { "value": "truck",   "label": "Truck (delivery)" },
+          { "value": "install", "label": "Installation" },
+          { "value": "removal", "label": "Removal / recycle" },
+          { "value": "star",    "label": "Star (guarantee)" },
+          { "value": "payment", "label": "Payment card" },
+          { "value": "shield",  "label": "Shield (warranty)" },
+          { "value": "phone",   "label": "Phone (support)" },
+          { "value": "clock",   "label": "Clock (timing)" },
+          { "value": "none",    "label": "No icon" }
+        ]},
+        { "type": "text",     "id": "card4_title", "label": "Title", "default": "Price Match Guarantee" },
+        { "type": "richtext", "id": "card4_body",  "label": "Body",  "default": "<p>Found it cheaper? Share the advertised price and retailer, our team will verify and match it.</p>" },
+
+        { "type": "header", "content": "Card 5" },
+        { "type": "select", "id": "card5_icon", "label": "Icon", "default": "payment", "options": [
+          { "value": "truck",   "label": "Truck (delivery)" },
+          { "value": "install", "label": "Installation" },
+          { "value": "removal", "label": "Removal / recycle" },
+          { "value": "star",    "label": "Star (guarantee)" },
+          { "value": "payment", "label": "Payment card" },
+          { "value": "shield",  "label": "Shield (warranty)" },
+          { "value": "phone",   "label": "Phone (support)" },
+          { "value": "clock",   "label": "Clock (timing)" },
+          { "value": "none",    "label": "No icon" }
+        ]},
+        { "type": "text",     "id": "card5_title", "label": "Title", "default": "Flexible Payments" },
+        { "type": "richtext", "id": "card5_body",  "label": "Body",  "default": "<p>Pay by Visa, Mastercard, Amex, or AfterPay, all accepted with no additional surcharges.</p>" },
+
+        { "type": "paragraph", "content": "Leave a card's Title AND Body both blank to hide that card." }
+      ]
+    },
+    {
+      "type": "richtext",
+      "name": "Custom tab",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Info" },
+        { "type": "richtext", "id": "content", "label": "Content" }
+      ]
+    },
+    {
+      "type": "documents",
+      "name": "Documents",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Tab label", "default": "Documents" },
+        { "type": "richtext", "id": "content", "label": "Introductory text (optional)" },
+        { "type": "header", "content": "Document 1" },
+        { "type": "text", "id": "doc1_label", "label": "Label", "placeholder": "e.g. Specification Sheet" },
+        { "type": "url",  "id": "doc1_url",   "label": "File URL" },
+        { "type": "header", "content": "Document 2" },
+        { "type": "text", "id": "doc2_label", "label": "Label" },
+        { "type": "url",  "id": "doc2_url",   "label": "File URL" },
+        { "type": "header", "content": "Document 3" },
+        { "type": "text", "id": "doc3_label", "label": "Label" },
+        { "type": "url",  "id": "doc3_url",   "label": "File URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Nav Tabs",
+      "blocks": [
+        { "type": "description" },
+        { "type": "features"    },
+        { "type": "specs"       },
+        { "type": "delivery"    },
+        { "type": "documents"   }
+      ]
+    }
+  ]
+}
+{% endschema %}

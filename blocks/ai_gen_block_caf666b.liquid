@@ -1,0 +1,1092 @@
+{% doc %}
+  @prompt
+    5 images like carousel but with text underneath each, Make the height of the picture at least a third of what it is now and i want to be able to change the opacity of picture and text area, make it so 3 are visible on the page , In the text area i want there to be Title bow, subtitle and desciption area, add the possibility to have a linkafter the description and to modify the font and font siwe for each text box, i want to be able to control the opacity for each of the image + text block separately like image 1 + Text 1 could be opacity 60 and image 2 and texte2 opacity 10 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-image-carousel-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    display: block;
+    position: relative;
+  }
+
+  .ai-image-carousel-container-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-image-carousel-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.slide_gap }}px;
+    transition: transform 0.5s ease;
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }} {
+    min-width: calc((100% - ({{ block.settings.slide_gap }}px * 2)) / 3);
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.text_spacing }}px;
+  }
+
+  .ai-image-carousel-image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    position: relative;
+    height: {{ block.settings.image_height }}px;
+    overflow: hidden;
+  }
+
+  .ai-image-carousel-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    object-fit: cover;
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-1 .ai-image-carousel-image-{{ ai_gen_id }},
+  .ai-image-carousel-slide-{{ ai_gen_id }}-1 .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    opacity: {{ block.settings.image_opacity_1 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-2 .ai-image-carousel-image-{{ ai_gen_id }},
+  .ai-image-carousel-slide-{{ ai_gen_id }}-2 .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    opacity: {{ block.settings.image_opacity_2 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-3 .ai-image-carousel-image-{{ ai_gen_id }},
+  .ai-image-carousel-slide-{{ ai_gen_id }}-3 .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    opacity: {{ block.settings.image_opacity_3 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-4 .ai-image-carousel-image-{{ ai_gen_id }},
+  .ai-image-carousel-slide-{{ ai_gen_id }}-4 .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    opacity: {{ block.settings.image_opacity_4 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-5 .ai-image-carousel-image-{{ ai_gen_id }},
+  .ai-image-carousel-slide-{{ ai_gen_id }}-5 .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    opacity: {{ block.settings.image_opacity_5 }};
+  }
+
+  .ai-image-carousel-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-image-carousel-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-1 .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    opacity: {{ block.settings.text_opacity_1 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-2 .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    opacity: {{ block.settings.text_opacity_2 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-3 .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    opacity: {{ block.settings.text_opacity_3 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-4 .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    opacity: {{ block.settings.text_opacity_4 }};
+  }
+
+  .ai-image-carousel-slide-{{ ai_gen_id }}-5 .ai-image-carousel-text-wrapper-{{ ai_gen_id }} {
+    opacity: {{ block.settings.text_opacity_5 }};
+  }
+
+  .ai-image-carousel-title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    font-family: var(--heading-font, 'Cormorant Garamond', 'Times New Roman', serif);
+    margin: 0 0 {{ block.settings.title_spacing }}px 0;
+  }
+
+  .ai-image-carousel-subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.subtitle_color }};
+    font-size: {{ block.settings.subtitle_size }}px;
+    font-weight: {{ block.settings.subtitle_weight }};
+    font-family: var(--body-font, 'Inter Tight', -apple-system, sans-serif);
+    margin: 0 0 {{ block.settings.subtitle_spacing }}px 0;
+  }
+
+  .ai-image-carousel-description-{{ ai_gen_id }} {
+    color: {{ block.settings.description_color }};
+    font-size: {{ block.settings.description_size }}px;
+    font-family: var(--body-font, 'Inter Tight', -apple-system, sans-serif);
+    line-height: 1.5;
+    margin: 0 0 {{ block.settings.description_spacing }}px 0;
+  }
+
+.ai-image-carousel-link-{{ ai_gen_id }} {
+  display: inline-block; /* make it behave like a button */
+  text-align: center;
+  color: {{ block.settings.link_color }};
+  background-color: {{ block.settings.button_fill }};
+  font-size: {{ block.settings.link_size }}px;
+  font-weight: {{ block.settings.link_weight }};
+  font-family: var(--btn-font, 'Inter Tight', -apple-system, sans-serif);
+  text-decoration: none;
+  padding: 10px 20px; /* space inside the button */
+  border-radius: 6px;
+  border: 2px solid {{ block.settings.link_color }}; /* optional border */
+  transition: all 0.3s ease;
+}
+
+.ai-image-carousel-link-{{ ai_gen_id }}:hover {
+  color: {{ block.settings.link_hover_color }};
+  background-color: {{ block.settings.button_fill_hover }};
+  transform: scale(1.1);
+}
+
+  .ai-image-carousel-controls-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: {{ block.settings.controls_spacing }}px;
+  }
+
+  .ai-image-carousel-nav-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+  }
+
+  .ai-image-carousel-nav-button-{{ ai_gen_id }} {
+    background-color: {{ block.settings.nav_button_color }};
+    color: {{ block.settings.nav_button_icon_color }};
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-image-carousel-nav-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.nav_button_hover_color }};
+  }
+
+  .ai-image-carousel-nav-button-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-image-carousel-dots-{{ ai_gen_id }} {
+    display: flex;
+    gap: 8px;
+  }
+
+  .ai-image-carousel-dot-{{ ai_gen_id }} {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: {{ block.settings.dot_color }};
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-image-carousel-dot-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.dot_active_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-image-carousel-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-image-carousel-slide-{{ ai_gen_id }} {
+      min-width: 100%;
+    }
+
+    .ai-image-carousel-image-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.mobile_image_height }}px;
+    }
+  }
+{% endstyle %}
+
+<image-carousel-{{ ai_gen_id }}
+  class="ai-image-carousel-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-image-carousel-container-{{ ai_gen_id }}">
+    <div class="ai-image-carousel-track-{{ ai_gen_id }}">
+        {% assign slide_order = "3,1,2,4,5" | split: "," %}
+        {% for i in slide_order %}
+          {% assign i = i | plus: 0 %}
+        {% liquid
+          assign image_key = 'image_' | append: i
+          assign title_key = 'title_' | append: i
+          assign subtitle_key = 'subtitle_' | append: i
+          assign description_key = 'description_' | append: i
+          assign link_text_key = 'link_text_' | append: i
+          assign link_url_key = 'link_url_' | append: i
+          assign image = block.settings[image_key]
+          assign title = block.settings[title_key]
+          assign subtitle = block.settings[subtitle_key]
+          assign description = block.settings[description_key]
+          assign link_text = block.settings[link_text_key]
+          # Change the URL to a mailto link
+          assign link_url = "mailto:marketing@osasourcing.com"
+        %}
+        <div class="ai-image-carousel-slide-{{ ai_gen_id }} ai-image-carousel-slide-{{ ai_gen_id }}-{{ i }}">
+          <div class="ai-image-carousel-image-wrapper-{{ ai_gen_id }}">
+            {% if image %}
+              <img
+                src="{{ image | image_url: width: 800 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+                class="ai-image-carousel-image-{{ ai_gen_id }}"
+              >
+            {% else %}
+              <div class="ai-image-carousel-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          {% if title != blank or subtitle != blank or description != blank or link_text != blank %}
+            <div class="ai-image-carousel-text-wrapper-{{ ai_gen_id }}">
+              {% if title != blank %}
+                <h3 class="ai-image-carousel-title-{{ ai_gen_id }}">{{ title }}</h3>
+              {% endif %}
+              {% if subtitle != blank %}
+                <div class="ai-image-carousel-subtitle-{{ ai_gen_id }}">{{ subtitle }}</div>
+              {% endif %}
+              {% if description != blank %}
+                <div class="ai-image-carousel-description-{{ ai_gen_id }}">{{ description }}</div>
+              {% endif %}
+              {% if link_text != blank %}
+                <a
+                  href="{{ link_url }}"
+                  class="ai-image-carousel-link-{{ ai_gen_id }}"
+                >
+                  {{ link_text }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="ai-image-carousel-controls-{{ ai_gen_id }}">
+    <div class="ai-image-carousel-nav-{{ ai_gen_id }}">
+      <button
+        class="ai-image-carousel-nav-button-{{ ai_gen_id }} ai-image-carousel-prev-{{ ai_gen_id }}"
+        aria-label="Previous slide"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+      <button
+        class="ai-image-carousel-nav-button-{{ ai_gen_id }} ai-image-carousel-next-{{ ai_gen_id }}"
+        aria-label="Next slide"
+      >
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="ai-image-carousel-dots-{{ ai_gen_id }}">
+      {% for i in (1..3) %}
+        <button
+          class="ai-image-carousel-dot-{{ ai_gen_id }} {% if i == 1 %}active{% endif %}"
+          data-index="{{ i | minus: 1 }}"
+          aria-label="Go to slide {{ i }}"
+        ></button>
+      {% endfor %}
+    </div>
+  </div>
+</image-carousel-{{ ai_gen_id }}>
+<script>
+  (function() {
+    class ImageCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.totalSlides = 5;
+        this.slidesPerView = 3;
+        this.maxIndex = this.totalSlides - this.slidesPerView;
+
+        this.autoScroll = {{ block.settings.auto_scroll }};
+        this.autoSpeed = {{ block.settings.auto_speed }};
+        this.autoTimer = null;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-image-carousel-track-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('.ai-image-carousel-prev-{{ ai_gen_id }}');
+        this.nextButton = this.querySelector('.ai-image-carousel-next-{{ ai_gen_id }}');
+        this.dots = this.querySelectorAll('.ai-image-carousel-dot-{{ ai_gen_id }}');
+
+        this.setupEventListeners();
+        this.updateCarousel();
+        this.handleResize();
+
+        window.addEventListener('resize', () => this.handleResize());
+
+        if (this.autoScroll) {
+          this.startAutoScroll();
+
+          this.addEventListener('mouseenter', () => this.stopAutoScroll());
+          this.addEventListener('mouseleave', () => this.startAutoScroll());
+        }
+      }
+
+      startAutoScroll() {
+        this.autoTimer = setInterval(() => {
+          if (this.currentIndex >= this.maxIndex) {
+            this.currentIndex = 0;
+          } else {
+            this.currentIndex++;
+          }
+          this.updateCarousel();
+        }, this.autoSpeed);
+      }
+
+      stopAutoScroll() {
+        clearInterval(this.autoTimer);
+      }
+
+      handleResize() {
+        if (window.innerWidth <= 749) {
+          this.slidesPerView = 1;
+          this.maxIndex = this.totalSlides - 1;
+        } else {
+          this.slidesPerView = 3;
+          this.maxIndex = this.totalSlides - this.slidesPerView;
+        }
+
+        if (this.currentIndex > this.maxIndex) {
+          this.currentIndex = this.maxIndex;
+        }
+
+        this.updateCarousel();
+      }
+
+      setupEventListeners() {
+        this.prevButton.addEventListener('click', () => this.goToPrevious());
+        this.nextButton.addEventListener('click', () => this.goToNext());
+
+        this.dots.forEach((dot) => {
+          dot.addEventListener('click', (e) => {
+            const index = parseInt(e.target.dataset.index);
+            this.goToSlide(index);
+          });
+        });
+      }
+
+      goToPrevious() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+        } else {
+          this.currentIndex = this.maxIndex;
+        }
+        this.updateCarousel();
+      }
+
+      goToNext() {
+        if (this.currentIndex < this.maxIndex) {
+          this.currentIndex++;
+        } else {
+          this.currentIndex = 0;
+        }
+        this.updateCarousel();
+      }
+
+      goToSlide(index) {
+        this.currentIndex = index;
+        this.updateCarousel();
+      }
+
+      updateCarousel() {
+        const slideWidth = this.track.querySelector('.ai-image-carousel-slide-{{ ai_gen_id }}').offsetWidth;
+        const gap = {{ block.settings.slide_gap }};
+        const offset = -(this.currentIndex * (slideWidth + gap));
+        this.track.style.transform = `translateX(${offset}px)`;
+
+        this.prevButton.disabled = false;
+        this.nextButton.disabled = false;
+
+        this.dots.forEach((dot, index) => {
+          if (index === this.currentIndex) {
+            dot.classList.add('active');
+          } else {
+            dot.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    customElements.define('image-carousel-{{ ai_gen_id }}', ImageCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Image carousel",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title",
+      "default": "First Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_1",
+      "label": "Subtitle",
+      "default": "First Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description_1",
+      "label": "Description",
+      "default": "This is the description for the first slide."
+    },
+    {
+      "type": "text",
+      "id": "link_text_1",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url_1",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity_1",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "text_opacity_1",
+      "label": "Text opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title",
+      "default": "Second Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_2",
+      "label": "Subtitle",
+      "default": "Second Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description_2",
+      "label": "Description",
+      "default": "This is the description for the second slide."
+    },
+    {
+      "type": "text",
+      "id": "link_text_2",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url_2",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity_2",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "text_opacity_2",
+      "label": "Text opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Title",
+      "default": "Third Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_3",
+      "label": "Subtitle",
+      "default": "Third Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description_3",
+      "label": "Description",
+      "default": "This is the description for the third slide."
+    },
+    {
+      "type": "text",
+      "id": "link_text_3",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url_3",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity_3",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "text_opacity_3",
+      "label": "Text opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "Title",
+      "default": "Fourth Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_4",
+      "label": "Subtitle",
+      "default": "Fourth Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description_4",
+      "label": "Description",
+      "default": "This is the description for the fourth slide."
+    },
+    {
+      "type": "text",
+      "id": "link_text_4",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url_4",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity_4",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "text_opacity_4",
+      "label": "Text opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Slide 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_5",
+      "label": "Title",
+      "default": "Fifth Title"
+    },
+    {
+      "type": "text",
+      "id": "subtitle_5",
+      "label": "Subtitle",
+      "default": "Fifth Subtitle"
+    },
+    {
+      "type": "textarea",
+      "id": "description_5",
+      "label": "Description",
+      "default": "This is the description for the fifth slide."
+    },
+    {
+      "type": "text",
+      "id": "link_text_5",
+      "label": "Link text",
+      "default": "Learn more"
+    },
+    {
+      "type": "url",
+      "id": "link_url_5",
+      "label": "Link URL"
+    },
+    {
+      "type": "range",
+      "id": "image_opacity_5",
+      "label": "Image opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "text_opacity_5",
+      "label": "Text opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "slide_gap",
+      "label": "Gap between slides",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image height (desktop)",
+      "min": 100,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_height",
+      "label": "Image height (mobile)",
+      "min": 100,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "default": 250
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "label": "Text spacing",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "controls_spacing",
+      "label": "Controls spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Text style"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Title"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "title_weight",
+      "label": "Weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Subtitle"
+    },
+    {
+      "type": "font_picker",
+      "id": "subtitle_font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtitle_weight",
+      "label": "Weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_spacing",
+      "label": "Spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Description"
+    },
+    {
+      "type": "font_picker",
+      "id": "description_font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_spacing",
+      "label": "Spacing",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "type": "font_picker",
+      "id": "link_font",
+      "label": "Font",
+      "default": "helvetica_n4"
+    },
+    {
+      "type": "range",
+      "id": "link_size",
+      "label": "Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "link_weight",
+      "label": "Weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 500
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Hover color",
+      "default": "#666666"
+    },
+    {
+      "type": "select",
+      "id": "link_underline",
+      "label": "Underline",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "underline",
+          "label": "Underline"
+        }
+      ],
+      "default": "underline"
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "auto_scroll",
+      "label": "Enable auto scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "auto_speed",
+      "label": "Auto scroll speed",
+      "min": 2000,
+      "max": 8000,
+      "step": 500,
+      "unit": "ms",
+      "default": 4000
+    },
+    {
+      "type": "color",
+      "id": "nav_button_color",
+      "label": "Button color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_hover_color",
+      "label": "Button hover color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "nav_button_icon_color",
+      "label": "Icon color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Active dot color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image carousel"
+    }
+  ]
+}
+{% endschema %}

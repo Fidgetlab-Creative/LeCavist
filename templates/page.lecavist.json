@@ -1,0 +1,295 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "slideshow_tAaXXU": {
+      "type": "slideshow",
+      "blocks": {
+        "slider_item_fafUtm": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/LCCV28B_lifestyle_picture_2260x_fe9e9a25-9a7e-4e11-a53e-27d44b407e8e.webp",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "Signature Service",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "center",
+            "content_position": "middle-center",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "slider_item_fafUtm"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "slide_height": "custom",
+        "desktop_height": 380,
+        "mobile_height": 300,
+        "color_scheme": "scheme-3d10de96-a479-49bd-819c-e044746b4f3e",
+        "subheading_font_size": 14,
+        "subheading_font_weight": "body_weight",
+        "subheading_spacing_bottom": 10,
+        "heading_font_size": 36,
+        "heading_font_weight": "subheading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "des_spacing_bottom": 40,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "pagination_position": "center",
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "content_below_image": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "rich_text_aAyVEX": {
+      "type": "rich-text",
+      "blocks": {
+        "description_tPQf7N": {
+          "type": "description",
+          "settings": {
+            "description": "<p>We at LeCavist take great pride in our work and service, putting care and attention into every individual fridge we produce. We have a thorough quality assurance process, and stand confidently over all our fridges. All LeCavist wine fridges are backed by a 24 month warranty as a display of the confidence we have in our fridges. If you have any warranty concerns, please contact us.</p>",
+            "font_size": 18,
+            "font_weight": "body_weight",
+            "spacing_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "description_tPQf7N"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "content_alignment": "center",
+        "content_max_width": 100,
+        "enable_expand_content": false,
+        "expand_content_button": "See all Information",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "collection_list_RMVUHz": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_qj4x9T": {
+          "type": "collection",
+          "settings": {
+            "collection": "petite-series",
+            "collection_title": ""
+          }
+        },
+        "collection_ABgDh8": {
+          "type": "collection",
+          "settings": {
+            "collection": "built-in-wine-fridge",
+            "collection_title": ""
+          }
+        },
+        "collection_rQhQXe": {
+          "type": "collection",
+          "settings": {
+            "collection": "service-series",
+            "collection_title": ""
+          }
+        },
+        "collection_kFFipB": {
+          "type": "collection",
+          "settings": {
+            "collection": "professional-range",
+            "collection_title": ""
+          }
+        },
+        "collection_iL6NFx": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_qj4x9T",
+        "collection_ABgDh8",
+        "collection_rQhQXe",
+        "collection_kFFipB",
+        "collection_iL6NFx"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Collection list",
+        "description": "",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "center",
+        "display_mode": "grid",
+        "image_ratio": "portrait",
+        "custom_ratio": "",
+        "items_per_row": 5,
+        "column_gap": 30,
+        "collection_information_position": "below_image",
+        "design": "default",
+        "text_alignment": "center",
+        "show_product_count": false,
+        "show_description": false,
+        "font_size": 16,
+        "font_weight": "heading_weight",
+        "information_spacing": 12,
+        "rounded_image": false,
+        "image_custom_width": false,
+        "image_width": 200,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "icon_box_HDW36B": {
+      "type": "icon-box",
+      "blocks": {
+        "icon_box_zfnH7j": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_delivery_Icon_af0ba902-6539-4dea-afb2-c232894157f9.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Free Next Day Delivery*",
+            "description": ""
+          }
+        },
+        "icon_box_CbKGYe": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_connection_Icon_1f8fbdfe-9205-4cf0-b870-70397618e74f.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Free Connection",
+            "description": ""
+          }
+        },
+        "icon_box_hw8AbQ": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_removal_Icon_ed76b409-f1ac-4766-893c-20e90432f59b.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Free Removal",
+            "description": ""
+          }
+        },
+        "icon_box_4XTagJ": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_match_guarantee_Icon_48dd8d59-30e9-4a5e-8516-ff3ae9da7a13.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Price Match Guarantee",
+            "description": ""
+          }
+        },
+        "icon_box_w6PxJg": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Flexible_payment_options_Icon_b2f8c9b8-e613-4bda-9c22-4a5dff409ed9.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Flexible Payment Options",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_zfnH7j",
+        "icon_box_CbKGYe",
+        "icon_box_hw8AbQ",
+        "icon_box_4XTagJ",
+        "icon_box_w6PxJg"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
+        "type": "default",
+        "column_gap": 30,
+        "icon_position": "top",
+        "icon_size": 60,
+        "spacing": 15,
+        "content_alignment": "center",
+        "heading_font_size": 16,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": "2",
+        "padding_top": 30,
+        "padding_bottom": 40,
+        "reset_spacing": false
+      }
+    },
+    "custom_html_jNHiwb": {
+      "type": "custom-html",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "html_custom": "<h3><span>Promotion Title:</span></h3>\n<p><span>LeCavist x Langtons GWP - Free Voucher December Promotion</span><span><b id=\"docs-internal-guid-60c2c299-7fff-9a89-24fd-a1c85046b38a\"></b>Promoter:</span></p>\n<p><span>LeCavist Wine Cabinets</span><span><br></span><span>Osass Australia Pty Ltd ABN: 28 644 539 668</span><span><br></span><span>19/20-28 Maddox St, Alexandria NSW 2015, Australia</span><span><br></span><span>Phone: 02 9398 9933</span><span><br></span><span>Email: hello@lecavist.com</span></p>\n<h3><span>Promotional Period:</span></h3>\n<ul>\n   <li>\n      <p><span>Start date:</span><span> 15/12/2024 at 12:01 AM AEDT</span></p>\n   </li>\n   <li>\n      <p><span>End date:</span><span> 02/01/2025 at 11:59 PM AEDT</span></p>\n   </li>\n</ul>\n<h3><span>Eligibility:</span></h3>\n<ul>\n   <li>\n      <p><span>The Promotion is open to all residents of Australia who are 18 years or older excluding residents of NT.</span></p>\n   </li>\n   <li>\n      <p><span>To be eligible to enter, participants must purchase an eligible LeCavist wine cabinet (listed below) from the following platforms during the Promotional Period:</span></p>\n   </li>\n   <ul>\n      <li>\n         <p><a href=\"http://www.lecavist.com\"><span>www.lecavist.com</span></a></p>\n      </li>\n      <li>\n         <p><a href=\"http://www.appliancesonline.com.au\"><span>www.appliancesonline.com.au</span></a></p>\n      </li>\n   </ul>\n</ul>\n<h3><span>Eligible Products:</span></h3>\n<p><span>Eligible products for this promotion include the following wine cabinets:</span></p>\n<ul>\n   <li>\n      <p><span>LCS100VN</span></p>\n   </li>\n   <li>\n      <p><span>LKS105VN2Z</span></p>\n   </li>\n   <li>\n      <p><span>LKS105VN2ZFS</span></p>\n   </li>\n   <li>\n      <p><span>LKS140VN3Z</span></p>\n   </li>\n   <li>\n      <p><span>LKS140VX3Z</span></p>\n   </li>\n   <li>\n      <p><span>LKS140VN3ZFS</span></p>\n   </li>\n   <li>\n      <p><span>LKS168VN</span></p>\n   </li>\n   <li>\n      <p><span>LKS168VNFS</span></p>\n   </li>\n   <li>\n      <p><span>LKV168PNDX</span></p>\n   </li>\n   <li>\n      <p><span>LKV168PNDXFS</span></p>\n   </li>\n   <li>\n      <p><span>LCS140VN2Z2D</span></p>\n   </li>\n   <li>\n      <p><span>LCS155VN1ZPRO</span></p>\n   </li>\n   <li>\n      <p><span>LCS200VN2Z2D</span></p>\n   </li>\n   <li>\n      <p><span>LCS230VN2Z1D</span></p>\n   </li>\n   <li>\n      <p><span>LCS240VN1Z1D</span></p>\n   </li>\n   <li>\n      <p><span>LCS300VX1ZPRO</span></p>\n   </li>\n   <li>\n      <p><span>LCS300VN2Z1D</span></p>\n   </li>\n   <li>\n      <p><span>LCS600VX2DP</span></p>\n   </li>\n   <li>\n      <p><span>LJ17VN2ZBU</span></p>\n   </li>\n   <li>\n      <p><span>LJ20VNBU</span></p>\n   </li>\n   <li>\n      <p><span>LJ40VN2Z2DBU</span></p>\n   </li>\n   <li>\n      <p><span>LJ44VN2ZBU</span></p>\n   </li>\n   <li>\n      <p><span>LJ52VNBU</span></p>\n   </li>\n</ul>\n<p><b> </b></p>\n<h3><span>Promotion Details:</span></h3>\n<ul>\n   <li>\n      <p><span>Bonus Gift:</span><span> Eligible entrants will receive a free $100 Langton's Voucher, redeemable on any Langton's product, excluding auction items.</span><span><br></span><span>Vouchers will be emailed to eligible entrants by LeCavist on January 06th, 2025.</span></p>\n   </li>\n</ul>\n<h3><span>How to Enter:</span></h3>\n<p><span>To enter the Promotion, eligible entrants must:</span></p>\n<ol>\n   <li>\n      <p><span>Purchase one of the eligible wine cabinet products listed above during the Promotional Period. LeCavist will automatically process to the voucher</span></p>\n   </li>\n</ol>\n<h3><span>Limitations:</span></h3>\n<ul>\n   <li>\n      <p><span>Each customer is entitled to one (1) Langton's $100 voucher per eligible wine cabinet purchased.</span></p>\n   </li>\n   <li>\n      <p><span>The number of eligible wine cabinets a customer can purchase within the Promotion Period is unlimited. Each qualifying purchase entitles the customer to one (1) $100 Langton's voucher.</span></p>\n   </li>\n   <li>\n      <p><span>The $100 Langton's Voucher is non-transferable and cannot be redeemed for cash or exchanged for any other products.</span></p>\n   </li>\n   <li>\n      <p><span>Any unused balance of a voucher will not be awarded cash. </span></p>\n   </li>\n   <li>\n      <p><span>Vouchers are valid 12 months from the date of issue. </span></p>\n   </li>\n</ul>\n<h3><span>General Terms &amp; Conditions:</span></h3>\n<ol>\n   <li>\n      <p><span>Entices agree to be bound by these terms and conditions by participating in the Promotion.</span></p>\n   </li>\n   <li>\n      <p><span>The Promoter reserves the right to disqualify any participant who provides false or misleading information.</span></p>\n   </li>\n   <li>\n      <p><span>The Promoter is not responsible for lost, delayed, or misdirected entries or gifts.</span></p>\n   </li>\n   <li>\n      <p><span>If for any reason the Promotion is not capable of running as planned, including due to technical issues, fraud, or any other causes beyond the control of the Promoter, the Promoter reserves the right to cancel, terminate, modify, or suspend the Promotion.</span></p>\n   </li>\n   <li>\n      <p><span>The Promoter's decision is final and no correspondence will be entered into.</span></p>\n   </li>\n   <li>\n      <p><span>The Promoter may collect personal information in connection with this Promotion. Personal information will be handled in accordance with the Promoter's Privacy Policy, available on</span><a href=\"http://www.lecavist.com\"><span> </span><span>www.lecavist.com</span></a><span>.</span></p>\n   </li>\n</ol>\n<h3><span>Liability:</span></h3>\n<p><span>To the extent permitted by law, the Promoter, its affiliates, and its agents shall not be liable for any loss or damage (including but not limited to direct, indirect, or consequential loss) that arises in connection with the Promotion or the redemption of the Langton's $100 voucher.</span></p>",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "slideshow_tAaXXU",
+    "rich_text_aAyVEX",
+    "custom_html_jNHiwb",
+    "collection_list_RMVUHz",
+    "icon_box_HDW36B"
+  ]
+}

@@ -1,0 +1,80 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "header": {
+      "type": "header",
+      "blocks": {
+        "menu_collection_7KiEyG": {
+          "type": "menu_collection",
+          "settings": {
+            "text": "Wine Cabinets",
+            "open-link-newtab": true,
+            "item_label": "unset",
+            "collection_menu_column": 2,
+            "mega_custom_width": 1090,
+            "center_submenu": false,
+            "full_width": true,
+            "collection_width": 50,
+            "collection_1": "",
+            "collection_2": "",
+            "collection_3": ""
+          }
+        }
+      },
+      "block_order": [
+        "menu_collection_7KiEyG"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "default",
+        "logo_position": "center",
+        "separator_line": "inner_page",
+        "enable_login_popup": true,
+        "sticky_header_type": "always",
+        "sticky_header_mobile": true,
+        "transparent_header": false,
+        "transparent_mobile": false,
+        "transparent_text_icon_color": "#ffffff",
+        "mega_menu": "main-navigation-v2",
+        "dropdowns_animation": "down-to-up",
+        "uppercase_first": false,
+        "hot": "Hot",
+        "label_color_hot": "#ffffff",
+        "label_background_hot": "#7c3030",
+        "new": "New",
+        "label_color_new": "#ffffff",
+        "label_background_new": "#516cf4",
+        "sale": "Sale",
+        "label_color_sale": "#ffffff",
+        "label_background_sale": "#7c3030",
+        "redirect_to_link": false,
+        "menu_tab": "unset",
+        "collection_list": [],
+        "menu_mobile_color": "#ffffff",
+        "menu_mobile_background": "#7c3030",
+        "show_search": true,
+        "show_account_icon": true,
+        "show_wishlist_icon": true,
+        "show_shopping_cart": true,
+        "show_currency": false,
+        "show_language": false,
+        "show_recently_viewed": false,
+        "padding_top": 5,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "header"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "manuals": {
+      "type": "manuals-list",
+      "settings": {
+        "collection": "all-cabinets",
+        "heading": "Manuals & Spec Sheets",
+        "subheading": "<p>Download the user manual and specification sheet for each of our wine cabinets.</p>",
+        "show_search": true,
+        "open_first": false
+      }
+    }
+  },
+  "order": ["manuals"]
+}

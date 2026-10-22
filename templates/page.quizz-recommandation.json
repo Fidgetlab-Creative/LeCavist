@@ -1,0 +1,148 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "slideshow_8eAbrn": {
+      "type": "slideshow",
+      "blocks": {
+        "slider_item_WQWdzq": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/LCCV28B_lifestyle_picture_7d82c02c-6830-4f7f-9e71-03f786513d0c.jpg",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "Wine Fridge Finder",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "center",
+            "content_position": "middle-center",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "slider_item_WQWdzq"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "slide_height": "custom",
+        "desktop_height": 360,
+        "mobile_height": 300,
+        "color_scheme": "scheme-3d10de96-a479-49bd-819c-e044746b4f3e",
+        "subheading_font_size": 14,
+        "subheading_font_weight": "body_weight",
+        "subheading_spacing_bottom": 10,
+        "heading_font_size": 36,
+        "heading_font_weight": "subheading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "des_spacing_bottom": 40,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "pagination_position": "center",
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "content_below_image": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "custom_liquid_NbdWzC": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "custom_liquid": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "1734592407dd7b3ede": {
+      "type": "apps",
+      "blocks": {
+        "tangent_quiz_tangent_product_recommendation_6cphnJ": {
+          "type": "shopify://apps/tangent-quiz/blocks/tangent-product-recommendation/51b4f65b-1bd1-4373-a212-7af0ce5a9774",
+          "settings": {
+            "width": 100,
+            "show_variants": true,
+            "custom_css_text_area": ""
+          }
+        },
+        "tangent_quiz_tangent_iframe_hBgLFB": {
+          "type": "shopify://apps/tangent-quiz/blocks/tangent-iframe/51b4f65b-1bd1-4373-a212-7af0ce5a9774",
+          "settings": {
+            "form_id": "6621ed4495f1923cc32df954",
+            "width": 80,
+            "scroll_margin": 120
+          }
+        }
+      },
+      "block_order": [
+        "tangent_quiz_tangent_product_recommendation_6cphnJ",
+        "tangent_quiz_tangent_iframe_hBgLFB"
+      ],
+      "settings": {}
+    },
+    "custom_liquid_WQ9Yc4": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
+        "custom_liquid": "<div class=\"thin-banner\">\n  <div class=\"banner-item\">\n<a href=\"https://lecavist.com/pages/signature-service\" class=\"banner-link\">\n    <img src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_delivery_Icon_af0ba902-6539-4dea-afb2-c232894157f9.png?v=1709013778\" alt=\"Icon 1\">\n</a>\n    <a href=\"https://lecavist.com/pages/signature-service\" class=\"thin-banner-link\">Free Next Day Delivery*</a>\n  </div>\n  <div class=\"banner-item\">\n<a href=\"https://lecavist.com/pages/signature-service\" class=\"banner-link\">\n    <img src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_connection_Icon_1f8fbdfe-9205-4cf0-b870-70397618e74f.png?v=1709013778\" alt=\"Icon 2\">\n</a>\n    <a href=\"https://lecavist.com/pages/signature-service\" class=\"thin-banner-link\">Free Connection</a>\n  </div>\n  <div class=\"banner-item\">\n<a href=\"https://lecavist.com/pages/signature-service\" class=\"banner-link\">\n    <img src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_removal_Icon_ed76b409-f1ac-4766-893c-20e90432f59b.png?v=1709013778\" alt=\"Icon 3\">\n</a>\n    <a href=\"https://lecavist.com/pages/signature-service\" class=\"thin-banner-link\">Free Removal</a>\n  </div>\n  <div class=\"banner-item\">\n<a href=\"https://lecavist.com/pages/signature-service\" class=\"banner-link\">\n    <img src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Free_match_guarantee_Icon_48dd8d59-30e9-4a5e-8516-ff3ae9da7a13.png?v=1709013778\n\" alt=\"Icon 4\">\n</a>\n    <a href=\"https://lecavist.com/pages/signature-service\" class=\"thin-banner-link\">Price Match Guarantee</a>\n  </div>\n<div class=\"banner-item\">\n<a href=\"https://lecavist.com/pages/signature-service\" class=\"banner-link\">\n    <img src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Flexible_payment_options_Icon_b2f8c9b8-e613-4bda-9c22-4a5dff409ed9.png?v=1709013778\" alt=\"Icon 5\">\n</a>\n    <a href=\"https://lecavist.com/pages/signature-service\" class=\"thin-banner-link\">Flexible Payment Options</a>\n  </div>\n</div>\n<div class=\"comment\">\n  <p>*Free Next Day Delivery subject to stock availability and delivery location</p>\n</div>",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "service_red_banner_yHmdgw": {
+      "type": "service-red-banner",
+      "name": "Service Red Banner",
+      "settings": {
+        "banner_height": 95
+      }
+    }
+  },
+  "order": [
+    "main",
+    "slideshow_8eAbrn",
+    "custom_liquid_NbdWzC",
+    "1734592407dd7b3ede",
+    "custom_liquid_WQ9Yc4",
+    "service_red_banner_yHmdgw"
+  ]
+}

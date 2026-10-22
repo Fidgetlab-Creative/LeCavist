@@ -1,0 +1,284 @@
+{% doc %}
+  @prompt
+    Create a custom Liquid theme block called "3D Showroom Embed" that embeds a Matterport 3D interactive tour directly in the page using an iframe. The iframe URL is: https://my.matterport.com/show/?m=mh4RUXMb2su&play=1&ss=1&sr=-1.76,1.33
+    
+    Requirements:
+    - The iframe should be fully responsive and take 100% width
+    - Default height should be 600px but configurable via a theme editor setting (range: 400px to 900px)
+    - Add a setting for a section heading/title above the iframe (optional, e.g. "Visitez notre Showroom en 3D")
+    - Add a setting for a subtitle/description text below the title (optional)
+    - The iframe should have allowfullscreen enabled so visitors can go fullscreen
+    - Add allow="vr; xr; accelerometer; gyroscope" attributes for VR/mobile compatibility
+    - Style it with a clean container, centered title, and subtle border-radius on the iframe
+    - The block should be self-contained and work inside a multi-content section
+    - No loading spinner needed, keep it simple and clean
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-showroom-embed-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .ai-showroom-embed__container-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.container_padding }}px;
+    border-radius: {{ block.settings.container_border_radius }}px;
+  }
+
+  .ai-showroom-embed__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-showroom-embed__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 12px 0;
+    /* Match the homepage "— BEST SELLING —" eyebrow treatment */
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .ai-showroom-embed__title-{{ ai_gen_id }}::before { content: "— "; }
+  .ai-showroom-embed__title-{{ ai_gen_id }}::after  { content: " —"; }
+
+  .ai-showroom-embed__subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .ai-showroom-embed__iframe-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.iframe_height }}px;
+    border-radius: {{ block.settings.iframe_border_radius }}px;
+    overflow: hidden;
+    box-shadow: {{ block.settings.shadow_intensity }};
+  }
+
+  .ai-showroom-embed__iframe-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-showroom-embed__container-{{ ai_gen_id }} {
+      padding: {{ block.settings.container_padding | times: 0.6 }}px;
+    }
+
+    .ai-showroom-embed__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+
+    .ai-showroom-embed__subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-showroom-embed__iframe-wrapper-{{ ai_gen_id }} {
+      height: {{ block.settings.iframe_height | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-showroom-embed-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-showroom-embed__container-{{ ai_gen_id }}">
+    {% if block.settings.title != blank or block.settings.subtitle != blank %}
+      <div class="ai-showroom-embed__header-{{ ai_gen_id }}">
+        {% if block.settings.title != blank %}
+          <h2 class="ai-showroom-embed__title-{{ ai_gen_id }}">
+            {{ block.settings.title }}
+          </h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <div class="ai-showroom-embed__subtitle-{{ ai_gen_id }}">
+            {{ block.settings.subtitle }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="ai-showroom-embed__iframe-wrapper-{{ ai_gen_id }}">
+      <iframe
+        class="ai-showroom-embed__iframe-{{ ai_gen_id }}"
+        src="{{ block.settings.iframe_url }}"
+        allowfullscreen
+        allow="vr; xr; accelerometer; gyroscope"
+        loading="lazy"
+        title="{{ block.settings.title | default: '3D Showroom Tour' | escape }}"
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "3D Showroom embed",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Visit our 3D showroom"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Explore our space in immersive 3D"
+    },
+    {
+      "type": "url",
+      "id": "iframe_url",
+      "label": "Matterport URL"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "iframe_height",
+      "label": "Iframe height",
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "container_padding",
+      "label": "Container padding",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "container_border_radius",
+      "label": "Container border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "iframe_border_radius",
+      "label": "Iframe border radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "shadow_intensity",
+      "label": "Shadow intensity",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "0 2px 8px rgba(0, 0, 0, 0.1)",
+          "label": "Light"
+        },
+        {
+          "value": "0 4px 16px rgba(0, 0, 0, 0.15)",
+          "label": "Medium"
+        },
+        {
+          "value": "0 8px 24px rgba(0, 0, 0, 0.2)",
+          "label": "Strong"
+        }
+      ],
+      "default": "0 4px 16px rgba(0, 0, 0, 0.15)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "3D Showroom embed"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,201 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "heading_xXHA48": {
+          "type": "heading",
+          "settings": {
+            "page_title": "",
+            "header_size": "default"
+          }
+        }
+      },
+      "block_order": [
+        "heading_xXHA48"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 40,
+        "padding_bottom": 20
+      }
+    },
+    "main": {
+      "type": "page-compare",
+      "settings": {
+        "section_width": "fluid_container",
+        "padding_top": 0,
+        "padding_bottom": 90
+      }
+    },
+    "lookbook_image_xCTLTt": {
+      "type": "lookbook-image",
+      "blocks": {
+        "lookbook_item_ehMNFc": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/lookbook2.jpg",
+            "product__1": "lecavist-105-bottle-wine-fridge-dual-zone-black-lks105vn2z",
+            "offset_top__1": 6,
+            "offset_left__1": 60,
+            "product__2": "lecavist-109-bottle-cellar-with-full-shelves-lkv168pndxfs",
+            "offset_top__2": 15,
+            "offset_left__2": 43,
+            "product__3": "lecavist-12-bottle-wine-fridge-single-zone-lccv12b",
+            "offset_top__3": 51,
+            "offset_left__3": 45,
+            "product__4": "5-year-warranty-extension",
+            "offset_top__4": 51,
+            "offset_left__4": 63,
+            "product__5": "",
+            "offset_top__5": 1,
+            "offset_left__5": 4
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_item_ehMNFc"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "hotspot_style": "plus",
+        "action_when_click_on_hotspot": "open",
+        "items_per_row": 1,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 90,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "multi_content_BPYaWt": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_overlay_TPE89a": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "50%",
+            "vertical_align": "start",
+            "image": "shopify://shop_images/rules_5.jpg",
+            "image_link": "",
+            "image_overlay_opacity": 0,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "5 Rules of Storing Wine",
+            "description": "",
+            "first_button_label": "READ MORE",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "middle-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_6WqyHG": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "50%",
+            "vertical_align": "start",
+            "image": "shopify://shop_images/store_wine.jpg",
+            "image_link": "",
+            "image_overlay_opacity": 0,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "How to Store a Wine",
+            "description": "",
+            "first_button_label": "READ MORE",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "middle-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_overlay_TPE89a",
+        "image_with_text_overlay_6WqyHG"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 10,
+        "equal_height_adjustment": false,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "page-heading",
+    "main",
+    "lookbook_image_xCTLTt",
+    "multi_content_BPYaWt"
+  ]
+}

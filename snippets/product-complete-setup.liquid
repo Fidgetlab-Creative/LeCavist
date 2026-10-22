@@ -1,0 +1,591 @@
+{%- comment -%}
+  Complete Your Setup — suggestive add-on shelves for cabinet PDPs.
+
+  Data model:
+    Each shelf/accessory product has a rich-text metafield
+    `custom.compatible_products` listing SKUs of every cabinet it fits.
+    We reverse-look-up: iterate the `accessories` collection and find
+    every shelf whose metafield contains the current cabinet's SKU
+    (matched as `"value":"<SKU>"` so partial SKU prefixes don't match).
+
+  Behaviour highlights:
+    - Default stepper quantity is 0; nothing is pre-added.
+    - Per-card stepper, single "Add to bag" summary at the bottom.
+    - Summary bar appears only when at least one quantity > 0.
+    - One Ajax POST to /cart/add.js adds all selected items together.
+    - The cabinet itself is added separately via the main ATC button.
+
+  Renders nothing when the cabinet has no compatible shelves.
+{%- endcomment -%}
+
+{%- liquid
+  assign lc_cys_sku = product.selected_or_first_available_variant.sku | upcase | strip
+  if lc_cys_sku == blank
+    assign lc_cys_sku = product.metafields.custom.fs_sku.value | upcase | strip
+  endif
+-%}
+
+{%- if lc_cys_sku != blank -%}
+
+{%- liquid
+  # `custom.compatible_products` is a rich_text_field. In this theme's
+  # Liquid, `.value` stringifies to a Ruby-hash dump where each SKU
+  # appears as  "value"=>"<SKU>" .  We match with that exact token
+  # (quote-closed) so LEK168PV doesn't false-positive on LEK168PVX.
+  assign lc_cys_needle = '"value"=>"' | append: lc_cys_sku | append: '"'
+  assign lc_cys_handles = ''
+  assign lc_cys_count = 0
+  for acc in collections.accessories.products
+    if lc_cys_count >= 12
+      break
+    endif
+    # Force string coercion — `.value` is a rich_text drop object; without
+    # a string filter, `contains` would do object/array membership (never
+    # matches). `strip_html` is the proven coercion (no HTML tags present
+    # so the Ruby-hash dump is preserved verbatim).
+    assign mfv_str = acc.metafields.custom.compatible_products.value | strip_html
+    if mfv_str == blank
+      continue
+    endif
+    if mfv_str contains lc_cys_needle
+      assign lc_cys_handles = lc_cys_handles | append: acc.handle | append: '|'
+      assign lc_cys_count = lc_cys_count | plus: 1
+    endif
+  endfor
+  assign lc_cys_h_arr = lc_cys_handles | split: '|'
+-%}
+
+{%- if lc_cys_h_arr.size > 0 -%}
+<section class="lc-cys" aria-labelledby="lc-cys-heading">
+  <header class="lc-cys__header">
+    <span class="lc-cys__eyebrow">— Complete your setup —</span>
+    <span class="lc-cys__heading" id="lc-cys-heading">Matching shelves</span>
+  </header>
+  <p class="lc-cys__sub">Optional — add as many as you like.</p>
+
+  <form class="lc-cys__form" data-lc-cys-form data-cabinet-sku="{{ lc_cys_sku | escape }}">
+    <div class="lc-cys__viewport{% if lc_cys_h_arr.size > 3 %} lc-cys__viewport--carousel{% endif %}">
+      <div class="lc-cys__cards{% if lc_cys_h_arr.size > 3 %} lc-cys__cards--carousel{% endif %}" data-lc-cys-cards>
+      {%- for h in lc_cys_h_arr -%}
+        {%- assign acc = all_products[h] -%}
+        {%- if acc.handle == blank -%}{%- continue -%}{%- endif -%}
+        {%- assign acc_variant = acc.selected_or_first_available_variant -%}
+        {%- assign acc_sku = acc_variant.sku | upcase | default: acc.title -%}
+        <article class="lc-cys__card" data-lc-cys-card data-variant-id="{{ acc_variant.id }}" data-price="{{ acc_variant.price | divided_by: 100.0 }}" data-title="{{ acc.title | escape }}">
+          {%- comment %} Pass the current cabinet's handle so the accessory PDP
+              can highlight its compatibility pill ("your cabinet"). {%- endcomment %}
+          {%- assign acc_href = acc.url | append: '?from=' | append: product.handle -%}
+          <a href="{{ acc_href }}" class="lc-cys__card-imglink" aria-label="View {{ acc.title | escape }}">
+            <div class="lc-cys__card-image">
+              {%- if acc.featured_image != blank -%}
+                <img src="{{ acc.featured_image | image_url: width: 240 }}"
+                     alt="{{ acc.title | escape }}"
+                     width="120" height="120" loading="lazy"
+                     class="lc-cys__card-img">
+              {%- endif -%}
+            </div>
+          </a>
+          <div class="lc-cys__card-body">
+            <h4 class="lc-cys__card-title">
+              <a href="{{ acc_href }}">{{ acc.title | replace: 'LECAVIST ', '' | replace: 'Lecavist ', '' }}</a>
+            </h4>
+            <div class="lc-cys__card-meta">
+              <span class="lc-cys__card-ref">{{ acc_sku }}</span>
+              <span class="lc-cys__card-price">{{ acc_variant.price | money_without_trailing_zeros }}</span>
+            </div>
+            <p class="lc-cys__card-note">
+              <svg class="lc-cys__card-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l4 4 10-10"/></svg>
+              Compatible with your {{ lc_cys_sku }} cabinet
+            </p>
+            <div class="lc-cys__stepper" role="group" aria-label="Quantity for {{ acc.title | escape }}">
+              <button type="button" class="lc-cys__stepper-btn" data-lc-cys-dec aria-label="Decrease quantity">−</button>
+              <span class="lc-cys__stepper-val" data-lc-cys-qty data-max="20" aria-live="polite">0</span>
+              <button type="button" class="lc-cys__stepper-btn" data-lc-cys-inc aria-label="Increase quantity">+</button>
+            </div>
+          </div>
+        </article>
+      {%- endfor -%}
+      </div>
+      {%- if lc_cys_h_arr.size > 3 -%}
+        <button type="button" class="lc-cys__arrow lc-cys__arrow--prev" data-lc-cys-prev aria-label="Previous shelves">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <button type="button" class="lc-cys__arrow lc-cys__arrow--next" data-lc-cys-next aria-label="Next shelves">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+      {%- endif -%}
+    </div>
+
+    {%- comment %} Single Add to Cart button — shows running total, disabled at 0 {%- endcomment %}
+    <button type="button" class="lc-cys__add-btn" data-lc-cys-add disabled>
+      <span data-lc-cys-add-label>Add to Cart</span>
+    </button>
+    <p class="lc-cys__status" data-lc-cys-status aria-live="polite"></p>
+  </form>
+</section>
+
+<style>
+  /* ── Container ─────────────────────────────────────────── */
+  /* Mirrors the Availability-by-State block:
+       - container body  = #F5F0E8  (same as the page / state-cell interior)
+       - header bar       = #EBE4D8  (same as the avail header strip)
+       - product cards    = #EBE4D8  (same as the gallery photo-tile bg)
+       - border           = rgba(26,21,18,0.12)  (--lc-ed-border) */
+  .lc-cys {
+    background: #F5F0E8;
+    border: 1px solid rgba(26,21,18,0.12);
+    border-radius: 6px;
+    padding: 22px 18px 18px;
+    margin: 18px 0 22px;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+  }
+  /* Header bar — mirrors `.lc-d-avail-header` (cream bar, bottom border,
+     accent eyebrow + tracked-caps title) so it reads as a sibling of the
+     Availability / Delivery and Configuration blocks. Negative margins
+     flush it to the container edges. */
+  .lc-cys__header {
+    background: #EBE4D8;
+    border-bottom: 1px solid rgba(26,21,18,0.12);
+    padding: 10px 16px;
+    text-align: center;
+    margin: -22px -18px 0;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+  }
+  .lc-cys__eyebrow {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B1F2E;
+    margin-bottom: 2px;
+  }
+  .lc-cys__heading {
+    display: block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1A1512;
+  }
+  .lc-cys__sub {
+    margin: 12px 0 16px;
+    font-size: 16px;
+    color: #555555;
+    text-align: center;
+  }
+
+  /* ── Cards row ──────────────────────────────────────────── */
+  .lc-cys__cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  @media (min-width: 600px) {
+    .lc-cys__cards {
+      /* minmax(0, …) lets columns shrink BELOW their content's
+         intrinsic width so 3 cards always fit a narrow buy rail. */
+      grid-template-columns: repeat(var(--lc-cys-cols, 3), minmax(0, 1fr));
+    }
+  }
+
+  .lc-cys__card {
+    min-width: 0;
+    display: flex;
+    gap: 14px;
+    background: #EBE4D8;
+    border: 1px solid rgba(26,21,18,0.12);
+    border-radius: 6px;
+    padding: 12px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .lc-cys__card:hover {
+    border-color: rgba(107,31,46,0.3);
+    box-shadow: 0 2px 12px rgba(26,21,18,0.05);
+  }
+  @media (min-width: 600px) {
+    .lc-cys__card {
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px;
+    }
+  }
+  .lc-cys__card-imglink {
+    flex-shrink: 0;
+    display: block;
+    text-decoration: none;
+  }
+  .lc-cys__card-image {
+    width: 84px;
+    height: 84px;
+    background: #EBE4D8;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (min-width: 600px) {
+    .lc-cys__card-image { width: 100%; height: 0; padding-bottom: 100%; position: relative; }
+    .lc-cys__card-image img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  }
+  .lc-cys__card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    mix-blend-mode: multiply;
+  }
+  .lc-cys__card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .lc-cys__card-title {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.2;
+    color: #1A1A1A;
+    overflow-wrap: anywhere;
+  }
+  .lc-cys__card-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .lc-cys__card-title a:hover { color: #5C0F1A; }
+  .lc-cys__card-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .lc-cys__card-ref {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #555555;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .lc-cys__card-price {
+    font-family: 'Cormorant Garamond', 'Times New Roman', Times, serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: #1A1A1A;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .lc-cys__card-note {
+    margin: 4px 0 8px;
+    font-size: 11px;
+    color: #2C6B3A;
+    line-height: 1.35;
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .lc-cys__card-check {
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #2C6B3A;
+  }
+
+  /* ── Stepper — full card width, 3 equal flex segments ──── */
+  .lc-cys__stepper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    border: 1px solid #D4CDBF;
+    border-radius: 100px;
+    background: #F5F0E8;
+    overflow: hidden;
+    margin-top: auto;
+  }
+  .lc-cys__stepper-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 44px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #1A1A1A;
+    font-family: inherit;
+    line-height: 1;
+    padding: 0;
+    transition: background 0.12s, color 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-cys__stepper-btn:hover:not(:disabled) { background: rgba(92,15,26,0.06); color: #5C0F1A; }
+  .lc-cys__stepper-btn:disabled { opacity: 0.3; cursor: default; }
+  .lc-cys__stepper-val {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: #1A1A1A;
+    font-variant-numeric: tabular-nums;
+    user-select: none;
+    border-left: 1px solid #EDE3D1;
+    border-right: 1px solid #EDE3D1;
+  }
+  .lc-cys__card[data-lc-cys-active] {
+    border-color: #5C0F1A;
+    box-shadow: 0 0 0 1px rgba(92,15,26,0.25), 0 2px 12px rgba(26,26,26,0.06);
+  }
+
+  /* ── Add to Cart button (full width, shows running total) ── */
+  .lc-cys__add-btn {
+    width: 100%;
+    background: #5C0F1A;
+    color: #F7F1E6;
+    border: none;
+    border-radius: 6px;
+    padding: 14px 20px;
+    min-height: 48px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-cys__add-btn:hover:not(:disabled) { background: #4A0814; }
+  .lc-cys__add-btn:active:not(:disabled) { transform: scale(0.99); }
+  .lc-cys__add-btn:disabled {
+    background: rgba(26,26,26,0.16);
+    color: #ffffff;
+    cursor: default;
+  }
+  .lc-cys__add-btn[data-success] { background: #2C6B3A !important; }
+
+  .lc-cys__status {
+    margin: 8px 0 0;
+    font-size: 12.5px;
+    color: #555555;
+    min-height: 18px;
+    text-align: center;
+  }
+  .lc-cys__status[data-error] { color: #b3261e; }
+
+  @media (min-width: 768px) {
+    .lc-cys { margin: 22px 0 26px; padding: 26px 24px 22px; }
+    .lc-cys__header { margin: -26px -24px 0; padding: 12px 18px; }
+    .lc-cys__cards { --lc-cys-cols: 3; }
+  }
+
+  /* ── Carousel mode — shown when more than 3 compatible products ── */
+  .lc-cys__viewport { position: relative; }
+  .lc-cys__cards--carousel {
+    display: flex;
+    grid-template-columns: none;
+    gap: 10px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+  }
+  .lc-cys__cards--carousel::-webkit-scrollbar { display: none; }
+  .lc-cys__cards--carousel .lc-cys__card {
+    flex: 0 0 auto;
+    width: 162px;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    scroll-snap-align: start;
+  }
+  .lc-cys__cards--carousel .lc-cys__card-image { width: 100%; height: 0; padding-bottom: 100%; position: relative; }
+  .lc-cys__cards--carousel .lc-cys__card-image img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .lc-cys__arrow {
+    display: none;
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,21,18,0.14);
+    background: #F5F0E8;
+    color: #1A1512;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(26,21,18,0.14);
+    z-index: 3;
+    transition: background 0.15s, opacity 0.15s;
+  }
+  .lc-cys__arrow:hover { background: #EBE4D8; }
+  .lc-cys__arrow--prev { left: -8px; }
+  .lc-cys__arrow--next { right: -8px; }
+  .lc-cys__arrow:disabled { opacity: 0; pointer-events: none; }
+  @media (min-width: 600px) and (pointer: fine) {
+    .lc-cys__viewport--carousel .lc-cys__arrow { display: flex; }
+  }
+</style>
+
+<script>
+(function() {
+  if (window.__lcCysInit) return;
+  window.__lcCysInit = true;
+
+  function fmtMoney(amount) {
+    var n = Math.round(amount);
+    return '$' + n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function setupForm(form) {
+    var cards   = [].slice.call(form.querySelectorAll('[data-lc-cys-card]'));
+    var addBtn  = form.querySelector('[data-lc-cys-add]');
+    var addLbl  = form.querySelector('[data-lc-cys-add-label]');
+    var status  = form.querySelector('[data-lc-cys-status]');
+    if (!cards.length || !addBtn) return;
+
+    function qtyOf(card) {
+      var el = card.querySelector('[data-lc-cys-qty]');
+      var v = parseInt(el.textContent, 10);
+      return (isNaN(v) || v < 0) ? 0 : v;
+    }
+    function setQty(card, v) {
+      card.querySelector('[data-lc-cys-qty]').textContent = v;
+    }
+
+    function refresh() {
+      var total = 0, count = 0;
+      cards.forEach(function(card) {
+        var q = qtyOf(card);
+        total += (parseFloat(card.dataset.price) || 0) * q;
+        count += q;
+        var dec = card.querySelector('[data-lc-cys-dec]');
+        if (dec) dec.disabled = (q === 0);
+        if (q > 0) card.setAttribute('data-lc-cys-active', '');
+        else card.removeAttribute('data-lc-cys-active');
+      });
+      if (count > 0) {
+        addBtn.disabled = false;
+        addLbl.textContent = 'Add to Cart — ' + fmtMoney(total);
+      } else {
+        addBtn.disabled = true;
+        addLbl.textContent = 'Add to Cart';
+      }
+    }
+
+    // Delegated stepper handling — robust against re-render / timing.
+    form.addEventListener('click', function(e) {
+      var decBtn = e.target.closest && e.target.closest('[data-lc-cys-dec]');
+      var incBtn = e.target.closest && e.target.closest('[data-lc-cys-inc]');
+      if (!decBtn && !incBtn) return;
+      e.preventDefault();
+      var card = e.target.closest('[data-lc-cys-card]');
+      if (!card) return;
+      var q = qtyOf(card);
+      if (decBtn && q > 0) setQty(card, q - 1);
+      if (incBtn) {
+        var max = parseInt(card.querySelector('[data-lc-cys-qty]').getAttribute('data-max'), 10) || 99;
+        if (q < max) setQty(card, q + 1);
+      }
+      refresh();
+    });
+
+    addBtn.addEventListener('click', function() {
+      var items = [];
+      cards.forEach(function(card) {
+        var q = qtyOf(card);
+        if (q > 0) items.push({ id: card.dataset.variantId, quantity: q });
+      });
+      if (!items.length) return;
+
+      addBtn.disabled = true;
+      var prev = addLbl.textContent;
+      addLbl.textContent = 'Adding…';
+      if (status) { status.textContent = ''; status.removeAttribute('data-error'); }
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ items: items })
+      })
+      .then(function(res) {
+        if (!res.ok) return res.json().then(function(j) { throw new Error(j.description || 'Could not add to cart'); });
+        return res.json();
+      })
+      .then(function() {
+        addLbl.textContent = 'Added ✓';
+        addBtn.setAttribute('data-success', '');
+        document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+        document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+        if (window.theme && typeof window.theme.cart === 'function') window.theme.cart();
+        setTimeout(function() {
+          cards.forEach(function(c) { setQty(c, 0); });
+          addBtn.removeAttribute('data-success');
+          refresh();
+        }, 1400);
+      })
+      .catch(function(err) {
+        addBtn.disabled = false;
+        addLbl.textContent = prev;
+        if (status) {
+          status.textContent = err.message || 'Something went wrong — please try again.';
+          status.setAttribute('data-error', '');
+        }
+      });
+    });
+
+    refresh();
+  }
+
+  function setupCarousel(vp) {
+    var cards = vp.querySelector('[data-lc-cys-cards]');
+    var prev  = vp.querySelector('[data-lc-cys-prev]');
+    var next  = vp.querySelector('[data-lc-cys-next]');
+    if (!cards) return;
+    function page(dir) {
+      var card = cards.querySelector('[data-lc-cys-card]');
+      var cw = card ? card.offsetWidth + 10 : cards.clientWidth * 0.8;
+      var per = Math.max(1, Math.floor(cards.clientWidth / cw));
+      cards.scrollBy({ left: dir * cw * per, behavior: 'smooth' });
+    }
+    function update() {
+      if (prev) prev.disabled = cards.scrollLeft <= 2;
+      if (next) next.disabled = cards.scrollLeft >= (cards.scrollWidth - cards.clientWidth - 2);
+    }
+    if (prev) prev.addEventListener('click', function() { page(-1); });
+    if (next) next.addEventListener('click', function() { page(1); });
+    cards.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  function init() {
+    var forms = document.querySelectorAll('[data-lc-cys-form]');
+    for (var i = 0; i < forms.length; i++) setupForm(forms[i]);
+    var vps = document.querySelectorAll('.lc-cys__viewport--carousel');
+    for (var j = 0; j < vps.length; j++) setupCarousel(vps[j]);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+{%- endif -%}
+{%- endif -%}

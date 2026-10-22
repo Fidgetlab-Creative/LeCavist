@@ -1,0 +1,8 @@
+{%- comment -%}
+  Master all-reviews snippet — fans out to chunked sub-snippets.
+  Each chunk handles a subset of product handles; only the matching one outputs content.
+{%- endcomment -%}
+<div class="lc-all-reviews__list">
+  {%- render 'lc-all-reviews-1', product: product -%}
+  {%- render 'lc-all-reviews-2', product: product -%}
+</div>

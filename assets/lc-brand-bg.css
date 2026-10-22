@@ -1,0 +1,624 @@
+/* ──────────────────────────────────────────────────────────────
+   LeCavist brand background — site-wide "product-page look":
+     • light warm-beige page background (same as the PDP)
+     • each content section becomes a rounded cream card
+     • full-bleed / image-only sections stay edge-to-edge (no card)
+     • all standard buttons rounded
+
+   Product pages (body.product) are scoped OUT of the section-card rules
+   because sections/main-product.liquid already cards them itself — this
+   avoids double-carding. Page background + button rounding apply everywhere.
+   ────────────────────────────────────────────────────────────── */
+
+/* ── Rounded buttons (theme buttons were square: button_radius = 0) ── */
+.btn-primary,
+.btn-outline,
+.btn,
+.btn-white,
+.shopify-payment-button__button--unbranded,
+.shopify-payment-button__more-options {
+  border-radius: 100px !important;
+}
+
+/* ── Page background: the PDP's light warm beige, site-wide ── */
+html,
+body {
+  background-color: #fdfaf5 !important;
+}
+
+/* ── Every content section → rounded cream card (mirrors the PDP) ── */
+body:not(.product) #MainContent > .shopify-section > .section {
+  background-color: #f1eae1 !important;
+  background-image: none !important;
+  border-radius: 22px;
+  margin: 16px 18px;
+  overflow: clip;
+}
+@media (max-width: 749px) {
+  body:not(.product) #MainContent > .shopify-section > .section {
+    margin: 10px;
+    border-radius: 16px;
+  }
+}
+
+/* ── Full-bleed / image-only sections, product displays, dividers and
+      image heroes stay edge-to-edge with no card and their own background ── */
+body:not(.product) #MainContent > .shopify-section > .section.sec__divider,
+body:not(.product) #MainContent > .shopify-section > .section.sec__multi-content,
+body:not(.product) #MainContent > .shopify-section > .section.sec__featured-product,
+body:not(.product) #MainContent > .shopify-section > .section.sec__page-heading,
+body:not(.product) #MainContent > .shopify-section > .section.sec__iwto,
+body:not(.product) #MainContent > .shopify-section > .section.sec__lookbook-image,
+body:not(.product) #MainContent > .shopify-section > .section.sec__lookbook-product,
+body:not(.product) #MainContent > .shopify-section > .section.sec__products-carousel,
+body:not(.product) #MainContent > .shopify-section > .section.sec__products-set,
+body:not(.product) #MainContent > .shopify-section > .section.sec__related-product,
+body:not(.product) #MainContent > .shopify-section > .section.sec__products-grid,
+body:not(.product) #MainContent > .shopify-section > .section.sec__products-list,
+body:not(.product) #MainContent > .shopify-section > .section.sec__products-loadmore,
+body:not(.product) #MainContent > .shopify-section > .section.sec__collection-list,
+body:not(.product) #MainContent > .shopify-section > .section.sec__collection-main,
+body:not(.product) #MainContent > .shopify-section > .section.sec__collection-packery,
+body:not(.product) #MainContent > .shopify-section > .section.sec__collection-tab,
+body:not(.product) #MainContent > .shopify-section > .section.sec__collections-list,
+body:not(.product) #MainContent > .shopify-section > .section.sec__shopable-video,
+body:not(.product) #MainContent > .shopify-section > .section.sec__video,
+body:not(.product) #MainContent > .shopify-section > .section.sec__tiktok-video,
+body:not(.product) #MainContent > .shopify-section > .section.sec__instagram,
+body:not(.product) #MainContent > .shopify-section > .section.sec__brand-logo,
+body:not(.product) #MainContent > .shopify-section > .section.sec__scrolling-text,
+body:not(.product) #MainContent > .shopify-section > .section.sec__image-comparison-slider,
+body:not(.product) #MainContent > .shopify-section > .section.sec__icon-switch-slide,
+body:not(.product) #MainContent > .shopify-section > .section.sec__google-map {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* ── Scrolling text exception: the full-bleed rule above forces it transparent so
+      it blends into the beige page. But when a colour scheme is chosen (e.g. the
+      burgundy #3A0D16), the user wants THAT scheme's background to actually show —
+      otherwise the scheme's white text is invisible on the beige page. Restore the
+      chosen scheme's background for this section. ──
+      NOTE: must out-specify the transparent rule above (body:not(.product) …
+      .sec__scrolling-text = specificity 1,4,1), so this selector keeps the same
+      `body:not(.product)` prefix AND adds the [id*] attribute → 1,5,1, which wins
+      on a full page load (not just in the editor's isolated re-render). ── */
+body:not(.product) #MainContent > .shopify-section[id*="scrolling_text_Dz4DiL"] > .section.sec__scrolling-text {
+  background-color: var(--color-background) !important;
+}
+
+/* ── Specific sections the user wants carded (beige rounded), even though
+      their type is otherwise full-bleed: Best Selling (products carousel),
+      Shop the Look (lookbook), Register your product (image-with-text-overlay),
+      and the customer-reviews carousel. Carded on the WRAPPER so the section's
+      own image/products show inside, rounded. ── */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"],
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"],
+#MainContent > .shopify-section[id*="image_with_text_overlay_EQRiKA"],
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] {
+  background-color: #f1eae1 !important;
+  border-radius: 22px !important;
+  margin: 16px 18px !important;
+}
+/* Clip to the rounded shape — these have no content that needs to overflow */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"],
+#MainContent > .shopify-section[id*="image_with_text_overlay_EQRiKA"],
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] {
+  overflow: clip !important;
+}
+/* Shop the Look: keep overflow VISIBLE so the hotspot popovers can extend
+   over the next section again (the card no longer traps them). The pictures
+   are rounded directly instead of relying on the wrapper clip. */
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] {
+  overflow: visible !important;
+}
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] .lookbook-item__media--ratio img,
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] .lookbook-item__media--ratio .rounded {
+  border-radius: 16px !important;
+}
+/* The two carousel slides have different native ratios — the first banner
+   (2.26) is taller than the second 1920×701 banner (2.74), so the carousel
+   jumps taller on slide 1. Pin both slides to the shorter 1920/701 ratio on
+   desktop so they share a height; object-fit:cover crops the first to match.
+   Mobile hides the second slide, so leave the first at its natural height. */
+@media (min-width: 750px) {
+  #MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] .lookbook-item__media--ratio {
+    --aspect-ratio: 1920/701 !important;
+  }
+  /* keep the top of the first banner, take the crop mostly off the bottom */
+  #MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] .lookbook-item__media--ratio img {
+    object-position: 50% 25% !important;
+  }
+}
+
+/* Shop the Look: let the picture fill the whole section so the SHOP / THE /
+   LOOK title (styled in sections/lookbook-prod4.liquid) can overlay it. */
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] > .section {
+  position: relative;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+@media (max-width: 749px) {
+  #MainContent > .shopify-section[id*="products_carousel_AdKeFt"],
+  #MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"],
+  #MainContent > .shopify-section[id*="image_with_text_overlay_EQRiKA"],
+  #MainContent > .shopify-section[id*="1748570245e4ecd716"] {
+    margin: 10px !important;
+    border-radius: 16px !important;
+  }
+}
+/* their inner sits flush inside the wrapper card (no double-card / no band) */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"] > .section,
+#MainContent > .shopify-section[id*="lookbook_prod4_EtYJie"] > .section,
+#MainContent > .shopify-section[id*="image_with_text_overlay_EQRiKA"] > .section {
+  background-color: transparent !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+/* ── Best Selling (products carousel) + the customer-reviews carousel
+      ("Let our customers speak for us"): blend into the page — use the PAGE
+      background (#fdfaf5) instead of the cream card, so they read as part of
+      the page rather than a separate card (unlike the other carded sections). ── */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"],
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] {
+  background-color: #fdfaf5 !important;
+}
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] > .section {
+  background-color: transparent !important;
+}
+
+/* ── Best Selling + the "Let our customers speak for us" reviews carousel:
+      wrap the title in em-dashes ("— TITLE —"), matching the other dashed
+      homepage eyebrow titles (— RESTAURANTS —, etc.). ── */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"] .section__header-heading::before,
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] .jdgm-carousel-title::before {
+  content: "— ";
+}
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"] .section__header-heading::after,
+#MainContent > .shopify-section[id*="1748570245e4ecd716"] .jdgm-carousel-title::after {
+  content: " —";
+}
+
+/* ── Collection filter dropdown titles (Price, Cooling Zones, Bottle Capacity,
+      Installation Type, etc.): use the SAME font as the product-card cabinet
+      titles (.product-item__name → Inter Tight / --menu-font) instead of the
+      Cormorant heading serif. ── */
+.filter-item .collapsible-heading {
+  font-family: var(--menu-font, 'Inter Tight', -apple-system, sans-serif) !important;
+}
+/* Price filter: the min/max number inputs + currency symbol kept the old serif
+   — match them to the same Inter Tight font too. */
+.filter-item .price-range input,
+.filter-item .price-range .field-currency,
+.price-range input,
+.price-range .field-currency {
+  font-family: var(--menu-font, 'Inter Tight', -apple-system, sans-serif) !important;
+}
+/* The "Price: $0 – $X" summary line — its value div has the .heading-style serif. */
+.price-lable,
+.price-lable .price,
+.price-lable .price .min,
+.price-lable .price .max {
+  font-family: var(--menu-font, 'Inter Tight', -apple-system, sans-serif) !important;
+}
+
+/* ── Multi-content (cooling-zone images, etc.): no card band — instead round
+      each image block individually so each reads as its own rounded tile. ── */
+#MainContent > .shopify-section > .section.sec__multi-content .banner__media,
+#MainContent > .shopify-section > .section.sec__multi-content .section__block-inner {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+/* ── "Will you protect your wine?" (multi_content_j4c4YG) and the Single/Dual/
+      Triple Zone section (multi_content_8ejfQz) are full-width edge-to-edge;
+      inset their content so the images start at the same left edge as the Best
+      Selling card (which sits at margin 18px / 10px mobile). ── */
+#MainContent > .shopify-section[id*="multi_content_j4c4YG"] > .section > .full_width,
+#MainContent > .shopify-section[id*="multi_content_8ejfQz"] > .section > .full_width {
+  padding-left: 18px !important;
+  padding-right: 18px !important;
+}
+@media (max-width: 749px) {
+  #MainContent > .shopify-section[id*="multi_content_j4c4YG"] > .section > .full_width,
+  #MainContent > .shopify-section[id*="multi_content_8ejfQz"] > .section > .full_width {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+}
+
+/* ── "Register your product" (image-with-text-overlay): its heading uses the
+      serif default (.sec__content-heading), while every other homepage section
+      title uses the Inter Tight uppercase eyebrow style (critical.css
+      body.index .section__header-heading). Match it so it's consistent. ── */
+#MainContent > .shopify-section[id*="image_with_text_overlay_EQRiKA"] .sec__content-heading {
+  font-family: 'Inter Tight', -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  line-height: 1.3 !important;
+}
+
+/* ── LeCavist merchandising badges (New / Best Seller / Cashback) ──
+      Rendered by snippets/lc-merch-badges.liquid on collection cards and the
+      first PDP image. Colours/labels come from theme settings. ── */
+.lc-mbadges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  pointer-events: none;
+}
+.lc-mbadge {
+  display: inline-block;
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 6px 11px;
+  border-radius: 100px;
+  background: var(--mb-bg, #7C3030);
+  color: var(--mb-fg, #fff);
+  white-space: nowrap;
+}
+/* overlay placement on an image (collection card + PDP first image) */
+.lc-mbadges--overlay {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 4;
+}
+@media (max-width: 749px) {
+  .lc-mbadge { font-size: 10px; padding: 5px 9px; }
+  .lc-mbadges--overlay { top: 8px; left: 8px; gap: 4px; }
+}
+/* Mobile PDP gallery: badges go top-right so they clear the zoom (loupe)
+   button, which sits top-left. Collection cards + desktop keep top-left. */
+.lc-gallery__viewport .lc-mbadges--overlay {
+  left: auto;
+  right: 12px;
+  align-items: flex-end;
+}
+
+/* ── Brand body font (Inter Tight) on mobile-only UI controls ────────────────
+   These were inheriting the heading font (Cormorant Garamond) via `heading-style`
+   or the theme defaults. UI labels (nav, sticky ATC, drawer menu items) read
+   better in the body face and stay consistent with breadcrumbs + form labels.
+
+   Burger / drawer menu:
+     .categories-list-menu-mobile         — collection list in the mobile drawer
+     .categories-menu-items-link
+     .verticalmenu-list                   — the main menu's mobile tree
+     .menu-mobile-title / .menu-mobile    — drawer chrome (title bar etc.)
+
+   Bottom utility bar (Home / Account / Shop / Wishlist / Cart):
+     .mobile-navigation-bar               — the fixed bar itself
+
+   Sticky add-to-cart bars (mobile + desktop variants):
+     .lc-sticky-bar    / .lc-sticky-bar__btn
+     .lc-d-sticky      / .lc-d-sticky__btn
+*/
+.mobile-navigation-bar,
+.mobile-navigation-bar .heading-style,
+.categories-list-menu-mobile,
+.categories-list-menu-mobile .heading-style,
+.categories-menu-items-link,
+.verticalmenu-list,
+.verticalmenu-list .heading-style,
+.menu-mobile-title,
+.menu-mobile,
+.menu-mobile .heading-style,
+.lc-sticky-bar,
+.lc-sticky-bar__btn,
+.lc-d-sticky,
+.lc-d-sticky__btn {
+  font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* ── Optional "text under dimensions" (Theme settings → Product page) ── */
+.lc-under-dim {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(26, 21, 18, 0.7);
+}
+.lc-under-dim p { margin: 0 0 6px; }
+.lc-under-dim p:last-child { margin-bottom: 0; }
+
+/* "Extra text under dimensions" override (rich text) — match the auto short-desc */
+.lc-d-short-desc--rte p { margin: 0 0 10px; }
+.lc-d-short-desc--rte p:last-child { margin-bottom: 0; }
+
+/* "Best Seller" badge is redundant inside the Best Selling carousel itself — hide it there */
+#MainContent > .shopify-section[id*="products_carousel_AdKeFt"] .lc-mbadge--best { display: none !important; }
+
+/* ── Wine Circle page: sections sit flat on the page — no cream card, no rounded
+      corners, no card margin; just the page background showing through. ── */
+body.page.page-wine-circle #MainContent > .shopify-section > .section {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* Wine Circle: image-with-text section titles in bold (Cormorant 700) */
+body.page-wine-circle .image-with-text__title { font-weight: 700 !important; }
+
+/* ── Wine Circle: the 3 custom-liquid section titles ("The 3 Pillars…",
+      "Inside Our Past Dinners", "Our Wine Circle Dinners") → Montserrat,
+      all-caps, with "- TITLE -" dashes. Past Dinners already has the dashes
+      in its text, so only the other two get them added via CSS. ── */
+body.page-wine-circle .wine-circle-title {
+  font-family: 'Montserrat', -apple-system, sans-serif !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+}
+body.page-wine-circle [id*="custom_liquid_LAFDG"] .wine-circle-title::before,
+body.page-wine-circle [id*="custom_liquid_ECfgN"] .wine-circle-title::before { content: "- "; }
+body.page-wine-circle [id*="custom_liquid_LAFDG"] .wine-circle-title::after,
+body.page-wine-circle [id*="custom_liquid_ECfgN"] .wine-circle-title::after { content: " -"; }
+
+/* ── Our Story page: bold the page title, the counter stats (number +
+      heading) and every section title in the multi-content block.
+      The theme's heading weight is brand-set to 400, so we override to 700
+      (Cormorant 700 / Inter Tight 700 are both loaded). ── */
+body.page-our-story .page-default .page-title h1,
+body.page-our-story .counter-inner,
+body.page-our-story .counter-number,
+body.page-our-story .counter-heading,
+body.page-our-story .sec__content-heading {
+  font-weight: 700 !important;
+}
+
+/* ── Our Story page: the first three sections (title, intro rich-text and the
+      stat counters) lose the beige cream card and sit on the plain page
+      background, like the multi-content below them. ── */
+body.page-our-story #MainContent > .shopify-section[id$="__main"] > .section,
+body.page-our-story #MainContent > .shopify-section[id*="rich_text_aB7tBJ"] > .section,
+body.page-our-story #MainContent > .shopify-section[id*="counter_WLDXrp"] > .section {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* ── Rules of Cellaring page (handle: cellaring_rules): the intro rich-text
+      block ("Wine is a beverage steeped in tradition…") loses the beige cream
+      card and sits on the plain page background. ── */
+body.page-cellaring_rules #MainContent > .shopify-section[id*="rich_text_WjAbeF"] > .section {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  overflow: visible !important;
+}
+
+/* ── Rules of Cellaring: bold the multi-content section titles
+      ("The Importance of Proper Wine Storage", "Temperature: The Key to
+      Preservation", etc.). ── */
+body.page-cellaring_rules .sec__content-heading {
+  font-weight: 700 !important;
+}
+
+/* ── Rules of Cellaring: "Featured collection" + "Blog post" section headers
+      → match the homepage Best Selling title exactly (the PDP eyebrow look:
+      Inter Tight, 18px, weight 700, tracked, uppercase, wrapped in em-dashes
+      "— TITLE —"). Mirrors critical.css `body.index .section__header-heading`. ── */
+body.page-cellaring_rules #MainContent > .shopify-section[id*="products_carousel_UjirJJ"] .section__header-heading,
+body.page-cellaring_rules #MainContent > .shopify-section[id*="blog_posts_hDjhaB"] .section__header-heading {
+  font-family: 'Inter Tight', -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  color: #1A1512 !important;
+  line-height: 1.3 !important;
+}
+body.page-cellaring_rules #MainContent > .shopify-section[id*="products_carousel_UjirJJ"] .section__header-heading::before,
+body.page-cellaring_rules #MainContent > .shopify-section[id*="blog_posts_hDjhaB"] .section__header-heading::before { content: "— "; }
+body.page-cellaring_rules #MainContent > .shopify-section[id*="products_carousel_UjirJJ"] .section__header-heading::after,
+body.page-cellaring_rules #MainContent > .shopify-section[id*="blog_posts_hDjhaB"] .section__header-heading::after { content: " —"; }
+
+/* ── Rules of Cellaring: bold the individual blog-post card titles. ── */
+body.page-cellaring_rules #MainContent > .shopify-section[id*="blog_posts_hDjhaB"] .blog-posts-title,
+body.page-cellaring_rules #MainContent > .shopify-section[id*="blog_posts_hDjhaB"] .blog-posts-title a {
+  font-weight: 700 !important;
+}
+
+/* ── Signature Service page: styled to match the Rules of Cellaring page. ── */
+/* Bold the multi-content section titles (Free Delivery, Free Connection,
+   Free Removal, Price Match Guarantee, Flexible Payment Options). */
+body.page-signature-service .sec__content-heading {
+  font-weight: 700 !important;
+}
+/* The Judge.me reviews carousel title → homepage Best Selling eyebrow look
+   (Inter Tight, 18px, weight 700, tracked, uppercase, em-dashes "— TITLE —"). */
+body.page-signature-service .jdgm-carousel-title {
+  font-family: 'Inter Tight', -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.28em !important;
+  text-transform: uppercase !important;
+  color: #1A1512 !important;
+  line-height: 1.3 !important;
+}
+body.page-signature-service .jdgm-carousel-title::before { content: "— "; }
+body.page-signature-service .jdgm-carousel-title::after { content: " —"; }
+
+/* ── Policy pages (Privacy policy, etc.): the section titles inside the policy
+      body are written as <p><strong>…</strong></p>. The brand typography rule
+      (critical.css: `strong { font-weight: var(--heading-weight) }` = 400) had
+      flattened them, so they no longer read as bold — restore real bold here. ── */
+body.policy .shopify-policy__body strong {
+  font-weight: 700 !important;
+}
+/* The main policy title ("Refund policy", "Privacy policy", …) renders in the
+   light Cormorant heading weight — make it bold too. */
+body.policy .shopify-policy__title h1 {
+  font-weight: 700 !important;
+}
+
+/* ── Contact page: bold the section titles — "Contact us" (rich-text heading,
+      .sec__content-heading), "Google map" and "Contact Us" (section headers,
+      .section__header-heading). ── */
+body.page-contact .sec__content-heading,
+body.page-contact .section__header-heading {
+  font-weight: 700 !important;
+}
+
+/* ── They Trust Us page: the image-with-text title "LeCavist in their words"
+      → bold + Title Case (capitalise the first letter of every word). Scoped to
+      that section's id so it doesn't affect other image-with-text sections. ── */
+#MainContent > .shopify-section[id*="image_with_text_wNHUTd"] .image-with-text__title {
+  font-weight: 700 !important;
+  text-transform: capitalize !important;
+}
+
+/* ── They Trust Us: restyle the Testimonials section to match the PDP
+      "What our customers say" reviews look — warm cream cards, thin border,
+      brand-gold stars. Author photos + the "Testimonials" heading are kept.
+      Scoped to that section's id. ── */
+/* Title "Testimonials" → Montserrat, uppercase, NOT bold, wrapped in "- -"
+   dashes (the PDP section-title look). */
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .section__header-heading {
+  font-family: 'Montserrat', -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  font-style: normal !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.18em !important;
+  color: #1A1512 !important;
+}
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .section__header-heading::before { content: "- "; }
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .section__header-heading::after { content: " -"; }
+/* Stars → the reviews' muted gold (#c9a84c). !important beats the section's
+   inline --rate-color:#FF9C05. */
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] > .section.sec__testimonials {
+  --rate-color: #c9a84c !important;
+}
+/* Cards → warm cream with a thin hairline border, like the review cards */
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .testimonial_wraper {
+  background: #FAF6EE !important;
+  border: 1px solid rgba(26, 21, 18, 0.1) !important;
+  border-radius: 8px !important;
+}
+/* Quote text → review body (16px, relaxed line-height, soft ink, upright) */
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .testimonials-quote,
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .testimonials-quote p {
+  font-size: 16px !important;
+  line-height: 1.6 !important;
+  color: rgba(26, 21, 18, 0.78) !important;
+  font-style: normal !important;
+}
+/* Date + location → small uppercase tracked, like the review card footer */
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .testimonials-date,
+#MainContent > .shopify-section[id*="testimonials_ejCwQA"] .testimonials-adress {
+  font-size: 11px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(26, 21, 18, 0.5) !important;
+}
+
+/* ── They Trust Us: the Collection list title → Montserrat, all-caps, wrapped
+      in "- COLLECTION LIST -" dashes (mirrors the dashed eyebrow titles). ── */
+#MainContent > .shopify-section[id*="collection_list_dQNDpB"] .section__header-heading {
+  font-family: 'Montserrat', -apple-system, sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.18em !important;
+  color: #1A1512 !important;
+}
+#MainContent > .shopify-section[id*="collection_list_dQNDpB"] .section__header-heading::before { content: "- "; }
+#MainContent > .shopify-section[id*="collection_list_dQNDpB"] .section__header-heading::after { content: " -"; }
+
+/* ── They Trust Us: sit the service banner flush against the footer. The footer
+      carries a default `margin-top: calc(var(--section-spacing) - 1.8rem)` gap
+      (the homepage strips it via .remove_spacing-on-home). Remove that gap only
+      on the page that contains the TTU service banner. ── */
+body:has(#MainContent .shopify-section[id*="service_red_banner_TTU"]) .footer {
+  margin-top: 0 !important;
+}
+
+/* ── FAQ page (FAQ King app): the app gives its content blocks a white
+      (#FFFFFF) background, which stands out as boxes against the beige page.
+      The app content sits directly on #MainContent (no cream section card),
+      so match the blocks to the page background (#fdfaf5) to blend them in.
+      The app's own rules aren't !important, so this override wins. ── */
+.s-main-faq__main .faq-heading-title,
+.s-main-faq__main .faq-subcategory-header,
+.s-main-faq__main .faq-subcategory-content {
+  background-color: #fdfaf5 !important;
+}
+
+/* ── FAQ sidebar category buttons (Introduction to LeCavist, Product issue…):
+      when NOT selected the app makes them grey (#F9F9F9). Give them the same
+      background as the page header/footer (the color-default scheme, #f5f0e8).
+      The selected button (._active) keeps its burgundy #7c3030 — the :not()
+      guard leaves it untouched. ── */
+.faq-king-sidebar .s-main-faq__menu-item:not(._active) {
+  background-color: #f5f0e8 !important;
+}
+
+/* ── FAQ page title → bold. The app sets font-weight:600!important on
+      `.faq-container .faq-title h1`; out-specify it via #MainContent. ── */
+#MainContent .faq-container .faq-title h1 {
+  font-weight: 700 !important;
+}
+
+/* ── Collection pages: larger product-card title + price. The card sizes are
+      driven by theme settings (product_size 16, price_size 14) via .fs-custom;
+      bump them here, scoped to collection pages only. ── */
+body.collection .product-item__name {
+  font-size: 20px !important;
+}
+body.collection .card-product-price,
+body.collection .card-product-price .price,
+body.collection .card-product-price .price-same-style,
+body.collection .card-product-price .compare-price {
+  font-size: 20px !important;
+}
+
+/* ── Collection title header — Montserrat, uppercase, "- Title -" dashes
+      (matches the site's section-title style), with more space below so it
+      isn't cramped against the filter/sort buttons. ── */
+body.collection .sec__page-heading .heading-title {
+  font-family: 'Montserrat', -apple-system, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.18em !important;
+  color: #1a1512 !important;
+}
+body.collection .sec__page-heading .heading-title::before { content: "- "; }
+body.collection .sec__page-heading .heading-title::after  { content: " -"; }
+body.collection .sec__page-heading { padding-bottom: 30px !important; }
+
+/* ── Homepage: square up all rounded corners — section cards, images, media,
+      buttons and rounded utility boxes. Circular UI (.rounded-50 — carousel
+      arrows, back-to-top, pagination dots) and colour swatches are kept round.
+      The double :not() gives this 1,4,1 specificity so it beats every rounding
+      rule above (section cards 22px, images 16px, buttons 100px). ── */
+body.index #MainContent .shopify-section,
+body.index #MainContent .shopify-section *:not([class~="rounded-50"]):not([class*="swatch"]) {
+  border-radius: 0 !important;
+}
+/* …but the radial "Choose with confidence" pod section is an intentional CIRCULAR
+   design — the dotted SVG ring traces a round hero image, plus circular pod icons.
+   Squaring those broke the ring alignment, so re-round them (1,4,1 specificity, after
+   the square-up, so it wins). The section card itself stays squared. */
+body.index #MainContent .shopify-section .pods-hero-col .pods-oval,
+body.index #MainContent .shopify-section .pod-clickable .pod__icon-wrap {
+  border-radius: 50% !important;
+}

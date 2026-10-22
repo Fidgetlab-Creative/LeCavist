@@ -1,0 +1,42 @@
+{%- comment -%}
+  Customer reviews — carousel of top reviews ("What our customers say").
+  Renders the existing `lc-product-reviews` snippet so the look matches
+  exactly what was previously shown inside the product information area.
+  Sits in its own rounded card on the product page.
+{%- endcomment -%}
+
+<div class="lc-rt-section">
+  <div class="lc-rt-container">
+    {%- render 'lc-product-reviews', product: product -%}
+  </div>
+</div>
+
+<style>
+  /* Section wrapper — transparent so the parent rounded card colour shows */
+  .lc-rt-section {
+    background: transparent !important;
+    padding: clamp(40px, 5vw, 72px) 0;
+  }
+  .lc-rt-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  /* Collapse the wrapper entirely when the snippet renders nothing
+     (i.e. product has no curated reviews) so we don't leave a blank gap. */
+  .lc-rt-section:not(:has(.lc-reviews-block)) { display: none; }
+</style>
+
+{% schema %}
+{
+  "name": "Customer reviews carousel",
+  "tag": "section",
+  "class": "section-product-reviews-teaser",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Customer reviews carousel"
+    }
+  ]
+}
+{% endschema %}

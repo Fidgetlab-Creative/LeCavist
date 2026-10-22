@@ -1,0 +1,1235 @@
+{% doc %}
+  @prompt
+    Create a mixed media carousel section that supports both images and videos (MP4/YouTube/Vimeo), smaller in size than the main hero banner slideshow. The carousel should have navigation arrows and dot indicators, allow merchants to add multiple slides each with either an image or a video, and include optional caption text per slide. The height should be configurable but default to a medium size (e.g., 400-500px) suitable for secondary content sections. without text or anything underneath it , is it possible to have 3 pictures/videos per page like de image carousel classiaue which is feature in shopify
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-media-carousel-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    display: block;
+  }
+
+  .ai-media-carousel-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: {{ block.settings.carousel_height }}px;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-media-carousel-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.gap }}px;
+    transition: transform 0.5s ease;
+    height: 100%;
+  }
+
+  .ai-media-carousel-slide-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.items_per_page_desktop | minus: 1 }} * {{ block.settings.gap }}px)) / {{ block.settings.items_per_page_desktop }});
+    height: 100%;
+  }
+
+  .ai-media-carousel-slide-{{ ai_gen_id }} img,
+  .ai-media-carousel-slide-{{ ai_gen_id }} video,
+  .ai-media-carousel-slide-{{ ai_gen_id }} iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: {{ block.settings.item_border_radius }}px;
+  }
+
+  .ai-media-carousel-slide-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: {{ block.settings.item_border_radius }}px;
+  }
+
+  .ai-media-carousel-slide-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-media-carousel-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: {{ block.settings.arrow_background }};
+    color: {{ block.settings.arrow_color }};
+    border: none;
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: background-color 0.3s ease;
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.arrow_hover_background }};
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }}.prev {
+    left: {{ block.settings.arrow_offset }}px;
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }}.next {
+    right: {{ block.settings.arrow_offset }}px;
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }} svg {
+    width: calc({{ block.settings.arrow_size }}px * 0.5);
+    height: calc({{ block.settings.arrow_size }}px * 0.5);
+  }
+
+  .ai-media-carousel-nav-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-media-carousel-dots-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: {{ block.settings.dots_offset }}px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 2;
+  }
+
+  .ai-media-carousel-dot-{{ ai_gen_id }} {
+    width: {{ block.settings.dot_size }}px;
+    height: {{ block.settings.dot_size }}px;
+    border-radius: 50%;
+    background-color: {{ block.settings.dot_color }};
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .ai-media-carousel-dot-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.dot_active_color }};
+    transform: scale(1.2);
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-media-carousel-container-{{ ai_gen_id }} {
+      height: {{ block.settings.carousel_height | times: 0.7 }}px;
+    }
+
+    .ai-media-carousel-slide-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.items_per_page_mobile | minus: 1 }} * {{ block.settings.gap }}px)) / {{ block.settings.items_per_page_mobile }});
+    }
+
+    .ai-media-carousel-nav-{{ ai_gen_id }} {
+      width: {{ block.settings.arrow_size | times: 0.8 }}px;
+      height: {{ block.settings.arrow_size | times: 0.8 }}px;
+    }
+
+    .ai-media-carousel-nav-{{ ai_gen_id }}.prev {
+      left: {{ block.settings.arrow_offset | times: 0.5 }}px;
+    }
+
+    .ai-media-carousel-nav-{{ ai_gen_id }}.next {
+      right: {{ block.settings.arrow_offset | times: 0.5 }}px;
+    }
+  }
+{% endstyle %}
+
+<media-carousel-{{ ai_gen_id }}
+  class="ai-media-carousel-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+  data-items-desktop="{{ block.settings.items_per_page_desktop }}"
+  data-items-mobile="{{ block.settings.items_per_page_mobile }}"
+  data-autoplay="{{ block.settings.autoplay }}"
+  data-autoplay-speed="{{ block.settings.autoplay_speed }}"
+>
+  <div class="ai-media-carousel-container-{{ ai_gen_id }}">
+    <div class="ai-media-carousel-track-{{ ai_gen_id }}">
+      {% liquid
+        assign has_content = false
+        for i in (1..12)
+          assign media_type_key = 'slide_' | append: i | append: '_media_type'
+          assign image_key = 'slide_' | append: i | append: '_image'
+          assign video_key = 'slide_' | append: i | append: '_video'
+          assign youtube_key = 'slide_' | append: i | append: '_youtube_id'
+          assign vimeo_key = 'slide_' | append: i | append: '_vimeo_id'
+
+          assign media_type = block.settings[media_type_key]
+          assign image = block.settings[image_key]
+          assign video = block.settings[video_key]
+          assign youtube_id = block.settings[youtube_key]
+          assign vimeo_id = block.settings[vimeo_key]
+
+          if media_type == 'image' and image != blank
+            assign has_content = true
+          elsif media_type == 'video' and video != blank
+            assign has_content = true
+          elsif media_type == 'youtube' and youtube_id != blank
+            assign has_content = true
+          elsif media_type == 'vimeo' and vimeo_id != blank
+            assign has_content = true
+          endif
+        endfor
+      %}
+
+      {% for i in (1..12) %}
+        {% liquid
+          assign media_type_key = 'slide_' | append: i | append: '_media_type'
+          assign image_key = 'slide_' | append: i | append: '_image'
+          assign video_key = 'slide_' | append: i | append: '_video'
+          assign youtube_key = 'slide_' | append: i | append: '_youtube_id'
+          assign vimeo_key = 'slide_' | append: i | append: '_vimeo_id'
+
+          assign media_type = block.settings[media_type_key]
+          assign image = block.settings[image_key]
+          assign video = block.settings[video_key]
+          assign youtube_id = block.settings[youtube_key]
+          assign vimeo_id = block.settings[vimeo_key]
+        %}
+
+        {% if media_type == 'image' and image != blank %}
+          <div class="ai-media-carousel-slide-{{ ai_gen_id }}" data-slide="{{ forloop.index }}">
+            <img
+              src="{{ image | image_url: width: 1000 }}"
+              alt="{{ image.alt | escape }}"
+              loading="lazy"
+              width="{{ image.width }}"
+              height="{{ image.height }}"
+            >
+          </div>
+        {% elsif media_type == 'video' and video != blank %}
+          <div class="ai-media-carousel-slide-{{ ai_gen_id }}" data-slide="{{ forloop.index }}">
+            <video
+              src="{{ video }}"
+              {% if block.settings.video_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_loop %}loop{% endif %}
+              {% if block.settings.video_muted %}muted{% endif %}
+              playsinline
+            ></video>
+          </div>
+        {% elsif media_type == 'youtube' and youtube_id != blank %}
+          <div class="ai-media-carousel-slide-{{ ai_gen_id }}" data-slide="{{ forloop.index }}">
+            <iframe
+              src="https://www.youtube.com/embed/{{ youtube_id }}?controls=1&rel=0&playsinline=1&modestbranding=1&autoplay=0&enablejsapi=1&origin={{ shop.url | url_encode }}&widgetid=1"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        {% elsif media_type == 'vimeo' and vimeo_id != blank %}
+          <div class="ai-media-carousel-slide-{{ ai_gen_id }}" data-slide="{{ forloop.index }}">
+            <iframe
+              src="https://player.vimeo.com/video/{{ vimeo_id }}?title=0&byline=0&portrait=0"
+              frameborder="0"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      {% unless has_content %}
+        <div class="ai-media-carousel-slide-{{ ai_gen_id }}" data-slide="1">
+          <div class="ai-media-carousel-slide-placeholder-{{ ai_gen_id }}">
+            {{ 'hero-apparel-1' | placeholder_svg_tag }}
+            <div class="ai-media-carousel-empty-state-{{ ai_gen_id }}">
+              Next, add images or videos to your slides
+            </div>
+          </div>
+        </div>
+      {% endunless %}
+    </div>
+
+    {% if has_content %}
+      <button
+        class="ai-media-carousel-nav-{{ ai_gen_id }} prev"
+        aria-label="Previous slide"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <button
+        class="ai-media-carousel-nav-{{ ai_gen_id }} next"
+        aria-label="Next slide"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="ai-media-carousel-dots-{{ ai_gen_id }}"></div>
+    {% endif %}
+  </div>
+</media-carousel-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class MediaCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentPage = 0;
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-media-carousel-track-{{ ai_gen_id }}');
+        this.slides = this.querySelectorAll('.ai-media-carousel-slide-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('.ai-media-carousel-nav-{{ ai_gen_id }}.prev');
+        this.nextButton = this.querySelector('.ai-media-carousel-nav-{{ ai_gen_id }}.next');
+        this.dotsContainer = this.querySelector('.ai-media-carousel-dots-{{ ai_gen_id }}');
+        this.itemsDesktop = parseInt(this.dataset.itemsDesktop);
+        this.itemsMobile = parseInt(this.dataset.itemsMobile);
+        this.autoplay = this.dataset.autoplay === 'true';
+        this.autoplaySpeed = parseInt(this.dataset.autoplaySpeed) * 1000;
+
+        if (this.slides.length === 0) return;
+
+        this.updateItemsPerPage();
+        this.createDots();
+        this.setupEventListeners();
+        this.updateCarousel();
+
+        if (this.autoplay) {
+          this.startAutoplay();
+        }
+
+        window.addEventListener('resize', () => {
+          this.updateItemsPerPage();
+          this.updateCarousel();
+        });
+      }
+
+      updateItemsPerPage() {
+        this.itemsPerPage = window.innerWidth <= 749 ? this.itemsMobile : this.itemsDesktop;
+        this.totalPages = Math.ceil(this.slides.length / this.itemsPerPage);
+      }
+
+      createDots() {
+        if (!this.dotsContainer) return;
+
+        this.dotsContainer.innerHTML = '';
+        
+        for (let i = 0; i < this.totalPages; i++) {
+          const dot = document.createElement('button');
+          dot.classList.add('ai-media-carousel-dot-{{ ai_gen_id }}');
+          if (i === 0) dot.classList.add('active');
+          dot.setAttribute('aria-label', 'Go to page ' + (i + 1));
+          dot.addEventListener('click', () => this.goToPage(i));
+          this.dotsContainer.appendChild(dot);
+        }
+
+        this.dots = this.querySelectorAll('.ai-media-carousel-dot-{{ ai_gen_id }}');
+      }
+
+      setupEventListeners() {
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', () => this.previousPage());
+        }
+
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', () => this.nextPage());
+        }
+      }
+
+      goToPage(pageIndex) {
+        this.currentPage = Math.max(0, Math.min(pageIndex, this.totalPages - 1));
+        this.updateCarousel();
+
+        if (this.autoplay) {
+          this.resetAutoplay();
+        }
+      }
+
+      updateCarousel() {
+        const slideWidth = this.slides[0].offsetWidth;
+        const gap = parseFloat(getComputedStyle(this.track).gap) || 0;
+        const offset = this.currentPage * this.itemsPerPage * (slideWidth + gap);
+        
+        this.track.style.transform = `translateX(-${offset}px)`;
+
+        if (this.dots) {
+          this.dots.forEach((dot, index) => {
+            if (index === this.currentPage) {
+              dot.classList.add('active');
+            } else {
+              dot.classList.remove('active');
+            }
+          });
+        }
+
+        if (this.prevButton) {
+          this.prevButton.disabled = this.currentPage === 0;
+        }
+
+        if (this.nextButton) {
+          this.nextButton.disabled = this.currentPage >= this.totalPages - 1;
+        }
+      }
+
+      nextPage() {
+        if (this.currentPage < this.totalPages - 1) {
+          this.goToPage(this.currentPage + 1);
+        }
+      }
+
+      previousPage() {
+        if (this.currentPage > 0) {
+          this.goToPage(this.currentPage - 1);
+        }
+      }
+
+      startAutoplay() {
+        this.autoplayInterval = setInterval(() => {
+          if (this.currentPage >= this.totalPages - 1) {
+            this.goToPage(0);
+          } else {
+            this.nextPage();
+          }
+        }, this.autoplaySpeed);
+      }
+
+      resetAutoplay() {
+        clearInterval(this.autoplayInterval);
+        this.startAutoplay();
+      }
+
+      disconnectedCallback() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+        }
+      }
+    }
+
+    customElements.define('media-carousel-{{ ai_gen_id }}', MediaCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Media carousel grid",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Carousel settings"
+    },
+    {
+      "type": "range",
+      "id": "carousel_height",
+      "min": 300,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "label": "Height",
+      "default": 450
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "items_per_page_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Items per page on desktop",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "items_per_page_mobile",
+      "label": "Items per page on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between items",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Container border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "item_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Item border radius",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Autoplay slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay speed",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Navigation arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Arrow size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "arrow_offset",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Arrow offset",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_background",
+      "label": "Arrow hover background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "header",
+      "content": "Dot indicators"
+    },
+    {
+      "type": "range",
+      "id": "dot_size",
+      "min": 6,
+      "max": 16,
+      "step": 2,
+      "unit": "px",
+      "label": "Dot size",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "dots_offset",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Dots offset",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "dot_color",
+      "label": "Dot color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "dot_active_color",
+      "label": "Active dot color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Video settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay videos",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop videos",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Mute videos",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Slide 1"
+    },
+    {
+      "type": "select",
+      "id": "slide_1_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_1_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_1_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_1_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 2"
+    },
+    {
+      "type": "select",
+      "id": "slide_2_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_2_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_2_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_2_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 3"
+    },
+    {
+      "type": "select",
+      "id": "slide_3_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_3_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_3_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_3_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 4"
+    },
+    {
+      "type": "select",
+      "id": "slide_4_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_4_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_4_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_4_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 5"
+    },
+    {
+      "type": "select",
+      "id": "slide_5_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_5_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_5_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_5_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 6"
+    },
+    {
+      "type": "select",
+      "id": "slide_6_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_6_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_6_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_6_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 7"
+    },
+    {
+      "type": "select",
+      "id": "slide_7_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_7_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_7_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_7_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_7_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 8"
+    },
+    {
+      "type": "select",
+      "id": "slide_8_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_8_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_8_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_8_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_8_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 9"
+    },
+    {
+      "type": "select",
+      "id": "slide_9_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_9_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_9_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_9_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_9_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 10"
+    },
+    {
+      "type": "select",
+      "id": "slide_10_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_10_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_10_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_10_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_10_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 11"
+    },
+    {
+      "type": "select",
+      "id": "slide_11_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_11_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_11_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_11_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_11_vimeo_id",
+      "label": "Vimeo video ID"
+    },
+    {
+      "type": "header",
+      "content": "Slide 12"
+    },
+    {
+      "type": "select",
+      "id": "slide_12_media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video (MP4)"
+        },
+        {
+          "value": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "value": "vimeo",
+          "label": "Vimeo"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "slide_12_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "slide_12_video",
+      "label": "Video URL"
+    },
+    {
+      "type": "text",
+      "id": "slide_12_youtube_id",
+      "label": "YouTube video ID"
+    },
+    {
+      "type": "text",
+      "id": "slide_12_vimeo_id",
+      "label": "Vimeo video ID"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media carousel grid"
+    }
+  ]
+}
+{% endschema %}

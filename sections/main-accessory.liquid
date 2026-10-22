@@ -1,0 +1,1151 @@
+{%- comment -%}
+  Accessory PDP — lean, fast, single-question layout.
+
+  Audience: customers who own (or are about to buy) a LeCavist cabinet and
+  want to know "does this accessory fit my cabinet?". Everything else is cut.
+
+  Layout (right column on desktop, single stack on mobile):
+    1. Product image (single hero, or snap-carousel with dots + prev/next
+       buttons if multiple)
+    2. Title + SKU reference
+    3. Short one-line description (custom.short_description, rich text —
+       no body-description fallback; blank metafield renders nothing)
+    4. Price
+    5. COMPATIBILITY block (the key new component)
+         • one pill per SKU in custom.compatible_products (rich text);
+           each SKU resolves to a live cabinet via the synced
+           custom.compatible_cabinets references (sync-accessory-metafields.js),
+           falling back to collections['all-cabinets'] matching when un-synced
+         • SKUs with no live product render greyed/dashed, non-clickable,
+           with a "Product discontinued" hover bubble — owners of those
+           cabinets still buy accessories for them
+         • a ?from=<cabinet_handle> URL parameter highlights the matching pill
+           in burgundy with a ✓ prefix and " — your cabinet" suffix
+         • > 5 cabinets → first 4 + "+N more" pill that expands inline
+    6. Availability by state — same lc-avail-block as the cabinet PDPs,
+       rendered here in the info rail; blank states show as "Available"
+    7. Quantity stepper
+    8. Add to Cart (single full-width)
+    9. Specifications (collapsed accordion: Size/Weight rows from
+       custom.acc_size / custom.acc_weight + free text from
+       custom.acc_specifications; hidden when all three are empty)
+   10. (Optional) Reviews — Judge.me preview badge
+   11. (Optional) "Pairs with these cabinets" small grid
+
+  Section settings toggle the optional blocks. All per-product content is
+  metafield-driven and editable in admin; the section renders nothing extra
+  when metafields are empty.
+{%- endcomment -%}
+
+{%- liquid
+  # ── Resolve SKU
+  assign acc_sku = product.selected_or_first_available_variant.sku | upcase | strip
+  if acc_sku == blank
+    assign acc_sku = product.metafields.custom.fs_sku.value | upcase | strip
+  endif
+
+  # ── Short description: metafield ONLY. Never fall back to the body
+  # description — its first line is often a spec fragment ("size : W49…"),
+  # which reads broken as a lead sentence. Blank metafield → no paragraph.
+  # short_description is rich_text: render via metafield_tag first, otherwise
+  # stringifying the drop yields its raw JSON document.
+  assign acc_short = product.metafields.custom.short_description | metafield_tag | strip_html | strip
+  if acc_short.size > 240
+    assign acc_short = acc_short | slice: 0, 240 | append: '…'
+  endif
+
+  # ── Specifications: dedicated metafields, editable per product in admin.
+  # Size and Weight come from custom.acc_size / custom.acc_weight; the free
+  # text comes from custom.acc_specifications (rich text, one paragraph per
+  # sentence). The raw body description is no longer rendered here.
+  assign acc_size = product.metafields.custom.acc_size.value | strip
+  assign acc_weight = product.metafields.custom.acc_weight.value | strip
+  assign acc_specs_rt = product.metafields.custom.acc_specifications
+  assign acc_has_specs = false
+  if acc_size != blank or acc_weight != blank or acc_specs_rt != blank
+    assign acc_has_specs = true
+  endif
+
+  # ── Resolve compatible cabinets.
+  # The SKU list in custom.compatible_products decides WHICH pills render —
+  # including cabinets that are no longer sold (draft/archived), which show
+  # as greyed, non-clickable "Product discontinued" pills: owners of those
+  # cabinets still buy shelves/filters for them. The synced
+  # custom.compatible_cabinets references resolve each SKU to a live product
+  # URL without the Liquid 50-product collection cap.
+  assign acc_cab_refs = product.metafields.custom.compatible_cabinets.value
+  assign acc_live_refs = 0
+  for cab in acc_cab_refs
+    if cab == blank or cab.url == blank
+      continue
+    endif
+    assign acc_live_refs = acc_live_refs | plus: 1
+  endfor
+  assign acc_use_refs = false
+  if acc_live_refs > 0
+    assign acc_use_refs = true
+  endif
+
+  # Parse the SKUs out of the rich-text Ruby-hash dump: every text node
+  # appears as "value"=>"<SKU>". Dedupe with |-delimited needles so partial
+  # prefixes (LEK168PV vs LEK168PVX) don't collide.
+  assign acc_mfv = product.metafields.custom.compatible_products.value | strip_html
+  assign acc_sku_concat = ''
+  assign _seen = '|'
+  if acc_mfv != blank
+    assign _chunks = acc_mfv | split: '"value"=>"'
+    for _chunk in _chunks offset: 1
+      assign _sku = _chunk | split: '"' | first | upcase | strip
+      if _sku == blank
+        continue
+      endif
+      assign _skuneedle = '|' | append: _sku | append: '|'
+      unless _seen contains _skuneedle
+        assign _seen = _seen | append: _sku | append: '|'
+        assign acc_sku_concat = acc_sku_concat | append: _sku | append: '|'
+      endunless
+    endfor
+  endif
+  assign acc_sku_list = acc_sku_concat | split: '|'
+  assign acc_compat_count = acc_sku_list.size
+
+  # Reference list without a SKU list (manually-curated refs): fall back to
+  # rendering the live references directly.
+  if acc_compat_count == 0 and acc_live_refs > 0
+    assign acc_compat_count = acc_live_refs
+  endif
+-%}
+
+<section
+  id="MainAccessory-{{ section.id }}"
+  class="lc-acc-pdp"
+  data-section="{{ section.id }}"
+  data-acc-pdp
+>
+  <div class="lc-acc-pdp__inner">
+
+    {%- comment -%} ── 1. Media ─────────────────────────────────────────── {%- endcomment -%}
+    <div class="lc-acc-pdp__media">
+      {%- if product.images.size > 1 -%}
+        <div class="lc-acc-pdp__carousel" data-acc-carousel role="region" aria-label="Product images">
+          {%- for img in product.images -%}
+            <div class="lc-acc-pdp__slide">
+              <img
+                src="{{ img | image_url: width: 1200 }}"
+                srcset="{{ img | image_url: width: 600 }} 600w, {{ img | image_url: width: 1200 }} 1200w"
+                sizes="(min-width: 900px) 50vw, 100vw"
+                alt="{{ img.alt | default: product.title | escape }}"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                class="lc-acc-pdp__img"
+                width="{{ img.width }}"
+                height="{{ img.height }}"
+              >
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="lc-acc-pdp__media-nav">
+          <button type="button" class="lc-acc-pdp__media-btn" data-acc-prev aria-label="Previous image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="lc-acc-pdp__dots" data-acc-dots>
+            {%- for img in product.images -%}
+              <button type="button" class="lc-acc-pdp__dot{% if forloop.first %} is-active{% endif %}" data-dot="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}"></button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="lc-acc-pdp__media-btn" data-acc-next aria-label="Next image">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      {%- elsif product.featured_image != blank -%}
+        <img
+          src="{{ product.featured_image | image_url: width: 1200 }}"
+          srcset="{{ product.featured_image | image_url: width: 600 }} 600w, {{ product.featured_image | image_url: width: 1200 }} 1200w"
+          sizes="(min-width: 900px) 50vw, 100vw"
+          alt="{{ product.featured_image.alt | default: product.title | escape }}"
+          loading="eager"
+          class="lc-acc-pdp__img lc-acc-pdp__img--single"
+          width="{{ product.featured_image.width }}"
+          height="{{ product.featured_image.height }}"
+        >
+      {%- else -%}
+        <div class="lc-acc-pdp__img lc-acc-pdp__img--placeholder" aria-hidden="true"></div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} ── 2–11. Info column ───────────────────────────────── {%- endcomment -%}
+    <div class="lc-acc-pdp__info">
+
+      <h1 class="lc-acc-pdp__title">{{ product.title | escape }}</h1>
+      {%- if acc_sku != blank -%}
+        <div class="lc-acc-pdp__sku">Ref. {{ acc_sku }}</div>
+      {%- endif -%}
+
+      {%- if acc_short != blank -%}
+        <p class="lc-acc-pdp__desc">{{ acc_short }}</p>
+      {%- endif -%}
+
+      <div class="lc-acc-pdp__price">{{ product.price | money_without_trailing_zeros }}</div>
+
+      {%- if acc_compat_count > 0 -%}
+        <section class="lc-acc-compat" aria-labelledby="lc-acc-compat-h-{{ section.id }}">
+          <div id="lc-acc-compat-h-{{ section.id }}" class="lc-acc-compat__heading">Compatible with</div>
+          <div class="lc-acc-compat__sub">
+            Fits {{ acc_compat_count }} LeCavist cabinet model{% if acc_compat_count > 1 %}s{% endif %}. Tap to view.
+          </div>
+          <ul class="lc-acc-compat__list" data-compat-list>
+            {%- if acc_sku_list.size > 0 -%}
+              {%- for _sku in acc_sku_list -%}
+                {%- liquid
+                  # Resolve this SKU to a live cabinet: synced references
+                  # first, else (un-synced accessories) the collection loop.
+                  # No live match → greyed "Product discontinued" pill.
+                  assign _cab = nil
+                  if acc_use_refs
+                    for _ref in acc_cab_refs
+                      if _ref == blank or _ref.url == blank
+                        continue
+                      endif
+                      assign _rsku = _ref.variants.first.sku | upcase | strip
+                      if _rsku == blank
+                        assign _rsku = _ref.metafields.custom.fs_sku.value | upcase | strip
+                      endif
+                      if _rsku == _sku
+                        assign _cab = _ref
+                        break
+                      endif
+                    endfor
+                  else
+                    for _col_cab in collections['all-cabinets'].products
+                      assign _colsku = _col_cab.variants.first.sku | upcase | strip
+                      if _colsku == blank
+                        assign _colsku = _col_cab.metafields.custom.fs_sku.value | upcase | strip
+                      endif
+                      if _colsku == _sku
+                        assign _cab = _col_cab
+                        break
+                      endif
+                    endfor
+                  endif
+                  assign _label = _sku
+                  if _cab
+                    assign _label = _cab.metafields.custom.capacity_label | default: _sku
+                  endif
+                -%}
+                <li class="lc-acc-compat__item{% if forloop.index > 4 %} is-extra{% endif %}"{% if forloop.index > 4 %} hidden{% endif %}>
+                  {%- if _cab -%}
+                    <a
+                      href="{{ _cab.url }}"
+                      class="lc-acc-compat__pill"
+                      data-cab-handle="{{ _cab.handle }}"
+                      data-cab-label="{{ _label | escape }}"
+                    >
+                      <span class="lc-acc-compat__pill-mark" aria-hidden="true"></span>
+                      <span class="lc-acc-compat__pill-text">{{ _label }}</span>
+                    </a>
+                  {%- else -%}
+                    <span
+                      class="lc-acc-compat__pill lc-acc-compat__pill--discontinued"
+                      aria-label="{{ _sku }} — product discontinued"
+                    >
+                      <span class="lc-acc-compat__pill-text">{{ _sku }}</span>
+                    </span>
+                  {%- endif -%}
+                </li>
+                {%- if forloop.index == 4 and acc_compat_count > 4 -%}
+                  <li class="lc-acc-compat__item lc-acc-compat__item--more">
+                    <button type="button" class="lc-acc-compat__pill lc-acc-compat__pill--more" data-compat-more aria-expanded="false">
+                      +{{ acc_compat_count | minus: 4 }} more
+                    </button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              {%- comment -%} Refs without a SKU list — render live references directly {%- endcomment -%}
+              {%- assign _ridx = 0 -%}
+              {%- for cab in acc_cab_refs -%}
+                {%- if cab == blank or cab.url == blank -%}{%- continue -%}{%- endif -%}
+                {%- assign _csku = cab.variants.first.sku | upcase | strip -%}
+                {%- if _csku == blank -%}{%- assign _csku = cab.metafields.custom.fs_sku.value | upcase | strip -%}{%- endif -%}
+                {%- assign _ridx = _ridx | plus: 1 -%}
+                {%- assign _label = cab.metafields.custom.capacity_label | default: _csku -%}
+                {%- if _label == blank -%}{%- assign _label = cab.title | truncate: 28 -%}{%- endif -%}
+                <li class="lc-acc-compat__item{% if _ridx > 4 %} is-extra{% endif %}"{% if _ridx > 4 %} hidden{% endif %}>
+                  <a
+                    href="{{ cab.url }}"
+                    class="lc-acc-compat__pill"
+                    data-cab-handle="{{ cab.handle }}"
+                    data-cab-label="{{ _label | escape }}"
+                  >
+                    <span class="lc-acc-compat__pill-mark" aria-hidden="true"></span>
+                    <span class="lc-acc-compat__pill-text">{{ _label }}</span>
+                  </a>
+                </li>
+                {%- if _ridx == 4 and acc_compat_count > 4 -%}
+                  <li class="lc-acc-compat__item lc-acc-compat__item--more">
+                    <button type="button" class="lc-acc-compat__pill lc-acc-compat__pill--more" data-compat-more aria-expanded="false">
+                      +{{ acc_compat_count | minus: 4 }} more
+                    </button>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </ul>
+        </section>
+      {%- endif -%}
+
+      {%- comment -%} ── 5b. Availability by state ────────────────────────
+          Same block as the cabinet PDPs (lc-avail-block in
+          main-product.liquid), rendered in the info rail above the ATC.
+          Waterfall: own state_availability.* metafields → parent product
+          (website-rev.parent_product) → blank states fall back to
+          "Available" (accessories without dates are assumed in stock). {%- endcomment -%}
+      {%- liquid
+        assign lc_nsw_raw = product.metafields.state_availability.nsw.value | strip
+        assign lc_vic_raw = product.metafields.state_availability.vic.value | strip
+        assign lc_qld_raw = product.metafields.state_availability.qld.value | strip
+        assign lc_sa_raw  = product.metafields.state_availability.sa.value  | strip
+        assign lc_wa_raw  = product.metafields.state_availability.wa.value  | strip
+        assign lc_has_own_avail = false
+        if lc_nsw_raw != blank or lc_vic_raw != blank or lc_qld_raw != blank or lc_sa_raw != blank or lc_wa_raw != blank
+          assign lc_has_own_avail = true
+        endif
+        unless lc_has_own_avail
+          assign lc_avail_parent = product.metafields['website-rev'].parent_product.value
+          if lc_avail_parent != blank
+            assign lc_nsw_raw = lc_avail_parent.metafields.state_availability.nsw.value | strip
+            assign lc_vic_raw = lc_avail_parent.metafields.state_availability.vic.value | strip
+            assign lc_qld_raw = lc_avail_parent.metafields.state_availability.qld.value | strip
+            assign lc_sa_raw  = lc_avail_parent.metafields.state_availability.sa.value  | strip
+            assign lc_wa_raw  = lc_avail_parent.metafields.state_availability.wa.value  | strip
+          endif
+        endunless
+        if lc_nsw_raw == blank
+          assign lc_nsw_raw = 'Available'
+        endif
+        if lc_vic_raw == blank
+          assign lc_vic_raw = 'Available'
+        endif
+        if lc_qld_raw == blank
+          assign lc_qld_raw = 'Available'
+        endif
+        if lc_sa_raw == blank
+          assign lc_sa_raw = 'Available'
+        endif
+        if lc_wa_raw == blank
+          assign lc_wa_raw = 'Available'
+        endif
+      -%}
+      <div class="lc-avail-block">
+        <div class="lc-avail-block__header">
+          <span class="lc-avail-block__eyebrow">— Delivery —</span>
+          <span class="lc-avail-block__title">Availability by state</span>
+        </div>
+        <div class="lc-avail-block__grid">
+          {%- for lc_si in (0..4) -%}
+            {%- assign lc_state_abbrs = 'NSW,VIC,QLD,SA,WA' | split: ',' -%}
+            {%- assign lc_state_raws  = lc_nsw_raw | append: '|' | append: lc_vic_raw | append: '|' | append: lc_qld_raw | append: '|' | append: lc_sa_raw | append: '|' | append: lc_wa_raw | split: '|' -%}
+            {%- assign lc_sraw = lc_state_raws[lc_si] | strip -%}
+            {%- assign lc_slc  = lc_sraw | downcase -%}
+            {%- assign lc_sstatus = 'unavailable' -%}
+            {%- if lc_slc == 'available' or lc_slc == 'yes' or lc_slc == 'in stock' or lc_slc == 'instock' -%}{%- assign lc_sstatus = 'yes' -%}
+            {%- elsif lc_slc == 'limited' or lc_slc == 'low' or lc_slc == 'limited stock' or lc_slc == 'low stock' -%}{%- assign lc_sstatus = 'slow' -%}
+            {%- elsif lc_slc == 'unavailable' or lc_slc == 'no' or lc_slc == 'out of stock' -%}{%- assign lc_sstatus = 'no' -%}
+            {%- elsif lc_slc != blank -%}{%- assign lc_sstatus = 'restock' -%}{%- endif -%}
+            <div class="lc-avail-cell">
+              <span class="lc-avail-abbr lc-avail-m--{{ lc_sstatus }}">{{ lc_state_abbrs[lc_si] }}</span>
+              <span class="lc-avail-status-m">
+                {%- case lc_sstatus -%}
+                  {%- when 'yes' -%}Available
+                  {%- when 'slow' -%}Limited
+                  {%- when 'no' -%}Unavail.
+                  {%- else -%}{{ lc_sraw | truncate: 10 }}
+                {%- endcase -%}
+              </span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <form
+        class="lc-acc-pdp__form"
+        action="{{ routes.cart_add_url }}"
+        method="post"
+        enctype="multipart/form-data"
+        data-acc-form
+      >
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        <div class="lc-acc-pdp__row">
+          <div class="lc-acc-pdp__qty" role="group" aria-label="Quantity">
+            <button type="button" class="lc-acc-pdp__qty-btn" data-qty-dec aria-label="Decrease quantity">&minus;</button>
+            <input
+              type="number"
+              name="quantity"
+              value="1"
+              min="1"
+              max="99"
+              inputmode="numeric"
+              class="lc-acc-pdp__qty-input"
+              aria-label="Quantity"
+              data-qty-input
+            >
+            <button type="button" class="lc-acc-pdp__qty-btn" data-qty-inc aria-label="Increase quantity">+</button>
+          </div>
+          <button
+            type="submit"
+            class="lc-acc-pdp__atc"
+            {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+          >
+            {% if product.selected_or_first_available_variant.available %}Add to Cart{% else %}Sold Out{% endif %}
+          </button>
+        </div>
+      </form>
+
+      {%- if acc_has_specs -%}
+        <details class="lc-acc-pdp__specs">
+          <summary class="lc-acc-pdp__specs-summary">
+            <span>Specifications</span>
+            <span class="lc-acc-pdp__specs-chevron" aria-hidden="true"></span>
+          </summary>
+          <div class="lc-acc-pdp__specs-body">
+            {%- if acc_size != blank or acc_weight != blank -%}
+              <ul class="lc-acc-pdp__specs-rows">
+                {%- if acc_size != blank -%}
+                  <li><span class="lc-acc-pdp__specs-lbl">Size</span><span class="lc-acc-pdp__specs-val">{{ acc_size }}</span></li>
+                {%- endif -%}
+                {%- if acc_weight != blank -%}
+                  <li><span class="lc-acc-pdp__specs-lbl">Weight</span><span class="lc-acc-pdp__specs-val">{{ acc_weight }}</span></li>
+                {%- endif -%}
+              </ul>
+            {%- endif -%}
+            {%- if acc_specs_rt != blank -%}
+              <div class="lc-acc-pdp__specs-text">{{ acc_specs_rt | metafield_tag }}</div>
+            {%- endif -%}
+          </div>
+        </details>
+      {%- endif -%}
+
+      {%- if section.settings.show_reviews -%}
+        <div class="lc-acc-pdp__reviews">
+          <a href="#reviews" class="lc-acc-pdp__reviews-link" aria-label="See reviews">
+            <span class="jdgm-widget jdgm-preview-badge" data-id="{{ product.id }}" data-template="product"></span>
+          </a>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+  {%- if section.settings.show_pairs_grid and acc_compat_count > 0 -%}
+    <div class="lc-acc-pairs">
+      <h2 class="lc-acc-pairs__heading">Pairs with these cabinets</h2>
+      <div class="lc-acc-pairs__grid">
+        {%- assign _gidx = 0 -%}
+        {%- if acc_use_refs -%}
+          {%- for cab in acc_cab_refs -%}
+            {%- if cab == blank or cab.url == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign _gidx = _gidx | plus: 1 -%}
+            {%- if _gidx > 6 -%}{%- break -%}{%- endif -%}
+            {%- assign _label = cab.metafields.custom.capacity_label | default: cab.title -%}
+            <a href="{{ cab.url }}" class="lc-acc-pairs__card">
+              {%- if cab.featured_image != blank -%}
+                <img src="{{ cab.featured_image | image_url: width: 300 }}" alt="{{ cab.title | escape }}" loading="lazy" class="lc-acc-pairs__img">
+              {%- endif -%}
+              <div class="lc-acc-pairs__label">{{ _label }}</div>
+            </a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for cab in collections['all-cabinets'].products -%}
+            {%- assign _csku = cab.variants.first.sku | upcase | strip -%}
+            {%- if _csku == blank -%}{%- assign _csku = cab.metafields.custom.fs_sku.value | upcase | strip -%}{%- endif -%}
+            {%- if _csku == blank -%}{%- continue -%}{%- endif -%}
+            {%- assign _needle = '"value"=>"' | append: _csku | append: '"' -%}
+            {%- if acc_mfv contains _needle -%}
+              {%- assign _gidx = _gidx | plus: 1 -%}
+              {%- if _gidx > 6 -%}{%- break -%}{%- endif -%}
+              {%- assign _label = cab.metafields.custom.capacity_label | default: cab.title -%}
+              <a href="{{ cab.url }}" class="lc-acc-pairs__card">
+                {%- if cab.featured_image != blank -%}
+                  <img src="{{ cab.featured_image | image_url: width: 300 }}" alt="{{ cab.title | escape }}" loading="lazy" class="lc-acc-pairs__img">
+                {%- endif -%}
+                <div class="lc-acc-pairs__label">{{ _label }}</div>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+</section>
+
+<style>
+  /* ── Brand tokens ───────────────────────────────────────────────────────── */
+  .lc-acc-pdp {
+    --lc-acc-burgundy: #5C0F1A;
+    --lc-acc-burgundy-dark: #421019;
+    --lc-acc-cream: #F7F1E6;
+    --lc-acc-cream-dark: #EDE3D1;
+    --lc-acc-ink: #1A1A1A;
+    --lc-acc-grey: #555555;
+    --lc-acc-border: #D4CDBF;
+    --lc-acc-gold: #B08D57;
+    --lc-acc-green: #2E7D4F;
+    --lc-acc-serif: 'Cormorant Garamond', 'Times New Roman', Times, serif;
+    --lc-acc-sans: 'Inter Tight', -apple-system, Helvetica, Arial, sans-serif;
+    background: var(--lc-acc-cream);
+    color: var(--lc-acc-ink);
+    font-family: var(--lc-acc-sans);
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .lc-acc-pdp *,
+  .lc-acc-pdp *::before,
+  .lc-acc-pdp *::after { box-sizing: border-box; }
+
+  .lc-acc-pdp__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px 28px;
+    display: grid;
+    gap: 24px;
+  }
+  @media (min-width: 900px) {
+    .lc-acc-pdp__inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      padding: 40px 24px 48px;
+      gap: 56px;
+      align-items: start;
+    }
+  }
+
+  /* ── 1. Media ─────────────────────────────────────────────────────────── */
+  .lc-acc-pdp__media { width: 100%; }
+  .lc-acc-pdp__img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .lc-acc-pdp__img--placeholder {
+    aspect-ratio: 1 / 1;
+    background: var(--lc-acc-cream-dark);
+  }
+  .lc-acc-pdp__carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    border-radius: 4px;
+  }
+  .lc-acc-pdp__carousel::-webkit-scrollbar { display: none; }
+  .lc-acc-pdp__slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+  .lc-acc-pdp__dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .lc-acc-pdp__dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.2);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .lc-acc-pdp__dot.is-active { background: var(--lc-acc-burgundy); }
+  /* Prev/next buttons under the picture — explicit slide controls so the
+     carousel is usable with a mouse on desktop (not just scroll/swipe). */
+  .lc-acc-pdp__media-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  .lc-acc-pdp__media-nav .lc-acc-pdp__dots { margin-top: 0; }
+  .lc-acc-pdp__media-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--lc-acc-ink);
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-acc-pdp__media-btn:hover {
+    border-color: var(--lc-acc-burgundy);
+    color: var(--lc-acc-burgundy);
+    background: var(--lc-acc-cream-dark);
+  }
+
+  /* ── 2–11. Info column ───────────────────────────────────────────────── */
+  .lc-acc-pdp__info {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .lc-acc-pdp__title {
+    font-family: var(--lc-acc-serif);
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: var(--lc-acc-ink);
+    margin: 0;
+  }
+  @media (min-width: 900px) { .lc-acc-pdp__title { font-size: 38px; } }
+
+  .lc-acc-pdp__sku {
+    font-family: var(--lc-acc-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lc-acc-grey);
+    margin: -6px 0 0;
+  }
+
+  .lc-acc-pdp__desc {
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--lc-acc-ink);
+    margin: 4px 0 0;
+  }
+
+  .lc-acc-pdp__price {
+    font-family: var(--lc-acc-serif);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--lc-acc-burgundy);
+    margin: 6px 0 4px;
+  }
+
+  /* ── 5. Compatibility block ─────────────────────────────────────────── */
+  .lc-acc-compat {
+    background: var(--lc-acc-cream-dark);
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 4px 0;
+  }
+  .lc-acc-compat__heading {
+    font-family: var(--lc-acc-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lc-acc-ink);
+    margin-bottom: 6px;
+  }
+  .lc-acc-compat__sub {
+    font-size: 13px;
+    color: var(--lc-acc-grey);
+    margin-bottom: 12px;
+  }
+  .lc-acc-compat__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .lc-acc-compat__item { margin: 0; padding: 0; }
+  .lc-acc-compat__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 100px;
+    background: transparent;
+    color: var(--lc-acc-ink);
+    font-family: var(--lc-acc-sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-acc-compat__pill:hover {
+    border-color: var(--lc-acc-burgundy);
+    color: var(--lc-acc-burgundy);
+  }
+  .lc-acc-compat__pill-mark { display: none; }
+  .lc-acc-compat__pill.is-yours {
+    background: var(--lc-acc-burgundy);
+    border-color: var(--lc-acc-burgundy);
+    color: #fff;
+  }
+  .lc-acc-compat__pill.is-yours:hover { color: #fff; }
+  .lc-acc-compat__pill.is-yours .lc-acc-compat__pill-mark {
+    display: inline-block;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .lc-acc-compat__pill.is-yours .lc-acc-compat__pill-mark::before { content: '✓'; }
+  .lc-acc-compat__pill--more {
+    font-size: 12px;
+    color: var(--lc-acc-grey);
+    background: var(--lc-acc-cream-dark);
+    border-color: var(--lc-acc-border);
+  }
+  .lc-acc-compat__pill--more:hover {
+    color: var(--lc-acc-burgundy);
+    border-color: var(--lc-acc-burgundy);
+    background: var(--lc-acc-cream);
+  }
+  /* Discontinued cabinet — the SKU stays visible (owners of that model still
+     buy accessories for it) but the pill is greyed, dashed and not clickable.
+     Colors are muted directly instead of via opacity so the hover bubble
+     below doesn't inherit the fade. */
+  .lc-acc-compat__pill--discontinued {
+    position: relative;
+    color: rgba(26, 26, 26, 0.38);
+    border-color: rgba(212, 205, 191, 0.85);
+    border-style: dashed;
+    background: transparent;
+    cursor: not-allowed;
+  }
+  .lc-acc-compat__pill--discontinued:hover {
+    color: rgba(26, 26, 26, 0.38);
+    border-color: rgba(212, 205, 191, 0.85);
+  }
+  .lc-acc-compat__pill--discontinued:hover::after {
+    content: 'Product discontinued';
+    position: absolute;
+    bottom: calc(100% + 7px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--lc-acc-ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  /* ── 5b. Availability by state — same design as the cabinet PDP block
+     (lc-avail-block in main-product.liquid), mapped onto the accessory
+     palette tokens since main-product's CSS doesn't load here. ─────────── */
+  .lc-acc-pdp .lc-avail-block {
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 4px 0;
+    background: #ffffff;
+  }
+  .lc-acc-pdp .lc-avail-block__header {
+    background: var(--lc-acc-cream);
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid var(--lc-acc-border);
+    text-align: center;
+  }
+  .lc-acc-pdp .lc-avail-block__eyebrow {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--lc-acc-burgundy);
+    display: block;
+    margin-bottom: 2px;
+  }
+  .lc-acc-pdp .lc-avail-block__title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--lc-acc-ink);
+    text-align: center;
+    display: block;
+  }
+  .lc-acc-pdp .lc-avail-block__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+  }
+  .lc-acc-pdp .lc-avail-cell {
+    padding: 12px 4px;
+    text-align: center;
+    border-right: 1px solid rgba(26, 21, 18, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .lc-acc-pdp .lc-avail-cell:last-child { border-right: none; }
+  .lc-acc-pdp .lc-avail-abbr {
+    font-size: 14px;
+    font-weight: 700;
+    display: block;
+    text-align: center;
+  }
+  .lc-acc-pdp .lc-avail-status-m {
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--lc-acc-grey);
+    display: block;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .lc-acc-pdp .lc-avail-m--yes     { color: #2d6a3f; }
+  .lc-acc-pdp .lc-avail-m--slow    { color: #92400e; }
+  .lc-acc-pdp .lc-avail-m--no      { color: rgba(26, 21, 18, 0.35); }
+  .lc-acc-pdp .lc-avail-m--restock { color: var(--lc-acc-burgundy); }
+
+  /* ── 6–7. Quantity + ATC ────────────────────────────────────────────── */
+  .lc-acc-pdp__form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 6px 0 4px;
+  }
+  .lc-acc-pdp__row {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .lc-acc-pdp__qty {
+    display: inline-flex;
+    align-items: stretch;
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 4px;
+    background: #fff;
+    height: 48px;
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+  .lc-acc-pdp__qty-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 100%;
+    flex-shrink: 0;
+    background: transparent;
+    border: none;
+    font-family: var(--lc-acc-sans);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--lc-acc-ink);
+    padding: 0;
+    margin: 0;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .lc-acc-pdp__qty-btn:hover { color: var(--lc-acc-burgundy); background: var(--lc-acc-cream); }
+  .lc-acc-pdp__qty-input {
+    width: 52px;
+    min-width: 0;
+    height: 100%;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 0 !important;
+    border: none;
+    border-left: 1px solid var(--lc-acc-border);
+    border-right: 1px solid var(--lc-acc-border);
+    border-radius: 0 !important;
+    background: transparent;
+    text-align: center;
+    font-family: var(--lc-acc-sans);
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--lc-acc-ink);
+    -moz-appearance: textfield;
+  }
+  .lc-acc-pdp__qty-input::-webkit-outer-spin-button,
+  .lc-acc-pdp__qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .lc-acc-pdp__qty-input:focus { outline: none; }
+
+  .lc-acc-pdp__atc {
+    flex: 1 1 auto;
+    min-height: 48px;
+    padding: 14px 24px;
+    background: var(--lc-acc-burgundy);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-family: var(--lc-acc-sans);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-acc-pdp__atc:hover { background: var(--lc-acc-burgundy-dark); }
+  .lc-acc-pdp__atc:disabled {
+    background: var(--lc-acc-grey);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  /* ── 9. Specs accordion ──────────────────────────────────────────────── */
+  .lc-acc-pdp__specs {
+    background: var(--lc-acc-cream-dark);
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 8px;
+    padding: 4px 16px;
+  }
+  .lc-acc-pdp__specs-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    cursor: pointer;
+    list-style: none;
+    padding: 8px 0;
+    font-family: var(--lc-acc-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lc-acc-ink);
+  }
+  .lc-acc-pdp__specs-summary::-webkit-details-marker { display: none; }
+  .lc-acc-pdp__specs-chevron {
+    width: 7px;
+    height: 7px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: rotate(45deg);
+    transition: transform 0.2s;
+  }
+  .lc-acc-pdp__specs[open] .lc-acc-pdp__specs-chevron { transform: rotate(-135deg); }
+  .lc-acc-pdp__specs-body {
+    padding: 8px 0 12px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--lc-acc-ink);
+  }
+  .lc-acc-pdp__specs-body :first-child { margin-top: 0; }
+  .lc-acc-pdp__specs-body :last-child { margin-bottom: 0; }
+  /* Size / Weight — dedicated metafield rows, one per line */
+  .lc-acc-pdp__specs-rows {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .lc-acc-pdp__specs-rows li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--lc-acc-border);
+  }
+  .lc-acc-pdp__specs-rows + .lc-acc-pdp__specs-text { margin-top: 12px; }
+  .lc-acc-pdp__specs-lbl { color: var(--lc-acc-grey); }
+  .lc-acc-pdp__specs-val {
+    color: var(--lc-acc-ink);
+    font-weight: 500;
+    text-align: right;
+  }
+  /* Free-text specs — force uniform typography. The old body description
+     carried pasted inline styles (random fonts, sizes, weights, white
+     backgrounds); flatten everything to the accessory PDP base style. */
+  .lc-acc-pdp__specs-text,
+  .lc-acc-pdp__specs-text * {
+    font-family: var(--lc-acc-sans) !important;
+    font-size: 16px !important;
+    font-weight: 400 !important;
+    line-height: 1.6 !important;
+    color: var(--lc-acc-ink) !important;
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  .lc-acc-pdp__specs-text strong,
+  .lc-acc-pdp__specs-text b { font-weight: 600 !important; }
+  .lc-acc-pdp__specs-text p { margin: 0 0 10px; }
+  .lc-acc-pdp__specs-text p:last-child { margin-bottom: 0; }
+  .lc-acc-pdp__specs-text ul { margin: 0 0 10px; padding-left: 18px; }
+
+  /* ── 10. Reviews ─────────────────────────────────────────────────────── */
+  .lc-acc-pdp__reviews {
+    padding: 4px 0;
+  }
+  .lc-acc-pdp__reviews-link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* ── 11. Pairs grid (optional) ───────────────────────────────────────── */
+  .lc-acc-pairs {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 16px 32px;
+  }
+  .lc-acc-pairs__heading {
+    font-family: var(--lc-acc-serif);
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--lc-acc-ink);
+    margin: 0 0 14px;
+  }
+  .lc-acc-pairs__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  @media (min-width: 600px) { .lc-acc-pairs__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 900px) { .lc-acc-pairs__grid { grid-template-columns: repeat(6, 1fr); } }
+  .lc-acc-pairs__card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--lc-acc-ink);
+    text-decoration: none;
+    background: #fff;
+    border: 1px solid var(--lc-acc-border);
+    border-radius: 4px;
+    padding: 10px;
+    transition: border-color 0.15s;
+  }
+  .lc-acc-pairs__card:hover { border-color: var(--lc-acc-burgundy); }
+  .lc-acc-pairs__img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: contain;
+    background: var(--lc-acc-cream-dark);
+    border-radius: 2px;
+  }
+  .lc-acc-pairs__label {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+</style>
+
+<script>
+  (function() {
+    var root = document.getElementById('MainAccessory-{{ section.id }}');
+    if (!root) return;
+
+    // ── Compatibility: highlight pill matching ?from= URL param ────────────
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var fromHandle = params.get('from');
+      if (fromHandle) {
+        var pills = root.querySelectorAll('.lc-acc-compat__pill[data-cab-handle]');
+        for (var i = 0; i < pills.length; i++) {
+          if (pills[i].getAttribute('data-cab-handle') === fromHandle) {
+            pills[i].classList.add('is-yours');
+            var label = pills[i].getAttribute('data-cab-label') || '';
+            var textEl = pills[i].querySelector('.lc-acc-compat__pill-text');
+            if (textEl && label) textEl.textContent = label + ' — your cabinet';
+            // The visitor's cabinet may sit in the collapsed "+N more" group —
+            // unhide it so the highlight is actually visible.
+            var li = pills[i].closest('.lc-acc-compat__item');
+            if (li && li.hidden) li.hidden = false;
+          }
+        }
+      }
+    } catch (e) { /* URLSearchParams missing or other — non-fatal */ }
+
+    // ── "+N more" inline expansion ─────────────────────────────────────────
+    var moreBtn = root.querySelector('[data-compat-more]');
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function() {
+        var extras = root.querySelectorAll('.lc-acc-compat__item.is-extra');
+        for (var i = 0; i < extras.length; i++) extras[i].hidden = false;
+        var moreItem = moreBtn.closest('.lc-acc-compat__item--more');
+        if (moreItem) moreItem.parentNode.removeChild(moreItem);
+      });
+    }
+
+    // ── Quantity stepper ──────────────────────────────────────────────────
+    var qtyInput = root.querySelector('[data-qty-input]');
+    if (qtyInput) {
+      var dec = root.querySelector('[data-qty-dec]');
+      var inc = root.querySelector('[data-qty-inc]');
+      function clamp(n) { return Math.max(1, Math.min(99, n | 0 || 1)); }
+      if (dec) dec.addEventListener('click', function() { qtyInput.value = clamp((parseInt(qtyInput.value, 10) || 1) - 1); });
+      if (inc) inc.addEventListener('click', function() { qtyInput.value = clamp((parseInt(qtyInput.value, 10) || 1) + 1); });
+      qtyInput.addEventListener('change', function() { qtyInput.value = clamp(parseInt(qtyInput.value, 10)); });
+    }
+
+    // ── Carousel dots ──────────────────────────────────────────────────────
+    var carousel = root.querySelector('[data-acc-carousel]');
+    var dotsRow = root.querySelector('[data-acc-dots]');
+    if (carousel && dotsRow) {
+      var dots = dotsRow.querySelectorAll('.lc-acc-pdp__dot');
+      carousel.addEventListener('scroll', function() {
+        var idx = Math.round(carousel.scrollLeft / Math.max(1, carousel.clientWidth));
+        for (var i = 0; i < dots.length; i++) dots[i].classList.toggle('is-active', i === idx);
+      }, { passive: true });
+      for (var i = 0; i < dots.length; i++) (function(i) {
+        dots[i].addEventListener('click', function() {
+          carousel.scrollTo({ left: i * carousel.clientWidth, behavior: 'smooth' });
+        });
+      })(i);
+    }
+
+    // ── Prev/next buttons under the picture ───────────────────────────────
+    var prevBtn = root.querySelector('[data-acc-prev]');
+    var nextBtn = root.querySelector('[data-acc-next]');
+    if (carousel && (prevBtn || nextBtn)) {
+      var slideCount = carousel.querySelectorAll('.lc-acc-pdp__slide').length;
+      var accIndex = function() { return Math.round(carousel.scrollLeft / Math.max(1, carousel.clientWidth)); };
+      var accGoTo = function(i) {
+        var clamped = Math.max(0, Math.min(slideCount - 1, i));
+        carousel.scrollTo({ left: clamped * carousel.clientWidth, behavior: 'smooth' });
+      };
+      if (prevBtn) prevBtn.addEventListener('click', function() { accGoTo(accIndex() - 1); });
+      if (nextBtn) nextBtn.addEventListener('click', function() { accGoTo(accIndex() + 1); });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Accessory PDP",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Optional blocks"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_reviews",
+      "label": "Show Judge.me reviews badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pairs_grid",
+      "label": "Show 'Pairs with these cabinets' grid",
+      "default": false
+    }
+  ],
+  "presets": [
+    { "name": "Accessory PDP" }
+  ]
+}
+{% endschema %}

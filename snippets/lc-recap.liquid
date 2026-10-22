@@ -1,0 +1,206 @@
+{%- comment -%}
+  lc-recap.liquid — "Email to myself" product recap + comparison, sent via Klaviyo.
+
+  Renders a <script> that exposes window.LC_RECAP (current product + candidate
+  cabinets to compare + the Klaviyo public key) and these helpers:
+    window.lcRecapBuildSelector(boxEl)  - builds the "compare other cabinets" picker
+    window.lcRecapSend({email, selected}) -> Promise  - fires the Klaviyo event
+  Auto-builds the picker into every [data-recap-compare] element on load.
+
+  Fires Klaviyo metric "Requested Product Recap" via the client-side
+  Client Events API (no secret key; uses the store's PUBLIC key).
+  Event properties: { type:'single'|'comparison', compare_count, email, page_url,
+    source_product:{...}, products:[{title,handle,url,image,price,sku,specs:{...}}] }.
+
+  Pass:  klaviyo_key (string), product (the current product object).
+  Candidate list = collections['all-cabinets'] minus the current product.
+  Specs are captured to display strings so it works for any metafield type;
+  update the capture lines if the metafield keys change.
+{%- endcomment -%}
+{%- liquid
+  assign recap_coll = collections['all-cabinets']
+  assign cur_ls = product.metafields.lecavist_specs
+  assign cur_sp = product.metafields.specs
+-%}
+{%- capture cur_cap   -%}{{ cur_ls.bottle_capacity.value }}{%- endcapture -%}
+{%- capture cur_zone  -%}{{ cur_ls.cooling_zone.value }}{%- endcapture -%}
+{%- capture cur_temp  -%}{{ cur_ls.temperature_range.value }}{%- endcapture -%}
+{%- capture cur_inst  -%}{{ cur_ls.installation_type.value }}{%- endcapture -%}
+{%- capture cur_noise -%}{% if cur_ls.noise_level_db.value != blank %}{{ cur_ls.noise_level_db.value }} dB{% endif %}{%- endcapture -%}
+{%- capture cur_dims  -%}{% if cur_ls.width_mm.value != blank and cur_ls.height_mm.value != blank and cur_ls.depth_mm.value != blank %}{{ cur_ls.width_mm.value }} × {{ cur_ls.height_mm.value }} × {{ cur_ls.depth_mm.value }} mm{% endif %}{%- endcapture -%}
+{%- capture cur_img -%}{{ product.featured_image | image_url: width: 600 }}{%- endcapture -%}
+{%- assign cur_img = cur_img | strip -%}
+{%- assign _cpfx = cur_img | slice: 0, 2 -%}
+{%- if _cpfx == '//' -%}{%- assign cur_img = cur_img | prepend: 'https:' -%}{%- endif -%}
+<script>
+window.LC_RECAP = {
+  key: {{ klaviyo_key | default: 'TfXW38' | json }},
+  current: {
+    handle: {{ product.handle | json }},
+    title: {{ product.title | json }},
+    url: {{ product.url | prepend: request.origin | json }},
+    image: {{ cur_img | json }},
+    price: {{ product.price | money | json }},
+    sku: {{ product.selected_or_first_available_variant.sku | json }},
+    specs: {
+      capacity:     {{ cur_cap   | strip | json }},
+      zones:        {{ cur_zone  | strip | json }},
+      temperature:  {{ cur_temp  | strip | json }},
+      installation: {{ cur_inst  | strip | json }},
+      noise:        {{ cur_noise | strip | json }},
+      dimensions:   {{ cur_dims  | strip | json }}
+    }
+  },
+  candidates: [
+    {%- for p in recap_coll.products -%}
+      {%- unless p.handle == product.handle -%}
+        {%- assign pls = p.metafields.lecavist_specs -%}
+        {%- assign psp = p.metafields.specs -%}
+        {%- capture p_cap   -%}{{ pls.bottle_capacity.value }}{%- endcapture -%}
+        {%- capture p_zone  -%}{{ pls.cooling_zone.value }}{%- endcapture -%}
+        {%- capture p_temp  -%}{{ pls.temperature_range.value }}{%- endcapture -%}
+        {%- capture p_inst  -%}{{ pls.installation_type.value }}{%- endcapture -%}
+        {%- capture p_noise -%}{% if pls.noise_level_db.value != blank %}{{ pls.noise_level_db.value }} dB{% endif %}{%- endcapture -%}
+        {%- capture p_dims  -%}{% if pls.width_mm.value != blank and pls.height_mm.value != blank and pls.depth_mm.value != blank %}{{ pls.width_mm.value }} × {{ pls.height_mm.value }} × {{ pls.depth_mm.value }} mm{% endif %}{%- endcapture -%}
+        {%- capture p_img -%}{{ p.featured_image | image_url: width: 260 }}{%- endcapture -%}
+        {%- assign p_img = p_img | strip -%}
+        {%- assign _ppfx = p_img | slice: 0, 2 -%}
+        {%- if _ppfx == '//' -%}{%- assign p_img = p_img | prepend: 'https:' -%}{%- endif -%}
+    {
+      handle: {{ p.handle | json }},
+      title: {{ p.title | json }},
+      url: {{ p.url | prepend: request.origin | json }},
+      image: {{ p_img | json }},
+      price: {{ p.price | money | json }},
+      sku: {{ p.selected_or_first_available_variant.sku | json }},
+      specs: {
+        capacity:     {{ p_cap   | strip | json }},
+        zones:        {{ p_zone  | strip | json }},
+        temperature:  {{ p_temp  | strip | json }},
+        installation: {{ p_inst  | strip | json }},
+        noise:        {{ p_noise | strip | json }},
+        dimensions:   {{ p_dims  | strip | json }}
+      }
+    },
+      {%- endunless -%}
+    {%- endfor -%}
+  ]
+};
+(function () {
+  var D = window.LC_RECAP || {};
+  var byHandle = {};
+  (D.candidates || []).forEach(function (c) { byHandle[c.handle] = c; });
+  var MAX = 3;
+
+  function esc(s) { var d = document.createElement('span'); d.textContent = s == null ? '' : String(s); return d.innerHTML; }
+
+  window.lcRecapBuildSelector = function (box) {
+    if (!box || box._lcBuilt) return;
+    box._lcBuilt = true;
+    var cands = D.candidates || [];
+    if (!cands.length) { box.style.display = 'none'; return; }
+    var selected = new Set();
+    box._lcSelected = function () { return Array.from(selected); };
+
+    box.innerHTML =
+      '<button type="button" class="lc-recap-toggle" aria-expanded="false">'
+        + '<span class="lc-recap-toggle__lbl">Compare with other cabinets</span>'
+        + '<span class="lc-recap-toggle__count"></span>'
+        + '<span class="lc-recap-toggle__chev" aria-hidden="true">⌄</span>'
+      + '</button>'
+      + '<div class="lc-recap-body" hidden>'
+        + '<input type="search" class="lc-recap-search" placeholder="Search cabinets…" aria-label="Search cabinets">'
+        + '<p class="lc-recap-hint">Add up to ' + MAX + ' to receive a side-by-side comparison.</p>'
+        + '<div class="lc-recap-list" role="group" aria-label="Cabinets to compare"></div>'
+      + '</div>';
+
+    var toggle = box.querySelector('.lc-recap-toggle');
+    var body   = box.querySelector('.lc-recap-body');
+    var list   = box.querySelector('.lc-recap-list');
+    var search = box.querySelector('.lc-recap-search');
+    var countEl = box.querySelector('.lc-recap-toggle__count');
+
+    function updateCount() {
+      var n = selected.size;
+      countEl.textContent = n ? '(' + n + ')' : '';
+      box.classList.toggle('has-selection', n > 0);
+    }
+    function render(filter) {
+      filter = (filter || '').toLowerCase();
+      list.innerHTML = '';
+      cands.forEach(function (c) {
+        if (filter && (c.title || '').toLowerCase().indexOf(filter) === -1) return;
+        var on = selected.has(c.handle);
+        var dis = (!on && selected.size >= MAX) ? ' disabled' : '';
+        var cap = (c.specs && c.specs.capacity) ? '<span class="lc-recap-row__c">' + esc(c.specs.capacity) + ' btl</span>' : '';
+        var img = c.image ? '<img class="lc-recap-row__img" src="' + c.image + '" alt="" loading="lazy" width="40" height="40">' : '<span class="lc-recap-row__img"></span>';
+        var row = document.createElement('label');
+        row.className = 'lc-recap-row' + (on ? ' is-on' : '');
+        row.innerHTML =
+          '<input type="checkbox" class="lc-recap-cb" value="' + esc(c.handle) + '"' + (on ? ' checked' : '') + dis + '>'
+          + img
+          + '<span class="lc-recap-row__t">' + esc(c.title) + '</span>'
+          + cap;
+        list.appendChild(row);
+      });
+    }
+    list.addEventListener('change', function (e) {
+      var cb = e.target;
+      if (!cb.classList || !cb.classList.contains('lc-recap-cb')) return;
+      if (cb.checked) {
+        if (selected.size >= MAX) { cb.checked = false; return; }
+        selected.add(cb.value);
+      } else {
+        selected.delete(cb.value);
+      }
+      updateCount();
+      render(search.value);
+    });
+    search.addEventListener('input', function () { render(search.value); });
+    toggle.addEventListener('click', function () {
+      var open = body.hasAttribute('hidden');
+      if (open) { body.removeAttribute('hidden'); } else { body.setAttribute('hidden', ''); }
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      box.classList.toggle('is-open', open);
+    });
+    render('');
+    updateCount();
+  };
+
+  window.lcRecapSend = function (opts) {
+    opts = opts || {};
+    var email = (opts.email || '').trim();
+    var chosen = (opts.selected || []).map(function (h) { return byHandle[h]; }).filter(Boolean);
+    var products = [D.current].concat(chosen).filter(Boolean);
+    var props = {
+      type: chosen.length ? 'comparison' : 'single',
+      compare_count: chosen.length,
+      email: email,
+      page_url: (D.current && D.current.url) || location.href,
+      source_product: D.current,
+      products: products
+    };
+    if (!D.key) return Promise.reject(new Error('no-key'));
+    var payload = { data: { type: 'event', attributes: {
+      properties: props,
+      metric:  { data: { type: 'metric',  attributes: { name: 'Requested Product Recap' } } },
+      profile: { data: { type: 'profile', attributes: { email: email } } }
+    } } };
+    return fetch('https://a.klaviyo.com/client/events/?company_id=' + encodeURIComponent(D.key), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (r.status === 202 || r.ok) return true;
+      throw new Error('klaviyo-' + r.status);
+    });
+  };
+
+  function initSelectors() {
+    var boxes = document.querySelectorAll('[data-recap-compare]');
+    for (var i = 0; i < boxes.length; i++) window.lcRecapBuildSelector(boxes[i]);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSelectors);
+  else initSelectors();
+})();
+</script>

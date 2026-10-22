@@ -1,0 +1,109 @@
+.collection .flex-col-custom { }
+body .jdgm-rev-widg .jdgm-star,
+body .jdgm-revs-tab .jdgm-star,
+body .jdgm-all-reviews .jdgm-star,
+body .jdgm-gallery-popup .jdgm-star,
+body .jdgm-rev-widg .jdgm-star:not([disabled]):hover,
+body .jdgm-rev-widg .jdgm-star:focus,
+body .jdgm-revs-tab .jdgm-star:not([disabled]):hover,
+body .jdgm-revs-tab .jdgm-star:focus,
+body .jdgm-all-reviews .jdgm-star:not([disabled]):hover,
+body .jdgm-all-reviews .jdgm-star:focus,
+body .jdgm-gallery-popup .jdgm-star:not([disabled]):hover,
+body .jdgm-gallery-popup .jdgm-star:focus,
+body .jdgm-rev-widg .jdgm-star,
+body .jdgm-revs-tab .jdgm-star,
+body .jdgm-all-reviews .jdgm-star,
+body .jdgm-gallery-popup .jdgm-star,
+body .jdgm-preview-badge .jdgm-star.jdgm-star,
+body .jdgm-histogram .jdgm-star { color: #333; }
+body .jdgm-rev-widg .jdgm-star,
+body .jdgm-revs-tab .jdgm-star,
+body .jdgm-all-reviews .jdgm-star,
+body .jdgm-gallery-popup .jdgm-star,
+body .jdgm-preview-badge .jdgm-star.jdgm-star,
+body .jdgm-histogram .jdgm-star {  font-size: 17px; }
+
+body .jdgm-rev[data-verified-buyer="true"] .jdgm-rev__icon.jdgm-rev__icon::after,
+body .jdgm-rev__buyer-badge.jdgm-rev__buyer-badge,
+body .jdgm-histogram__bar-content { background:#333; }
+
+body .jdgm-link,
+body .jdgm-histogram__clear-filter { color:#333; }
+body.page .jdgm-widget { padding-left: var(--bs-gutter-x, 1.5rem); padding-right: var(--bs-gutter-x, 1.5rem); margin-inline: auto; }
+
+multi-content .quote::before { content: ""; display: block; height: 46px; width: 60px; margin: 0 0 10px; background:url({{ 'quote.svg' | asset_url }}); background-size: cover; }
+multi-content .custom_sign { max-width:200px; }
+multi-content .askque { margin: 0 0 20px; font-weight: bold; text-decoration: none; }
+multi-content .askque { margin: 20px 0; font-weight: 700; text-decoration: none; }
+multi-content .askque a { text-decoration:none; } 
+multi-content .askque a::before { content: ""; display: inline-block; height: 30px; width: 30px; vertical-align: middle; margin-right: 11px; background:url({{ 'question.svg' | asset_url }}); background-size: cover; }
+multi-content .askque::before {  }
+
+.collection multi-content { row-gap: 1px !important; gap: 0 !important; }
+.collection multi-content .image_sec { padding:0; }
+.collection multi-content .text_sec .section__block-inner { padding:10px; }
+
+
+@media (min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+.smooth-padding-hover:hover { padding-inline-start: 0; }
+}
+
+@media (min-width:768px) {
+.swiper-button-next, .swiper-button-prev { opacity: 1 !important; visibility: visible; }
+}
+
+@media (min-width:1025px) {
+body.page .jdgm-widget { max-width: calc(var(--page-width) + var(--bs-gutter-x) * 2); }
+}
+
+@media (min-width:1200px) {
+body.page .jdgm-widget { max-width: calc(var(--page-width) + var(--bs-gutter-x) * 2); }
+}
+
+@media (max-width:1199px) {
+.shopify-section:not(.contact-us, .not-hide-br) br { display:inherit; }
+}
+
+@media (max-width:1024px) {
+.submenu .grid-cols .collection-items  { display:none; }
+}
+
+@media (max-width:767px) {
+multi-content .section__block:nth-of-type(1) { order:1 !important; }
+multi-content .section__block:nth-of-type(2) { order:0 !important; } 
+multi-content .section__block:nth-of-type(3) { order:2 !important; } 
+multi-content .section__block:nth-of-type(4) { order:3 !important; } 
+multi-content .section__block:nth-of-type(5) { order:5 !important; } 
+multi-content .section__block:nth-of-type(6) { order:4 !important; } 
+multi-content .section__block:nth-of-type(7) { order:6 !important; } 
+multi-content .section__block:nth-of-type(8) { order:7 !important; }
+multi-content .section__block:nth-of-type(9) { order:9 !important; }
+multi-content .section__block:nth-of-type(10) { order:8 !important; }
+
+multi-content .section__block:nth-of-type(11) { order:10 !important; }
+multi-content .section__block:nth-of-type(12) { order:11 !important; }
+multi-content .section__block:nth-of-type(13) { order:13 !important; }
+multi-content .section__block:nth-of-type(14) { order:12 !important; }
+multi-content .section__block:nth-of-type(15) { order:14 !important; }
+multi-content .section__block:nth-of-type(16) { order:15 !important; }
+multi-content .section__block:nth-of-type(17) { order:17 !important; }
+multi-content .section__block:nth-of-type(18) { order:16 !important; }
+multi-content .section__block:nth-of-type(19) { order:18 !important; }
+multi-content .section__block:nth-of-type(20) { order:19 !important; }
+}
+
+
+
+/* === [USER CUSTOMIZATIONS] Custom Styling and Modifications ===
+   - Added to fix the image cropping issue in product grids
+   - Desired behavior: display the entire image without cropping (even if it's not square)
+   - Using object-fit: contain to avoid any image cuts
+*/
+
+/* Ensure product images are displayed fully (contain) */
+.product-image {
+  object-fit: contain;
+  width: 100%;
+  height: 100%;
+}

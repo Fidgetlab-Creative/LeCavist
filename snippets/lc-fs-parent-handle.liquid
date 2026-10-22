@@ -1,0 +1,69 @@
+{%- comment -%}
+  LeCavist — Resolve the non-FS parent product's handle for a Full Shelves
+  (FS) variant. Outputs the parent's handle, or empty string if not found.
+
+  Target SKU (the parent's SKU) is chosen in this order:
+    1. product.metafields.website-rev.parent_product as a product_reference
+       (returns its handle directly; no lookup needed). Primary source —
+       set on duo / FS variants.
+    2. product.metafields.custom.parent_product as a product_reference
+       (returns its handle directly; no lookup needed).
+    3. product.metafields.custom.parent_product as a text value — treated
+       as the parent SKU.
+    4. Derived by stripping trailing "FS" from the current product's SKU.
+
+  Once we have a target SKU we look it up by iterating
+  collections.all.products with `paginate ... by 250`, which lifts the
+  default 50-product iteration cap.
+
+  Params: product (required)
+{%- endcomment -%}
+{%- liquid
+  assign _out = ''
+  assign _target_sku = ''
+
+  if product.metafields['website-rev'].parent_product.value.handle != blank
+    assign _out = product.metafields['website-rev'].parent_product.value.handle
+  endif
+
+  if _out == '' and product.metafields.custom.parent_product.value.handle != blank
+    assign _out = product.metafields.custom.parent_product.value.handle
+  endif
+
+  if _out == ''
+    assign _mp_val = product.metafields.custom.parent_product.value
+    if _mp_val != blank
+      assign _target_sku = _mp_val | upcase | strip
+    endif
+  endif
+
+  if _out == '' and _target_sku == ''
+    assign _own_sku_raw = product.selected_or_first_available_variant.sku
+    if _own_sku_raw == blank
+      assign _p = product.title | split: '('
+      if _p.size > 1
+        assign _own_sku_raw = _p | last | split: ')' | first | strip
+      endif
+    endif
+    assign _own_sku_u = _own_sku_raw | upcase
+    if _own_sku_u.size > 2
+      assign _last2 = _own_sku_u | slice: -2, 2
+      if _last2 == 'FS'
+        assign _base_len = _own_sku_u.size | minus: 2
+        assign _target_sku = _own_sku_u | slice: 0, _base_len
+      endif
+    endif
+  endif
+-%}
+{%- if _out == '' and _target_sku != '' -%}
+  {%- paginate collections.all.products by 250 -%}
+    {%- for _cp in collections.all.products -%}
+      {%- assign _cp_sku = _cp.variants.first.sku | upcase -%}
+      {%- if _cp_sku == _target_sku -%}
+        {%- assign _out = _cp.handle -%}
+        {%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endpaginate -%}
+{%- endif -%}
+{{- _out -}}

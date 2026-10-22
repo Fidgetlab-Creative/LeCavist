@@ -1,0 +1,861 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "all_cabinets_handle": "all-cabinets"
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "badges_RwfTMp": {
+          "type": "badges",
+          "settings": {}
+        },
+        "title_G6tU8U": {
+          "type": "title",
+          "settings": {
+            "show_vendor": true
+          }
+        },
+        "review_and_sold_AAbJC9": {
+          "type": "review_and_sold",
+          "disabled": true,
+          "settings": {
+            "show_review": true,
+            "show_sold_products": true,
+            "sold": "8,10,12,15,17,22",
+            "hours": "10,12,15,16,18,20,24"
+          }
+        },
+        "price_VJ4N8m": {
+          "type": "price",
+          "settings": {}
+        },
+        "afterpay_on_site_messaging_payments_messaging_FRHCEd": {
+          "type": "shopify://apps/afterpay-on-site-messaging/blocks/payments-messaging/f45a5524-d177-4475-bf59-281efd2215a8",
+          "settings": {
+            "text_align": "inherit",
+            "margin_top": 16,
+            "margin_bottom": 16,
+            "color": "",
+            "size": "md",
+            "intro_text": "or",
+            "show_interest_free": true,
+            "payment_amount_is_bold": true,
+            "show_with": true,
+            "logo_type": "badge",
+            "logo_theme": "black-on-mint",
+            "modal_link_style": "circled-info-icon",
+            "modal_theme": "mint",
+            "breakpoint": 749,
+            "text_align_mobile": "inherit",
+            "margin_top_mobile": 16,
+            "margin_bottom_mobile": 16,
+            "show_lower_limit": true,
+            "show_upper_limit": true,
+            "show_if_outside_limits": true,
+            "product": "{{product}}"
+          }
+        },
+        "short_description_9BGxVm": {
+          "type": "short_description",
+          "settings": {
+            "excerpt_length": 200
+          }
+        },
+        "custom_liquid_JtKia4": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<style>\n  .info-grid {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 6px;\n    margin: 4px 0;\n    justify-content: center;\n    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;\n  }\n  .info-card {\n    flex: 1 1 30%;\n    max-width: 140px;\n    background: #fff;\n    border: 1px solid #bbb;\n    border-radius: 5px;\n    padding: 4px 6px;\n    text-align: center;\n    box-shadow: 0 1px 3px rgba(0,0,0,0.07);\n    transition: box-shadow 0.25s ease;\n    cursor: default;\n  }\n  .info-card.installation-type {\n    max-width: 200px;\n    flex: 1 1 34%;\n  }\n  .info-card:hover {\n    box-shadow: 0 3px 8px rgba(0,0,0,0.12);\n  }\n  .info-title {\n    font-weight: 600;\n    font-size: 12px;\n    color: #4a2c31;\n    margin-bottom: 4px;\n    text-transform: uppercase;\n    letter-spacing: 0.03em;\n  }\n  .info-value {\n    font-size: 13px;\n    font-weight: 500;\n    color: #222;\n  }\n  .availability-section {\n    margin-top: 24px;\n  }\n  .availability-title {\n    text-align: center;\n    font-size: 16px;\n    font-weight: 700;\n    color: #4a2c31;\n    margin-bottom: 10px;\n  }\n  .product-specs-table {\n    width: 100%;\n    border-collapse: collapse;\n    margin-bottom: 10px;\n    font-size: 13px;\n  }\n  .product-specs-table th,\n  .product-specs-table td {\n    padding: 6px 10px;\n    text-align: center;\n    border: 1px solid #ddd;\n  }\n  .product-specs-table th {\n    background: #4a2c31;\n    color: #fff;\n    font-weight: 600;\n  }\n  .product-specs-table td {\n    background: #fff;\n    color: #444;\n  }\n  .button-container {\n    display: flex;\n    gap: 8px;\n    margin-bottom: 10px;\n    justify-content: center;\n  }\n  .custom-button {\n    flex: 1;\n    padding: 6px 14px;\n    font-size: 13px;\n    font-weight: 600;\n    text-align: center;\n    border-radius: 4px;\n    border: 1.5px solid #4a2c31;\n    transition: all 0.25s ease;\n    text-decoration: none;\n    user-select: none;\n  }\n  .button-full-shelves {\n    background: #4a2c31;\n    color: #fff;\n  }\n  .button-full-shelves:hover,\n  .button-see-all:hover {\n    background: #fff;\n    color: #4a2c31;\n  }\n  .button-see-all {\n    background: #fff;\n    color: #4a2c31;\n  }\n  @media (max-width: 700px) {\n    .info-card {\n      flex: 1 1 45%;\n    }\n  }\n  @media (max-width: 430px) {\n    .info-card {\n      flex: 1 1 100%;\n    }\n    .button-container {\n      flex-direction: column;\n    }\n  }\n</style>\n\n<!-- Bulles infos dynamiques -->\n<div class=\"info-grid\">\n  <div class=\"info-card\">\n    <div class=\"info-title\">Bottle Capacity</div>\n    <div class=\"info-value\">\n      {{ product.metafields.custom.bottle_capacity | metafield_tag }}\n    </div>\n  </div>\n\n  <div class=\"info-card\">\n    <div class=\"info-title\">Cooling Zones</div>\n    <div class=\"info-value\">\n      {{ product.metafields.custom.zones | metafield_tag }}\n    </div>\n  </div>\n\n  <div class=\"info-card installation-type\">\n    <div class=\"info-title\">Installation Type</div>\n    <div class=\"info-value\">\n      {{ product.type }}\n    </div>\n  </div>\n</div>\n\n<!-- Tableau de disponibilité -->\n{% assign availability_raw = product.metafields.custom.availability | metafield_text | strip_newlines %}\n{% assign nsw = availability_raw | split: \"NSW/ACT:\" | last | split: \"QLD:\" | first | strip %}\n{% assign qld = availability_raw | split: \"QLD:\" | last | split: \"VIC:\" | first | strip %}\n{% assign vic = availability_raw | split: \"VIC:\" | last | split: \"SA:\" | first | strip %}\n{% assign sa  = availability_raw | split: \"SA:\" | last | split: \"WA:\" | first | strip %}\n{% assign wa  = availability_raw | split: \"WA:\" | last | strip %}\n\n<div class=\"availability-section\">\n  <div class=\"availability-title\">Product Availability per State</div>\n  <table class=\"product-specs-table\">\n    <thead>\n      <tr>\n        <th>NSW/ACT</th>\n        <th>QLD</th>\n        <th>VIC</th>\n        <th>SA</th>\n        <th>WA</th>\n      </tr>\n    </thead>\n    <tbody>\n      <tr>\n        <td>{{ nsw }}</td>\n        <td>{{ qld }}</td>\n        <td>{{ vic }}</td>\n        <td>{{ sa }}</td>\n        <td>{{ wa }}</td>\n      </tr>\n    </tbody>\n  </table>\n</div>"
+          }
+        },
+        "complementary_products_e9wcWq": {
+          "type": "complementary_products",
+          "settings": {
+            "heading": "Available with more shelves:",
+            "product_list_limit": 10,
+            "products_per_page": 3,
+            "show_navigation": false,
+            "show_pagination": false,
+            "enable_quick_add": false
+          }
+        },
+        "buy_buttons_LcQGtR": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true,
+            "show_wishlist": true,
+            "show_compare": true
+          }
+        },
+        "delivery_return_VpjmLV": {
+          "type": "delivery_return",
+          "settings": {
+            "delivery_design": "horizontal",
+            "delivery_content_icon": "truck",
+            "delivery_content": "<p><strong>Free delivery and installation</strong> in your room of choice</p>",
+            "discount_content_icon": "discount",
+            "discount_content": "<p>2 years warranty on body & parts - <strong>5 years on compressor</strong></p>",
+            "return_content_icon": "check_badge",
+            "return_content": "<p>Access to our <strong>private wine circle </strong>(events, wine allocation, education)</p>"
+          }
+        },
+        "collapsible_row_m3g6f8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Description",
+            "content": "",
+            "use_product_description": true
+          }
+        },
+        "collapsible_row_eLaQpR": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Shipping",
+            "content": "<p>We offer fast and reliable shipping for all our items.</p><p>For any questions regarding your order, please contact our customer service team for assistance at hello@lecavist.com or <a href=\"tel:+61293989933\" target=\"_blank\" title=\"tel:+61293989933\">02 9398 9933</a></p>",
+            "use_product_description": false
+          }
+        },
+        "collapsible_row_VKx8Qq": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Specifications",
+            "content": "<p><strong>8 Pull-out Wire Racks with Beech Wood Lids</strong>: Conveniently display and access your bottles with these easy-to-pull racks, offering a premium aesthetic while reducing vibration.</p><p><strong>Intelligent Humidity and Temperature Control</strong>: Maintain perfect storage conditions with precise control over both temperature and humidity levels, ensuring your wine stays in ideal conditions.</p><p><strong>Carbon Filter</strong>: Purifies the air inside the fridge, keeping your collection fresh and free from unwanted odors.</p><p><strong>Multi-Airflow Fan</strong>: Ensures even air circulation, keeping the temperature consistent across the entire fridge and eliminating any hot or cold spots.</p><p><strong>Cold LED Lighting</strong>: Elegant and energy-efficient LED lights provide a gentle glow, highlighting your wine collection without generating heat.</p><p><strong>Triple Layer Low-E Coated Tempered Glass Door</strong>: The advanced glass protects your wine from harmful UV rays while maintaining insulation to preserve ideal storage conditions.</p><p><strong>Three Separate Temperature Zones</strong>: Perfect for storing different wine varietals at their ideal serving temperatures, all in one fridge:</p><p><strong>Upper Zone</strong>: 8 - 13°C</p><p><strong>Lower Zone</strong>: 13 - 18°C</p><p><strong>Drawer</strong>: 1 - 8°C</p><p><strong>Freestanding Design</strong>: The fridge is easy to install with no plumbing or professional setup required. Simply place it on a flat surface and plug it into a standard power outlet.</p>",
+            "use_product_description": false
+          }
+        },
+        "collapsible_row_kJHbNQ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Specification sheet",
+            "content": "<p><a href=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Cuve_Burgundy_LCS70VN2Z_SpecSheet.pdf?v=1773192392\" title=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/Cuve_Burgundy_LCS70VN2Z_SpecSheet.pdf?v=1773192392\">LCS70VN2Z-Spec sheet.</a></p>",
+            "use_product_description": false
+          }
+        },
+        "collapsible_row_nCBHCD": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Manual",
+            "content": "<p><a href=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LCS70VN2Z-User_manual_0902.pdf?v=1773192578\" title=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LCS70VN2Z-User_manual_0902.pdf?v=1773192578\">Manual - LCS70VN2Z</a></p>",
+            "use_product_description": false
+          }
+        },
+        "collapsible_row_aXKf3D": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "FAQ",
+            "content": "<p><a href=\"https://lecavist.com/apps/frequently-asked-questions\" target=\"_blank\" title=\"https://lecavist.com/apps/frequently-asked-questions\">FAQ Page</a></p>",
+            "use_product_description": false
+          }
+        },
+        "product_addons_YRaprz": {
+          "type": "product_addons",
+          "settings": {
+            "show_compare_color": true,
+            "show_ask_question": true,
+            "show_share": true
+          }
+        }
+      },
+      "block_order": [
+        "badges_RwfTMp",
+        "title_G6tU8U",
+        "review_and_sold_AAbJC9",
+        "price_VJ4N8m",
+        "afterpay_on_site_messaging_payments_messaging_FRHCEd",
+        "short_description_9BGxVm",
+        "custom_liquid_JtKia4",
+        "complementary_products_e9wcWq",
+        "buy_buttons_LcQGtR",
+        "delivery_return_VpjmLV",
+        "collapsible_row_m3g6f8",
+        "collapsible_row_eLaQpR",
+        "collapsible_row_VKx8Qq",
+        "collapsible_row_kJHbNQ",
+        "collapsible_row_nCBHCD",
+        "collapsible_row_aXKf3D",
+        "product_addons_YRaprz"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "enable_sticky_content_on_desktop": true,
+        "enable_skeleton_loading": false,
+        "desktop_media_width": 50,
+        "desktop_layout": "thumbnail_left",
+        "image_zoom": "open_lightbox",
+        "enable_video_looping": true,
+        "enable_video_autoplay": true,
+        "enable_frequently_bought_together": true,
+        "enable_on_desktop": true,
+        "enable_on_mobile": true,
+        "mobile_options": "hidden_thumbnail",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false,
+        "video_button_url": "",
+        "video_button_label": "Watch in video",
+        "gallery_mobile_ratio": "auto",
+        "gallery_max_height": 520,
+        "trust1_title": "Free Delivery",
+        "trust1_sub": "& installation",
+        "trust2_title": "2-Year Warranty",
+        "trust2_sub": "parts & labour",
+        "trust3_title": "Old Unit Removed",
+        "trust3_sub": "at no extra cost",
+        "collection_installation": "",
+        "collection_zone": "",
+        "collection_size_range": "",
+        "phone_number": "",
+        "faq_q1": "Will this fit in my space?",
+        "faq_a1": "Check the dimensions listed above. Allow at least 100mm clearance on each side and 50mm at the rear for ventilation. Freestanding models can be placed anywhere with a power point. Built-in models require a cabinetry cutout — refer to the installation guide.",
+        "faq_q2": "What is included in the delivery?",
+        "faq_a2": "Every LeCavist order includes white-glove delivery, in-home installation, electrical connection, and removal of your old appliance — all at no additional cost.",
+        "faq_q3": "What if I outgrow this cabinet size?",
+        "faq_a3": "We offer a trade-up programme for existing customers. Contact us and we will provide a quote for your upgrade, with credit applied for your current cabinet.",
+        "featured_in_eyebrow": "— Featured in —",
+        "trusted_by_eyebrow": "— They trust us —"
+      }
+    },
+    "product_nav_tabs_PNbR8V": {
+      "type": "product-nav-tabs",
+      "blocks": {
+        "description_UggcCH": {
+          "type": "description",
+          "settings": {
+            "heading": "Overview",
+            "overview_eyebrow": "◇ A Closer Look",
+            "overview_headline": ""
+          }
+        },
+        "features_xfyKkF": {
+          "type": "features",
+          "settings": {
+            "heading": "Features",
+            "feat_icon_1": "glass-holder",
+            "feat_title_1": "Stable Glass Holder",
+            "feat_content_1": "<p>Describe this feature.</p>",
+            "feat_icon_2": "led-lighting",
+            "feat_title_2": "LED Lighting",
+            "feat_content_2": "<p>Describe this feature.</p>",
+            "feat_icon_3": "temperature",
+            "feat_title_3": "Optimal Temperature",
+            "feat_content_3": "<p>Describe this feature.</p>",
+            "feat_icon_4": "air-flow",
+            "feat_title_4": "Internal Air Flow",
+            "feat_content_4": "<p>Describe this feature.</p>",
+            "feat_icon_5": "humidity",
+            "feat_title_5": "Humidity Control",
+            "feat_content_5": "<p>Describe this feature.</p>",
+            "feat_icon_6": "bottle",
+            "feat_title_6": "Oversized Compartment",
+            "feat_content_6": "<p>Describe this feature.</p>",
+            "feat_icon_7": "lock",
+            "feat_title_7": "Lock",
+            "feat_content_7": "<p>Describe this feature.</p>",
+            "feat_icon_8": "glass-door",
+            "feat_title_8": "3-Layer Glass Door",
+            "feat_content_8": "<p>Describe this feature.</p>",
+            "feat_icon_9": "anti-vibration",
+            "feat_title_9": "Anti-Vibration",
+            "feat_content_9": "<p>Describe this feature.</p>"
+          }
+        },
+        "specs_CjFw67": {
+          "type": "specs",
+          "settings": {
+            "heading": "Specifications",
+            "content": ""
+          }
+        },
+        "delivery_VQjpBJ": {
+          "type": "delivery",
+          "settings": {
+            "heading": "Delivery"
+          }
+        },
+        "documents_bC3bat": {
+          "type": "documents",
+          "settings": {
+            "heading": "Documents",
+            "content": "",
+            "doc1_label": "",
+            "doc1_url": "",
+            "doc2_label": "",
+            "doc2_url": "",
+            "doc3_label": "",
+            "doc3_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "description_UggcCH",
+        "features_xfyKkF",
+        "specs_CjFw67",
+        "delivery_VQjpBJ",
+        "documents_bC3bat"
+      ],
+      "name": "Product Nav Tabs",
+      "settings": {
+        "section_width": "container",
+        "quiz_url": "shopify://pages/about-us"
+      }
+    },
+    "brand_logo_DdXM8H": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_eaGeVi": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_byP7CC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_bhAxkb": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.22-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_pBUh7U": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_3AEzPm": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_aQKTHX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JHzBbP": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_VfLfh6": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_RmcjPy": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_4eCCNe": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cByDMD": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_yFdm9g": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qbaWQ8": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cqX8pC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_eaGeVi",
+        "brand_items_byP7CC",
+        "brand_items_bhAxkb",
+        "brand_items_pBUh7U",
+        "brand_items_3AEzPm",
+        "brand_items_aQKTHX",
+        "brand_items_JHzBbP",
+        "brand_items_VfLfh6",
+        "brand_items_RmcjPy",
+        "brand_items_4eCCNe",
+        "brand_items_cByDMD",
+        "brand_items_yFdm9g",
+        "brand_items_qbaWQ8",
+        "brand_items_cqX8pC"
+      ],
+      "name": "t:sections.brand-logo.presets.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>Restaurants</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": false,
+        "items_per_row": 6,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "reveal": false,
+        "items_per_row_mobile": 2.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "shopable_video_Ah8q6G": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_UXiBFH": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "local_video": "shopify://files/videos/WHY LECAVIST short- by Tyrrell's - REEL-with captions_comp.mov"
+          }
+        },
+        "video_hQmyVW": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by Lana - REEL-with captions_comp.mov"
+          }
+        },
+        "video_XPTVfh": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "local_video": "shopify://files/videos/manu HD Final_480_comp.mov"
+          }
+        },
+        "video_z9amJt": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "local_video": "shopify://files/videos/NEW - WHY LE CAVIST BY CUSTOMERS_comp.mov"
+          }
+        },
+        "video_phPqyh": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-63-bottle-wine-fridge-single-zone-lkcv63n",
+            "local_video": "shopify://files/videos/WHY LECAVIST short- by Château Tanunda - REEL-with captions_comp.mov"
+          }
+        },
+        "video_jEMiTp": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by Morena - REEL-with captions_comp.mov"
+          }
+        },
+        "video_TmYecr": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by 40res - REEL-with captions_comp.mov"
+          }
+        }
+      },
+      "block_order": [
+        "video_UXiBFH",
+        "video_hQmyVW",
+        "video_XPTVfh",
+        "video_z9amJt",
+        "video_phPqyh",
+        "video_jEMiTp",
+        "video_TmYecr"
+      ],
+      "name": "t:sections.shopable-video.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>They trust us</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "video_autoplay": true,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 3,
+        "reveal": false,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "brand_logo_CTGQJM": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_VKzT7W": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JGBdjX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_jXqN9e": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.22-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_YiwtnJ": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_MiJ9Bx": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_dhnKqF": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qqfiJC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_d67rGB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_yjX3ND": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cEUNGB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_x4jPVE": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_weRr78": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_VDdjrg": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_L73NFR": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_VKzT7W",
+        "brand_items_JGBdjX",
+        "brand_items_jXqN9e",
+        "brand_items_YiwtnJ",
+        "brand_items_MiJ9Bx",
+        "brand_items_dhnKqF",
+        "brand_items_qqfiJC",
+        "brand_items_d67rGB",
+        "brand_items_yjX3ND",
+        "brand_items_cEUNGB",
+        "brand_items_x4jPVE",
+        "brand_items_weRr78",
+        "brand_items_VDdjrg",
+        "brand_items_L73NFR"
+      ],
+      "name": "t:sections.brand-logo.presets.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>Restaurants</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": false,
+        "items_per_row": 6,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "reveal": false,
+        "items_per_row_mobile": 2.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product-set": {
+      "type": "product-set",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Combination Styles",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "items_per_row": 2,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots",
+        "infinite": false,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "1716793714ce89e457": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_KyV3NB": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_KyV3NB"
+      ],
+      "settings": {}
+    },
+    "divider_TKLM6L": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "border_height": 1,
+        "border_color": "#ebebeb",
+        "reset_spacing": false
+      }
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "People Also Bought",
+        "description": "Here’s some of our most similar products people are buying. Click to discover trending style.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 4,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "divider_HtLXd3": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "border_height": 1,
+        "border_color": "#ebebeb",
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_GdCNUL": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "description": "Explore your recently viewed items, blending quality and style for a refined living experience.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product_faq_bottom": {
+      "type": "product-faq-bottom",
+      "blocks": {
+        "qa_capacity": {
+          "type": "qa",
+          "settings": {
+            "question": "Why does my cabinet hold fewer bottles than the advertised capacity?",
+            "answer": "<p>All LeCavist capacities are calculated using the international 750 mL Bordeaux bottle, with shelves removed and bottles stacked end-to-end. In real-world use you'll typically fit <strong>around 80%</strong> of the advertised maximum, depending on:</p><ul><li><strong>Bottle shape</strong> — Burgundy and Champagne bottles are wider than Bordeaux and take more space.</li><li><strong>How many shelves you keep in</strong> — more shelves means easier access but lower total capacity.</li></ul><p>For example, a 168-bottle cabinet comfortably holds 100–130 mixed-shape bottles with most shelves in place. Each cabinet's <strong>specification sheet</strong> shows three stacking layouts — maximum, comfortable and light — so you can plan exactly how many bottles will fit your collection. <a href=\"#product-manuals\">View this cabinet's spec sheet and manuals</a> for the recommended layouts.</p><p>Extra matching shelves are available separately on our website if you want more storage flexibility.</p>"
+          }
+        },
+        "qa_noise": {
+          "type": "qa",
+          "settings": {
+            "question": "How quiet is the wine cabinet?",
+            "answer": "<p>LeCavist cabinets use a quiet compressor cooling system rated between <strong>41–43 dB</strong> depending on the model — comparable to a library or soft conversation. The compressor cycles on and off to maintain temperature, so you'll hear short periods of gentle humming rather than continuous noise.</p><p>For the quietest operation:</p><ul><li>Place the cabinet on a level, hard floor and adjust the front feet so it's perfectly level.</li><li>Leave the right ventilation clearance: <strong>10 cm</strong> on each side and on top for freestanding models, or <strong>3 cm</strong> for built-in models.</li><li>Wait 24 hours after delivery before powering on, so the refrigerant gas can settle.</li></ul><p>A faint trickling sound from circulating refrigerant is normal and indicates the cooling system is healthy.</p>"
+          }
+        },
+        "qa_temp": {
+          "type": "qa",
+          "settings": {
+            "question": "What temperature range does it cover, and will it work in hot or humid climates?",
+            "answer": "<p>All LeCavist cabinets cover a working range of <strong>5–20°C</strong>. Dual-zone and triple-zone models offer independent zones across that range — perfect for whites (6–10°C), reds (14–18°C) and Champagne (5–8°C) in the same cabinet.</p><p>Every LeCavist cabinet is <strong>subtropical climate rated</strong>, tested to maintain set temperature in ambient room temperatures from 10°C up to 38°C. Owners across Queensland, Western Australia and the Northern Territory consistently report stable temperatures through Australian summer. For best efficiency, install the cabinet away from direct sunlight or other heat sources.</p>"
+          }
+        },
+        "qa_delivery": {
+          "type": "qa",
+          "settings": {
+            "question": "What's included with delivery? Will you take my old fridge?",
+            "answer": "<p><strong>Free Australia-wide delivery</strong> is included on every wine cabinet. Our delivery partners provide:</p><ul><li>A 2-hour delivery window communicated in the morning of delivery, with a 30-minute pre-arrival call.</li><li>Unboxing and placement in the room of your choice.</li><li>Removal of all packaging.</li><li><strong>Free old wine fridge removal</strong> on request — just let us know at checkout or contact our team.</li></ul><p>After delivery, leave the cabinet upright and <strong>unplugged for 24 hours</strong> so the refrigerant gas can settle before first use.</p>"
+          }
+        },
+        "qa_warranty": {
+          "type": "qa",
+          "settings": {
+            "question": "What warranty comes with my wine cabinet?",
+            "answer": "<p>Every LeCavist cabinet ships with a <strong>24-month manufacturer warranty</strong> covering parts and labour. You can <strong>extend your warranty to 36 months for free</strong> by registering your product within 90 days of purchase at <a href=\"https://lecavist.com/pages/products-registration\" rel=\"noopener\">lecavist.com/pages/products-registration</a>.</p><p>Our Sydney-based customer service team handles all warranty claims directly — we don't outsource support. For most issues we'll dispatch a replacement unit within 48 hours of confirmation. To raise a claim, email <a href=\"mailto:hello@lecavist.com\">hello@lecavist.com</a> or visit our showroom in Alexandria, NSW.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "qa_capacity",
+        "qa_noise",
+        "qa_temp",
+        "qa_delivery",
+        "qa_warranty"
+      ],
+      "settings": {
+        "heading": "FREQUENTLY ASKED QUESTIONS"
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "product_nav_tabs_PNbR8V",
+    "brand_logo_DdXM8H",
+    "shopable_video_Ah8q6G",
+    "brand_logo_CTGQJM",
+    "product-set",
+    "1716793714ce89e457",
+    "divider_TKLM6L",
+    "related_products",
+    "divider_HtLXd3",
+    "products_recently_viewed_GdCNUL",
+    "product_faq_bottom"
+  ]
+}

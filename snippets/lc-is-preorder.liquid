@@ -1,0 +1,74 @@
+{%- comment -%}
+  LeCavist — Pre-order detection. Outputs the string 'true' or 'false'.
+
+  A product is "pre-order" when:
+    1. it carries a manual 'pre-order' / 'preorder' tag (effective tags, so an
+       FS variant inherits its parent's tags), OR
+    2. it has state_availability data and NO state is currently in stock
+       (every set state reads as a future date / limited / unavailable).
+
+  state_availability waterfall: product's own metafields → the
+  website-rev.parent_product reference (duo / full-shelf variants).
+
+  Params: product (required)
+{%- endcomment -%}
+{%- liquid
+  assign _po = false
+
+  comment
+    1) manual tag (effective tags include the FS parent's tags)
+  endcomment
+  capture _etags
+    render 'lc-effective-tags', product: product
+  endcapture
+  assign _tag_list = _etags | strip | split: '|'
+  for _t in _tag_list
+    assign _tlc = _t | downcase | remove: '-' | remove: ' '
+    if _tlc == 'preorder'
+      assign _po = true
+    endif
+  endfor
+
+  comment
+    2) state availability — own metafields, then parent_product
+  endcomment
+  assign _nsw = product.metafields.state_availability.nsw.value | strip
+  assign _vic = product.metafields.state_availability.vic.value | strip
+  assign _qld = product.metafields.state_availability.qld.value | strip
+  assign _sa  = product.metafields.state_availability.sa.value  | strip
+  assign _wa  = product.metafields.state_availability.wa.value  | strip
+  assign _has_own = false
+  if _nsw != blank or _vic != blank or _qld != blank or _sa != blank or _wa != blank
+    assign _has_own = true
+  endif
+  unless _has_own
+    assign _par = product.metafields['website-rev'].parent_product.value
+    if _par != blank
+      assign _nsw = _par.metafields.state_availability.nsw.value | strip
+      assign _vic = _par.metafields.state_availability.vic.value | strip
+      assign _qld = _par.metafields.state_availability.qld.value | strip
+      assign _sa  = _par.metafields.state_availability.sa.value  | strip
+      assign _wa  = _par.metafields.state_availability.wa.value  | strip
+    endif
+  endunless
+
+  assign _has_avail = false
+  if _nsw != blank or _vic != blank or _qld != blank or _sa != blank or _wa != blank
+    assign _has_avail = true
+  endif
+
+  if _has_avail
+    assign _any_in_stock = false
+    assign _states = _nsw | append: '|' | append: _vic | append: '|' | append: _qld | append: '|' | append: _sa | append: '|' | append: _wa | split: '|'
+    for _s in _states
+      assign _slc = _s | strip | downcase
+      if _slc == 'available' or _slc == 'yes' or _slc == 'in stock' or _slc == 'instock' or _slc == 'in-stock'
+        assign _any_in_stock = true
+      endif
+    endfor
+    unless _any_in_stock
+      assign _po = true
+    endunless
+  endif
+-%}
+{{- _po -}}

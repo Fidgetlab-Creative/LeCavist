@@ -1,0 +1,386 @@
+{%- comment -%}
+  lc-compare.liquid — custom spec-based cabinet comparison (replaces the Compareder app).
+
+  • Renders window.LC_CMP: every all-cabinets product keyed by handle, with its
+    lecavist_specs (capacity / zones / temperature / installation / dimensions / noise).
+  • JS injects a "Compare" toggle into each cabinet card, stores the selection in
+    localStorage ('lc-compare'), shows a floating bar, and opens a side-by-side spec
+    pop-up — all built from the data below (works across pages, no app needed).
+  • The Compareder app's own controls are hidden via CSS so there's no duplication.
+
+  Included globally from layout/theme.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign cmp_coll = collections['all-cabinets']
+-%}
+<script>
+window.LC_CMP = {
+{%- for p in cmp_coll.products -%}
+  {%- assign s = p.metafields.lecavist_specs -%}
+  {%- assign cap_raw = s.bottle_capacity.value | strip -%}
+  {%- if cap_raw != blank -%}
+    {%- liquid
+      assign cap = cap_raw
+      assign cap_rt = cap_raw | plus: 0 | append: ''
+      if cap_raw == cap_rt
+        assign cap = cap_raw | append: ' Bottles'
+      endif
+      assign zone = s.cooling_zone.value
+      assign temp = s.temperature_range.value
+      assign inst = s.installation_type.value
+      assign noise = s.noise_level_db.value
+      if noise != blank
+        assign noise = noise | append: ' dB'
+      endif
+      assign w = s.width_mm.value
+      assign h = s.height_mm.value
+      assign d = s.depth_mm.value
+      assign dims = ''
+      if w != blank and h != blank and d != blank
+        assign dims = w | append: ' × ' | append: h | append: ' × ' | append: d | append: ' mm'
+      endif
+      assign v = p.selected_or_first_available_variant
+      assign price_old = ''
+      if v.compare_at_price > v.price
+        assign price_old = v.compare_at_price | money
+      endif
+    -%}
+    {%- capture img -%}{{ p.featured_image | image_url: width: 320 }}{%- endcapture -%}
+    {%- assign img = img | strip -%}
+    {%- assign pfx = img | slice: 0, 2 -%}
+    {%- if pfx == '//' -%}{%- assign img = img | prepend: 'https:' -%}{%- endif -%}
+  {{ p.handle | json }}: {
+    handle: {{ p.handle | json }},
+    title: {{ p.title | json }},
+    url: {{ p.url | json }},
+    image: {{ img | json }},
+    price: {{ v.price | money | json }},
+    priceOld: {{ price_old | json }},
+    specs: {
+      capacity:     {{ cap  | strip | json }},
+      zones:        {{ zone | strip | json }},
+      temperature:  {{ temp | strip | json }},
+      installation: {{ inst | strip | json }},
+      dimensions:   {{ dims | strip | json }},
+      noise:        {{ noise | strip | json }}
+    }
+  },
+  {%- endif -%}
+{%- endfor -%}
+};
+</script>
+
+<div id="lc-cmp-bar" hidden>
+  <span class="lc-cmp-bar__count" aria-live="polite"></span>
+  <button type="button" class="lc-cmp-bar__view">Compare</button>
+  <button type="button" class="lc-cmp-bar__clear" aria-label="Clear comparison">Clear</button>
+</div>
+
+<div id="lc-cmp-popup" hidden role="dialog" aria-modal="true" aria-label="Compare cabinets">
+  <div class="lc-cmp-overlay" data-lc-cmp-close></div>
+  <div class="lc-cmp-box">
+    <div class="lc-cmp-head">
+      <h2 class="lc-cmp-title-h">Compare cabinets</h2>
+      <div class="lc-cmp-head-actions">
+        <button type="button" class="lc-cmp-pdf" data-lc-cmp-pdf>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v11m0 0 4-4m-4 4-4-4M5 20h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Download PDF
+        </button>
+        <button type="button" class="lc-cmp-close" data-lc-cmp-close aria-label="Close">×</button>
+      </div>
+    </div>
+    <div class="lc-cmp-scroll"></div>
+  </div>
+</div>
+
+{%- style -%}
+  /* Hide the Compareder app's own UI — this feature replaces it */
+  .coder-compareder-compare, .coder-compare-checkbox, .py-compare-o2link,
+  [class^="pyr-compare"], [class*=" pyr-compare"], [class^="coder-compare"] { display: none !important; }
+
+  /* ── Compare toggle on cards ── */
+  .lc-cmp-toggle {
+    display: inline-flex; align-items: center; gap: 7px; cursor: pointer;
+    margin-top: 12px; font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 13.5px; font-weight: 500; letter-spacing: .02em; color: #6B1F2E;
+    user-select: none; justify-content: center; width: 100%;
+  }
+  .product-item__information[style*="start"] .lc-cmp-toggle,
+  .type-list .lc-cmp-toggle { justify-content: flex-start; width: auto; }
+  .lc-cmp-toggle input { width: 15px; height: 15px; accent-color: #6B1F2E; cursor: pointer; margin: 0; }
+  .lc-cmp-toggle:hover { color: #1a1512; }
+
+  /* ── Floating bar ── */
+  #lc-cmp-bar {
+    position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%);
+    z-index: 9998; display: flex; align-items: center; gap: 14px;
+    background: #1a1512; color: #fff; border-radius: 100px;
+    padding: 11px 12px 11px 22px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    font-family: 'Inter Tight', -apple-system, sans-serif; font-size: 14px;
+  }
+  #lc-cmp-bar[hidden] { display: none; }
+  .lc-cmp-bar__count { white-space: nowrap; }
+  .lc-cmp-bar__view {
+    background: #F5F0E8; color: #1a1512; border: 0; border-radius: 100px;
+    padding: 9px 20px; font: 600 14px 'Inter Tight', sans-serif; cursor: pointer;
+  }
+  .lc-cmp-bar__view[disabled] { opacity: .45; cursor: not-allowed; }
+  .lc-cmp-bar__clear {
+    background: transparent; color: rgba(255,255,255,.7); border: 0;
+    font: 500 13px 'Inter Tight', sans-serif; cursor: pointer; text-decoration: underline; padding: 4px;
+  }
+  @media (max-width: 749px) { #lc-cmp-bar { bottom: 74px; width: calc(100% - 24px); justify-content: space-between; } }
+
+  /* ── Pop-up ── */
+  #lc-cmp-popup { position: fixed; inset: 0; z-index: 9999; }
+  #lc-cmp-popup[hidden] { display: none; }
+  .lc-cmp-overlay { position: absolute; inset: 0; background: rgba(26,21,18,.55); }
+  .lc-cmp-box {
+    position: relative; width: min(1000px, calc(100% - 32px)); max-height: 88vh;
+    margin: 6vh auto 0; background: #fff; border-radius: 16px; overflow: hidden;
+    display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .lc-cmp-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px; border-bottom: 1px solid rgba(26,21,18,.1); flex-shrink: 0;
+  }
+  .lc-cmp-title-h { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-size: 28px; color: #1a1512; }
+  .lc-cmp-close { background: none; border: 0; font-size: 30px; line-height: 1; color: #1a1512; cursor: pointer; padding: 0 4px; }
+  .lc-cmp-head-actions { display: flex; align-items: center; gap: 14px; }
+  .lc-cmp-pdf {
+    display: inline-flex; align-items: center; gap: 7px; background: #6B1F2E; color: #fff;
+    border: 0; border-radius: 100px; padding: 10px 18px; cursor: pointer;
+    font: 600 13.5px 'Inter Tight', sans-serif; white-space: nowrap;
+  }
+  .lc-cmp-pdf:hover { background: #511621; }
+  @media (max-width: 749px) { .lc-cmp-pdf { padding: 9px 14px; font-size: 12.5px; } .lc-cmp-title-h { font-size: 22px; } }
+  .lc-cmp-scroll { overflow: auto; -webkit-overflow-scrolling: touch; }
+
+  .lc-cmp-table { width: 100%; border-collapse: collapse; }
+  .lc-cmp-table th, .lc-cmp-table td { border-bottom: 1px solid rgba(26,21,18,.1); vertical-align: middle; }
+  .lc-cmp-lbl {
+    text-align: left; background: #F5F0E8; padding: 17px 20px; position: sticky; left: 0; z-index: 2;
+    font-family: 'Inter Tight', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: rgba(26,21,18,.6); white-space: nowrap;
+  }
+  .lc-cmp-val {
+    text-align: center; padding: 17px 20px; font-family: 'Inter Tight', sans-serif;
+    font-size: 18px; color: #1a1512; min-width: 160px;
+  }
+  .lc-cmp-row:nth-child(even) .lc-cmp-val { background: #FBF9F5; }
+  .lc-cmp-prod { text-align: center; padding: 16px 14px 20px; position: relative; min-width: 150px; vertical-align: top; }
+  .lc-cmp-prod img { max-width: 130px; height: auto; margin: 0 auto 10px; display: block; }
+  .lc-cmp-title { display: block; font-family: 'Inter Tight', sans-serif; font-size: 15px; font-weight: 600; color: #1a1512; text-decoration: none; line-height: 1.35; }
+  .lc-cmp-title:hover { text-decoration: underline; }
+  .lc-cmp-price { display: block; margin-top: 7px; font-family: 'Inter Tight', sans-serif; font-size: 16px; color: #6B1F2E; font-weight: 600; }
+  .lc-cmp-price s { color: rgba(26,21,18,.4); font-weight: 400; margin-left: 5px; }
+  .lc-cmp-rm { position: absolute; top: 6px; right: 6px; background: #F5F0E8; border: 0; width: 26px; height: 26px; border-radius: 50%; font-size: 17px; line-height: 1; color: #1a1512; cursor: pointer; }
+  .lc-cmp-corner { background: #F5F0E8; position: sticky; left: 0; z-index: 2; }
+  body.lc-cmp-open { overflow: hidden; }
+
+  /* toast */
+  #lc-cmp-toast {
+    position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); z-index: 10000;
+    background: #1a1512; color: #fff; padding: 10px 18px; border-radius: 100px;
+    font: 500 13px 'Inter Tight', sans-serif; opacity: 0; transition: opacity .25s; pointer-events: none;
+  }
+  #lc-cmp-toast.show { opacity: 1; }
+{%- endstyle -%}
+
+<script>
+(function () {
+  var DATA = window.LC_CMP || {};
+  var KEY = 'lc-compare';
+  var MAX = 4;
+
+  function getList() { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch (e) { return []; } }
+  function setList(a) { localStorage.setItem(KEY, JSON.stringify(a)); }
+  function esc(s) { var d = document.createElement('span'); d.textContent = s == null ? '' : String(s); return d.innerHTML.replace(/"/g, '&quot;'); }
+
+  var bar = document.getElementById('lc-cmp-bar');
+  var popup = document.getElementById('lc-cmp-popup');
+  var scroll = popup.querySelector('.lc-cmp-scroll');
+  var toast;
+
+  function showToast(msg) {
+    if (!toast) { toast = document.createElement('div'); toast.id = 'lc-cmp-toast'; document.body.appendChild(toast); }
+    toast.textContent = msg; toast.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(function () { toast.classList.remove('show'); }, 2200);
+  }
+
+  function handleOf(card) {
+    var a = card.querySelector('a[href*="/products/"]');
+    if (!a) return null;
+    var m = (a.getAttribute('href') || '').match(/\/products\/([^/?#]+)/);
+    return m ? m[1] : null;
+  }
+
+  function injectToggles(root) {
+    var cards = (root || document).querySelectorAll('.product-item');
+    for (var i = 0; i < cards.length; i++) {
+      var card = cards[i];
+      if (card._lcCmp) continue;
+      var h = handleOf(card);
+      if (!h || !DATA[h]) continue;         // only cabinets present in the data
+      card._lcCmp = true;
+      var info = card.querySelector('.product-item__information') || card;
+      var lbl = document.createElement('label');
+      lbl.className = 'lc-cmp-toggle';
+      lbl.dataset.h = h;
+      lbl.innerHTML = '<input type="checkbox"><span>Compare</span>';
+      var cb = lbl.querySelector('input');
+      cb.checked = getList().indexOf(h) > -1;
+      cb.addEventListener('change', function (hh, box) {
+        return function () { onToggle(hh, box); };
+      }(h, cb));
+      info.appendChild(lbl);
+    }
+  }
+
+  function onToggle(h, cb) {
+    var list = getList();
+    var idx = list.indexOf(h);
+    if (cb.checked) {
+      if (idx === -1) {
+        if (list.length >= MAX) { cb.checked = false; showToast('Compare up to ' + MAX + ' cabinets'); return; }
+        list.push(h);
+      }
+    } else if (idx > -1) { list.splice(idx, 1); }
+    setList(list); syncToggles(); updateBar();
+  }
+
+  function syncToggles() {
+    var list = getList();
+    document.querySelectorAll('.lc-cmp-toggle').forEach(function (w) {
+      var cb = w.querySelector('input'); if (cb) cb.checked = list.indexOf(w.dataset.h) > -1;
+    });
+  }
+
+  function updateBar() {
+    var n = getList().length;
+    if (!n) { bar.setAttribute('hidden', ''); return; }
+    bar.removeAttribute('hidden');
+    bar.querySelector('.lc-cmp-bar__count').textContent = n === 1 ? '1 cabinet — add 1 more' : n + ' cabinets selected';
+    var view = bar.querySelector('.lc-cmp-bar__view');
+    if (n < 2) { view.setAttribute('disabled', ''); } else { view.removeAttribute('disabled'); }
+  }
+
+  function items() { return getList().map(function (h) { return DATA[h]; }).filter(Boolean); }
+
+  var ROWS = [
+    ['capacity', 'Capacity'], ['zones', 'Cooling zones'], ['temperature', 'Temperature'],
+    ['installation', 'Installation'], ['dimensions', 'Dimensions (W × H × D)'], ['noise', 'Noise level']
+  ];
+
+  function buildTable() {
+    var its = items();
+    if (its.length < 2) { closePopup(); return; }
+    var html = '<table class="lc-cmp-table"><tbody>';
+    html += '<tr class="lc-cmp-row"><th class="lc-cmp-corner"></th>';
+    its.forEach(function (it) {
+      html += '<td class="lc-cmp-prod">'
+        + '<button class="lc-cmp-rm" type="button" data-h="' + esc(it.handle) + '" aria-label="Remove">×</button>'
+        + (it.image ? '<a href="' + esc(it.url) + '"><img src="' + esc(it.image) + '" alt="" loading="lazy"></a>' : '')
+        + '<a class="lc-cmp-title" href="' + esc(it.url) + '">' + esc(it.title) + '</a>'
+        + '<span class="lc-cmp-price">' + esc(it.price) + (it.priceOld ? ' <s>' + esc(it.priceOld) + '</s>' : '') + '</span>'
+        + '</td>';
+    });
+    html += '</tr>';
+    ROWS.forEach(function (r) {
+      html += '<tr class="lc-cmp-row"><th class="lc-cmp-lbl">' + esc(r[1]) + '</th>';
+      its.forEach(function (it) {
+        var v = it.specs && it.specs[r[0]] ? it.specs[r[0]] : '—';
+        html += '<td class="lc-cmp-val">' + esc(v) + '</td>';
+      });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    scroll.innerHTML = html;
+  }
+
+  function openPopup() {
+    if (getList().length < 2) { showToast('Select at least 2 cabinets'); return; }
+    buildTable();
+    popup.removeAttribute('hidden');
+    document.body.classList.add('lc-cmp-open');
+  }
+  function closePopup() { popup.setAttribute('hidden', ''); document.body.classList.remove('lc-cmp-open'); }
+
+  // Print just the comparison as a clean, self-contained document → browser "Save as PDF".
+  function printCompare() {
+    var its = items();
+    if (its.length < 2) return;
+    var head = '<tr><th class="c"></th>' + its.map(function (it) {
+      return '<th class="p"><div class="pt">' + esc(it.title) + '</div><div class="pp">' + esc(it.price) + '</div></th>';
+    }).join('') + '</tr>';
+    var body = ROWS.map(function (r) {
+      return '<tr><th class="lbl">' + esc(r[1]) + '</th>' + its.map(function (it) {
+        var v = it.specs && it.specs[r[0]] ? it.specs[r[0]] : '—';
+        return '<td>' + esc(v) + '</td>';
+      }).join('') + '</tr>';
+    }).join('');
+    var orient = its.length >= 3 ? 'landscape' : 'portrait';
+    // NB: keep this function free of any literal <style>/<body>/<head>/<html> tag — a
+    // storefront app string-injects app blocks at those tags and corrupts the script.
+    // So the print doc is assembled via DOM; CSS lives in the .sel style rules string
+    // (selectors like body{} / table{} have no '<', so nothing to anchor on).
+    var css = '@page{size:A4 ' + orient + ';margin:14mm}'
+      + 'body{font-family:Arial,Helvetica,sans-serif;color:#1a1512;margin:0}'
+      + 'h1{font-size:22px;font-weight:700;margin:0 0 3px}'
+      + '.sub{color:#6B1F2E;font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 20px}'
+      + 'table{width:100%;border-collapse:collapse;font-size:15px}'
+      + 'th,td{border:1px solid #d9d2c7;padding:11px 13px;text-align:center;vertical-align:middle}'
+      + 'th.lbl{background:#F5F0E8;text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#6b6257;white-space:nowrap}'
+      + 'th.p .pt{font-weight:700;font-size:13px}th.p .pp{color:#6B1F2E;font-weight:700;margin-top:4px}'
+      + 'tbody tr:nth-child(even) td{background:#FBF9F5}';
+    var old = document.getElementById('lc-cmp-print'); if (old) old.remove();
+    var ifr = document.createElement('iframe');
+    ifr.id = 'lc-cmp-print';
+    ifr.setAttribute('aria-hidden', 'true');
+    ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(ifr);
+    var d = ifr.contentWindow.document;
+    var el = function (tag, txt) { var e = d.createElement(tag); if (txt != null) e.textContent = txt; return e; };
+    d.head.appendChild(el('title', 'LeCavist — Cabinet Comparison'));
+    var stl = el('style'); stl.textContent = css; d.head.appendChild(stl);
+    d.body.appendChild(el('h1', 'Cabinet comparison'));
+    var sub = el('div', 'LeCavist Wine Cabinets'); sub.className = 'sub'; d.body.appendChild(sub);
+    var tbl = el('table'); tbl.innerHTML = '<thead>' + head + '</thead><tbody>' + body + '</tbody>'; d.body.appendChild(tbl);
+    setTimeout(function () { try { ifr.contentWindow.focus(); ifr.contentWindow.print(); } catch (e) {} }, 300);
+  }
+
+  // events
+  bar.querySelector('.lc-cmp-bar__view').addEventListener('click', openPopup);
+  bar.querySelector('.lc-cmp-bar__clear').addEventListener('click', function () {
+    setList([]); syncToggles(); updateBar(); closePopup();
+  });
+  popup.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-lc-cmp-pdf]')) { printCompare(); return; }
+    if (e.target.hasAttribute('data-lc-cmp-close')) { closePopup(); return; }
+    var rm = e.target.closest && e.target.closest('.lc-cmp-rm');
+    if (rm) {
+      var h = rm.dataset.h; var list = getList(); var i = list.indexOf(h);
+      if (i > -1) { list.splice(i, 1); setList(list); }
+      syncToggles(); updateBar();
+      if (getList().length >= 2) buildTable(); else closePopup();
+    }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !popup.hasAttribute('hidden')) closePopup(); });
+  window.addEventListener('storage', function (e) { if (e.key === KEY) { syncToggles(); updateBar(); } });
+
+  function start() {
+    injectToggles();
+    updateBar(); syncToggles();
+    var obs = new MutationObserver(function (muts) {
+      for (var i = 0; i < muts.length; i++) {
+        for (var j = 0; j < muts[i].addedNodes.length; j++) {
+          var n = muts[i].addedNodes[j];
+          if (n.nodeType === 1) injectToggles(n.matches && n.matches('.product-item') ? n.parentNode : n);
+        }
+      }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>

@@ -1,0 +1,364 @@
+{%- comment -%}
+  LECAVIST — State Availability Section
+  Namespace : state_availability
+  Keys      : nsw · vic · qld · sa · wa
+  Values    : available · limited · unavailable · or any free text (restock date)
+  The badge always displays the exact text from the CSV / metafield.
+  Status keywords control colour only.
+{%- endcomment -%}
+
+{%- liquid
+  assign nsw_raw = product.metafields.state_availability.nsw.value | strip
+  assign vic_raw = product.metafields.state_availability.vic.value | strip
+  assign qld_raw = product.metafields.state_availability.qld.value | strip
+  assign sa_raw  = product.metafields.state_availability.sa.value  | strip
+  assign wa_raw  = product.metafields.state_availability.wa.value  | strip
+
+  comment
+    "Available" fallback — products (e.g. accessories) often carry no
+    per-state dates. With the setting on, any blank state renders as a
+    green "Available" card and the table shows even with no data at all.
+  endcomment
+  if section.settings.fallback_available
+    if nsw_raw == blank
+      assign nsw_raw = 'Available'
+    endif
+    if vic_raw == blank
+      assign vic_raw = 'Available'
+    endif
+    if qld_raw == blank
+      assign qld_raw = 'Available'
+    endif
+    if sa_raw == blank
+      assign sa_raw = 'Available'
+    endif
+    if wa_raw == blank
+      assign wa_raw = 'Available'
+    endif
+  endif
+
+  assign nsw = nsw_raw | downcase
+  assign vic = vic_raw | downcase
+  assign qld = qld_raw | downcase
+  assign sa  = sa_raw  | downcase
+  assign wa  = wa_raw  | downcase
+
+  assign has_data = false
+  if nsw != blank or vic != blank or qld != blank or sa != blank or wa != blank
+    assign has_data = true
+  endif
+-%}
+
+{%- if has_data -%}
+<section id="state-availability-{{ section.id }}" class="lv-state-avail" aria-label="{{ section.settings.title | escape }}">
+  <div class="lv-state-avail__inner">
+
+    {%- if section.settings.title != blank -%}
+    <div class="lv-state-avail__header">
+      <span class="lv-state-avail__eyebrow">{{ section.settings.eyebrow }}</span>
+      <div class="lv-state-avail__divider" aria-hidden="true"></div>
+      <h3 class="lv-state-avail__title">{{ section.settings.title }}</h3>
+    </div>
+    {%- endif -%}
+
+    <div class="lv-state-avail__grid" role="list">
+
+      {%- assign state_abbr     = 'NSW,VIC,QLD,SA,WA' | split: ',' -%}
+      {%- assign state_full     = 'New South Wales,Victoria,Queensland,South Australia,Western Australia' | split: ',' -%}
+      {%- assign state_raw_vals = nsw_raw | append: '|' | append: vic_raw | append: '|' | append: qld_raw | append: '|' | append: sa_raw  | append: '|' | append: wa_raw  | split: '|' -%}
+      {%- assign state_lc_vals  = nsw     | append: '|' | append: vic     | append: '|' | append: qld     | append: '|' | append: sa      | append: '|' | append: wa      | split: '|' -%}
+
+      {%- for i in (0..4) -%}
+        {%- assign lc  = state_lc_vals[i]  | strip -%}
+        {%- assign raw = state_raw_vals[i] | strip -%}
+
+        {%- comment -%} Determine colour status ─── {%- endcomment -%}
+        {%- assign status = 'unavailable' -%}
+        {%- if lc == 'available' or lc == 'yes' or lc == '1' or lc == 'true' or lc == 'in stock' or lc == 'instock' -%}
+          {%- assign status = 'available' -%}
+        {%- elsif lc == 'limited' or lc == 'low' or lc == 'limited stock' or lc == 'limitedstock' or lc == 'low stock' or lc == 'lowstock' -%}
+          {%- assign status = 'limited' -%}
+        {%- elsif lc == 'unavailable' or lc == 'no' or lc == '0' or lc == 'false' or lc == 'out of stock' or lc == 'outofstock' -%}
+          {%- assign status = 'unavailable' -%}
+        {%- elsif lc != blank -%}
+          {%- assign status = 'restock' -%}
+        {%- endif -%}
+
+        <div
+          class="lv-state-avail__card lv-state-avail__card--{{ status }}"
+          role="listitem"
+          aria-label="{{ state_full[i] }}: {{ raw }}"
+        >
+          {%- if status == 'restock' -%}
+            <div class="lv-state-avail__icon" aria-hidden="true">
+              <svg width="11" height="11" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="1" y="2.5" width="12" height="10.5" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M1 5.5h12" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M4.5 1v3M9.5 1v3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+                <circle cx="4.5" cy="8.5" r="0.75" fill="currentColor"/>
+                <circle cx="7" cy="8.5" r="0.75" fill="currentColor"/>
+              </svg>
+            </div>
+          {%- else -%}
+            <div class="lv-state-avail__dot" aria-hidden="true"></div>
+          {%- endif -%}
+
+          <div class="lv-state-avail__abbr">{{ state_abbr[i] }}</div>
+          <div class="lv-state-avail__name">{{ state_full[i] }}</div>
+
+          <div class="lv-state-avail__badge">
+            {%- if status == 'restock' -%}
+              <span class="lv-state-avail__restock-pre">{{ section.settings.label_restock_prefix }}</span>
+              <span class="lv-state-avail__restock-date">{{ raw }}</span>
+            {%- else -%}
+              {{ raw }}
+            {%- endif -%}
+          </div>
+
+        </div>
+      {%- endfor -%}
+
+    </div>
+
+    {%- if section.settings.footnote != blank -%}
+    <p class="lv-state-avail__footnote">{{ section.settings.footnote }}</p>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endif -%}
+
+<style>
+  :root {
+    --lv-cream:    #f1eae1;
+    --lv-green:    #172519;
+    --lv-burgundy: #7c3030;
+    --lv-wine:     #3a0d16;
+    --lv-sans:     'Inter Tight', -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  }
+
+  .lv-state-avail {
+    padding-top:    {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .lv-state-avail__inner {
+    max-width: var(--page-width, 1200px);
+    margin:  0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ── Header ── */
+  .lv-state-avail__header {
+    text-align:    center;
+    margin-bottom: 1.6rem;
+  }
+
+  .lv-state-avail__eyebrow {
+    display:        block;
+    font-family:    var(--lv-sans);
+    font-size:      10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color:          var(--lv-burgundy);
+    margin-bottom:  0.4rem;
+  }
+
+  .lv-state-avail__divider {
+    width:      36px;
+    height:     1px;
+    background: var(--lv-burgundy);
+    opacity:    0.3;
+    margin:     0 auto 0.85rem;
+  }
+
+  .lv-state-avail__title {
+    margin:         0;
+    font-family:    var(--lv-sans);
+    font-size:      clamp(12px, 2vw, 14px);
+    font-weight:    400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color:          var(--lv-green);
+  }
+
+  /* ── Grid ── */
+  .lv-state-avail__grid {
+    display:         flex;
+    justify-content: center;
+    align-items:     stretch;
+    flex-wrap:       wrap;
+    gap:             0.5rem;
+  }
+
+  /* ── Card base ── */
+  .lv-state-avail__card {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            0.2rem;
+    padding:        0.9rem 0.8rem 0.75rem;
+    border:         1px solid;
+    border-radius:  1px;
+    min-width:      90px;
+    flex:           1 1 90px;
+    max-width:      130px;
+    text-align:     center;
+    transition:     opacity 0.2s ease;
+  }
+
+  /* ── available — filled dark green ── */
+  .lv-state-avail__card--available {
+    background:   var(--lv-green);
+    border-color: var(--lv-green);
+    color:        var(--lv-cream);
+  }
+
+  /* ── limited — burgundy outline ── */
+  .lv-state-avail__card--limited {
+    background:   transparent;
+    border-color: var(--lv-burgundy);
+    color:        var(--lv-burgundy);
+  }
+
+  /* ── unavailable — very muted ── */
+  .lv-state-avail__card--unavailable {
+    background:   transparent;
+    border-color: rgba(23, 37, 25, 0.18);
+    color:        rgba(23, 37, 25, 0.32);
+  }
+
+  /* ── restock — deep wine dashed ── */
+  .lv-state-avail__card--restock {
+    background:    transparent;
+    border-color:  var(--lv-wine);
+    border-style:  dashed;
+    color:         var(--lv-wine);
+  }
+
+  /* ── Pulsing dot ── */
+  .lv-state-avail__dot {
+    width:         5px;
+    height:        5px;
+    border-radius: 50%;
+    background:    currentColor;
+    margin-bottom: 0.1rem;
+    flex-shrink:   0;
+  }
+
+  .lv-state-avail__card--available .lv-state-avail__dot {
+    animation: lv-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes lv-pulse {
+    0%, 100% { opacity: 1;    transform: scale(1);    }
+    50%       { opacity: 0.4; transform: scale(0.65); }
+  }
+
+  /* ── Calendar icon ── */
+  .lv-state-avail__icon {
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    margin-bottom:   0.1rem;
+    opacity:         0.8;
+  }
+
+  /* ── Text ── */
+  .lv-state-avail__abbr {
+    font-family:    var(--lv-sans);
+    font-size:      14px;
+    font-weight:    700;
+    letter-spacing: 0.08em;
+    line-height:    1;
+  }
+
+  .lv-state-avail__name {
+    font-family:    var(--lv-sans);
+    font-size:      10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity:        0.55;
+    line-height:    1.3;
+  }
+
+  .lv-state-avail__badge {
+    font-family:    var(--lv-sans);
+    font-size:      10px;
+    font-weight:    600;
+    letter-spacing: 0.04em;
+    margin-top:     0.2rem;
+    line-height:    1.35;
+    text-transform: none;   /* show text exactly as typed */
+    word-break:     break-word;
+  }
+
+  /* ── Restock prefix ("Expected") ── */
+  .lv-state-avail__restock-pre {
+    display:        block;
+    font-size:      8px;
+    font-weight:    400;
+    letter-spacing: 0.1em;
+    opacity:        0.6;
+    text-transform: uppercase;
+    margin-bottom:  0.08rem;
+  }
+
+  .lv-state-avail__restock-date {
+    display:    block;
+    font-size:  10px;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  /* ── Footnote ── */
+  .lv-state-avail__footnote {
+    text-align:     center;
+    margin:         1.2rem 0 0;
+    font-family:    var(--lv-sans);
+    font-size:      10px;
+    letter-spacing: 0.04em;
+    color:          var(--lv-green);
+    opacity:        0.4;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 480px) {
+    .lv-state-avail__grid { gap: 0.35rem; }
+
+    .lv-state-avail__card {
+      min-width: 58px;
+      max-width: 66px;
+      padding:   0.7rem 0.45rem 0.6rem;
+      flex:      1 1 58px;
+    }
+
+    .lv-state-avail__abbr { font-size: 12px; }
+    .lv-state-avail__name { display: none; }
+    .lv-state-avail__restock-date { font-size: 9px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "State Availability",
+  "tag": "section",
+  "class": "section-state-availability",
+  "limit": 1,
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "Delivery" },
+    { "type": "text", "id": "title", "label": "Section title", "default": "Availability by State" },
+    { "type": "textarea", "id": "footnote", "label": "Footnote (optional)", "placeholder": "e.g. Availability subject to change. Contact us for delivery ETA." },
+    { "type": "header", "content": "Restock label" },
+    { "type": "text", "id": "label_restock_prefix", "label": "Restock prefix", "info": "Shown above restock date text. E.g. 'Expected' → 'Expected / End of April'", "default": "Expected" },
+    { "type": "header", "content": "Missing data" },
+    { "type": "checkbox", "id": "fallback_available", "label": "Treat missing data as 'Available'", "info": "States without a metafield value show a green 'Available' card instead of hiding the table. Recommended for accessories.", "default": false },
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 40 }
+  ],
+  "presets": [{ "name": "State Availability" }]
+}
+{% endschema %}

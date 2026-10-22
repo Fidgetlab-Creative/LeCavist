@@ -1,0 +1,105 @@
+/* ──────────────────────────────────────────────────────────────
+   LeCavist compare page — spec-based cabinet comparison.
+   Rows = field label (left, beige) + one cell per cabinet.
+   Fields: Capacity · Cooling zones · Temperature · Installation ·
+           Dimensions · Noise · Availability (from lecavist_specs).
+   ────────────────────────────────────────────────────────────── */
+.compare-page-section { --lc-ink: #1A1512; --lc-line: rgba(26, 21, 18, 0.10); }
+
+.compare-table {
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--lc-line) !important;
+  border-radius: 14px;
+  background: #fff;
+  -webkit-overflow-scrolling: touch;
+  --btn-padding-y: 12.5px;
+  --btn-padding-x: 1.5rem;
+}
+
+.compare-row { align-items: stretch; }
+.compare-row > * { border-bottom: 1px solid var(--lc-line); }
+.compare-row:last-child > * { border-bottom: 0; }
+.compare-row > *:last-child { border-inline-end: 0; }
+
+/* Zebra striping on the value cells for legibility */
+.compare-row:nth-child(even) > *:not(.compare-field) { background-color: #FBF9F5; }
+
+/* ── Left field-label column ── */
+.compare-field {
+  flex: 0 0 auto;
+  width: 40%;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: #F5F0E8;
+  border-inline-end: 1px solid var(--lc-line);
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 21, 18, 0.6);
+  line-height: 1.3;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+
+/* ── Product value cells ── */
+.compare-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 16px 18px;
+  border-inline-end: 1px solid var(--lc-line);
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-size: 15px;
+  color: var(--lc-ink);
+  line-height: 1.45;
+}
+
+/* ── Product header row (image / name / price / add-to-cart) ── */
+.compare-row-basic .compare-field { align-items: flex-start; }
+.compare-row-basic .product-item {
+  border-inline-end: 1px solid var(--lc-line);
+  padding: 18px 16px 22px !important;
+  text-align: center;
+}
+.compare-row-basic .product-item__media--ratio { max-width: 180px; margin: 0 auto 14px; }
+.compare-row-basic .product-item__name {
+  font-family: 'Inter Tight', -apple-system, sans-serif;
+  font-weight: 600;
+  color: var(--lc-ink);
+}
+.compare-row-basic .product-item__price { justify-content: center; margin-top: 6px; }
+.compare-row-basic .product-item__information { margin-top: 14px !important; }
+
+/* Availability */
+.compare-row-availability .available { color: #14854e; font-weight: 600; }
+.compare-row-availability .unavailable { color: #907341; font-weight: 600; }
+
+/* Badges / countdown tidy */
+.compare-table .product__badges { flex-direction: column; }
+.compare-table .product__badges-sale-countdown { display: none; }
+.compare-table .jdgm-prev-badge__text { display: none; }
+:is(.color-content, .size-content):not(:last-child) { margin-inline-end: 3px; }
+
+/* ── Column widths per breakpoint (how many cabinets fit before scroll) ── */
+.compare-row > *:not(.compare-field) { flex: 0 0 auto; width: 60%; }
+@media screen and (min-width: 576px) {
+  .compare-row > *:not(.compare-field) { width: 45%; }
+}
+@media screen and (min-width: 768px) {
+  .compare-row > *:not(.compare-field) { width: 32%; }
+  .compare-field { width: 22%; }
+}
+@media screen and (min-width: 1025px) {
+  .compare-row > *:not(.compare-field) { width: 22%; }
+  .compare-field { width: 18%; }
+}
+@media screen and (min-width: 1350px) {
+  .compare-row > *:not(.compare-field) { width: 19%; }
+  .compare-field { width: 16%; }
+}

@@ -1,0 +1,562 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign column_gap = section_st.column_gap
+  assign items_to_show = section_st.items_to_show
+  assign eyebrow = section_st.eyebrow
+  assign eyebrow_size = section_st.eyebrow_size | default: 18
+  assign items_per_row = section_st.items_per_row
+-%}
+{%- capture section_style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+
+<section
+  class="lc-rp-section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ section_style | strip | strip_newlines }}"
+>
+  <div class="lc-rp-container {{ section_width }}">
+    {%- if eyebrow != blank -%}
+      <div class="lc-rp-header">
+        <span class="lc-rp-eyebrow" style="font-size: {{ eyebrow_size }}px;">{{ eyebrow }}</span>
+      </div>
+    {%- endif -%}
+
+    <product-recommendations
+      data-section-id="{{ section.id }}"
+      class="lc-rp-grid"
+      style="--lc-rp-col-gap: {{ column_gap }}px; --lc-rp-cols: {{ items_per_row }};"
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ items_to_show }}"
+    >
+      {%- if recommendations.performed and recommendations.products_count > 0 -%}
+        {%- for rec in recommendations.products -%}
+          {%- liquid
+            assign rec_sp = rec.metafields.lecavist_specs
+            assign is_current = false
+            if rec.id == product.id
+              assign is_current = true
+            endif
+            assign footprint = ''
+            if rec_sp.width_mm.value != blank and rec_sp.height_mm.value != blank and rec_sp.depth_mm.value != blank
+              assign footprint = rec_sp.width_mm.value | append: ' × ' | append: rec_sp.height_mm.value | append: ' × ' | append: rec_sp.depth_mm.value | append: ' mm'
+            endif
+
+            # SKU for the recommended product — fall back to custom.fs_sku metafield
+            # (used on Full-Shelves variants which don't have their own variant SKU)
+            assign rec_sku = rec.variants.first.sku | upcase
+            if rec_sku == blank
+              assign rec_sku = rec.metafields.custom.fs_sku.value | upcase
+            endif
+
+            # Temperature range (for cabinets only)
+            assign rec_temp_range = rec_sp.temperature_range.value
+
+            # Title: "XX Bottles WINE CABINET/BEVERAGE FRIDGE"
+            assign rec_title_base = rec.title | split: ' - ' | first
+            assign rec_parts = rec_title_base | split: ' '
+            assign rec_bottles_num = ''
+            assign rec_container = 'Cabinet'
+            assign rec_type_word = 'Wine'
+            for tp in rec_parts
+              assign tplc = tp | downcase | remove: '-'
+              if tplc == 'bottle' or tplc == 'bottles'
+                assign ix = forloop.index0 | minus: 1
+                if ix >= 0
+                  assign rec_bottles_num = rec_parts[ix] | remove: '-'
+                endif
+              endif
+              if tplc == 'wine'
+                assign rec_type_word = 'Wine'
+              endif
+              if tplc == 'beverage'
+                assign rec_type_word = 'Beverage'
+              endif
+              if tplc == 'cabinet'
+                assign rec_container = 'Cabinet'
+              endif
+              if tplc == 'fridge'
+                assign rec_container = 'Fridge'
+              endif
+              if tplc == 'shelves' or tplc == 'shelf'
+                assign rec_container = 'Shelves'
+              endif
+            endfor
+            if rec_bottles_num == blank
+              assign rec_bottles_num = rec_sp.bottle_capacity.value
+            endif
+
+            # Collection-based pills: zone / installation / size range
+            # If the rec has no variant SKU (Full-Shelves variant), inherit collection
+            # tags from the parent product referenced via website-rev.parent_product.
+            assign rec_pill_src = rec
+            if rec.variants.first.sku == blank
+              assign rec_wr_parent = rec.metafields['website-rev'].parent_product.value
+              if rec_wr_parent != blank
+                assign rec_pill_src = rec_wr_parent
+              endif
+            endif
+            assign rec_bc_cap = nil
+            assign rec_bc_inst = nil
+            assign rec_bc_zone = nil
+            for col in rec_pill_src.collections
+              assign ct = col.title | downcase
+              unless rec_bc_cap
+                if ct contains 'small' or ct contains 'medium' or ct contains 'large'
+                  assign rec_bc_cap = col
+                endif
+              endunless
+              unless rec_bc_inst
+                if ct contains 'freestanding' or ct contains 'free standing' or ct contains 'built'
+                  assign rec_bc_inst = col
+                endif
+              endunless
+              unless rec_bc_zone
+                if ct contains 'zone'
+                  assign rec_bc_zone = col
+                endif
+              endunless
+            endfor
+            assign rec_label_cap = ''
+            assign rec_label_inst = ''
+            assign rec_label_zone = ''
+            if rec_bc_cap
+              assign ct2 = rec_bc_cap.title | downcase
+              if ct2 contains 'small'
+                assign rec_label_cap = 'Small Range'
+              elsif ct2 contains 'medium'
+                assign rec_label_cap = 'Medium Range'
+              elsif ct2 contains 'large'
+                assign rec_label_cap = 'Large Range'
+              endif
+            endif
+            if rec_bc_inst
+              assign it2 = rec_bc_inst.title | downcase
+              if it2 contains 'built'
+                assign rec_label_inst = 'Built-in'
+              else
+                assign rec_label_inst = 'Freestanding'
+              endif
+            endif
+            if rec_bc_zone
+              assign zt2 = rec_bc_zone.title | downcase
+              if zt2 contains 'single'
+                assign rec_label_zone = 'Single Zone'
+              elsif zt2 contains 'dual'
+                assign rec_label_zone = 'Dual Zone'
+              elsif zt2 contains 'triple'
+                assign rec_label_zone = 'Triple Zone'
+              endif
+            endif
+
+            # ── Accessory detection ─────────────────────────────────────────
+            # Primary signal: custom.compatible_products is set (only accessories have this).
+            # Fallbacks: product.type matches an accessory keyword, or no bottle count anywhere.
+            assign is_accessory = false
+            if rec.metafields.custom.compatible_products.value != blank
+              assign is_accessory = true
+            endif
+            assign rec_type_str = rec.type | default: '' | strip
+            assign rec_type_lc  = rec_type_str | downcase
+            if rec_type_lc contains 'accessory' or rec_type_lc contains 'accessories' or rec_type_lc contains 'shelf' or rec_type_lc contains 'shelves' or rec_type_lc contains 'filter' or rec_type_lc contains 'label' or rec_type_lc contains 'holder'
+              assign is_accessory = true
+            endif
+            if rec_bottles_num == blank and rec_sp.bottle_capacity.value == blank
+              assign is_accessory = true
+            endif
+
+            # Label: always "ACCESSORY" when treated as an accessory (regardless of "Accessory"/"Accessories" spelling)
+            assign rec_acc_label = 'ACCESSORY'
+
+            assign rec_acc_variant = ''
+            if is_accessory
+              assign rec_t_lc = rec.title | downcase
+              if rec_t_lc contains 'glass holder' or rec_t_lc contains 'glassholder'
+                assign rec_acc_variant = 'GLASS HOLDER'
+              elsif rec_t_lc contains 'cheese plater' or rec_t_lc contains 'cheese platter'
+                assign rec_acc_variant = 'CHEESE PLATER'
+              elsif rec_t_lc contains 'wire shelf'
+                assign rec_acc_variant = 'WIRE SHELF'
+              elsif rec_t_lc contains 'wooden shelf' or rec_t_lc contains 'wood shelf'
+                assign rec_acc_variant = 'WOODEN SHELF'
+              elsif rec_t_lc contains 'metal shelf'
+                assign rec_acc_variant = 'METAL SHELF'
+              elsif rec_t_lc contains 'multi-use shelf' or rec_t_lc contains 'multi use shelf'
+                assign rec_acc_variant = 'MULTI-USE SHELF'
+              elsif rec_t_lc contains 'display shelf'
+                assign rec_acc_variant = 'DISPLAY SHELF'
+              elsif rec_t_lc contains 'glass shelves' or rec_t_lc contains 'glass shelf'
+                assign rec_acc_variant = 'GLASS SHELVES'
+              elsif rec_t_lc contains 'side shelf'
+                assign rec_acc_variant = 'SIDE SHELF'
+              elsif rec_t_lc contains 'shelves' or rec_t_lc contains 'shelf'
+                assign rec_acc_variant = 'SHELVES'
+              elsif rec_t_lc contains 'filter'
+                assign rec_acc_variant = 'FILTER'
+              elsif rec_t_lc contains 'label'
+                assign rec_acc_variant = 'LABEL'
+              elsif rec_t_lc contains 'crate'
+                assign rec_acc_variant = 'CRATE'
+              endif
+            endif
+
+            # Cleaned product description (without "LECAVIST" prefix and SKU suffix)
+            assign rec_acc_desc = rec.title | replace_first: 'LECAVIST ', '' | replace_first: 'Lecavist ', ''
+            if rec_sku != blank
+              assign sku_with_dash = ' - ' | append: rec_sku
+              assign sku_with_paren = '(' | append: rec_sku | append: ')'
+              assign rec_acc_desc = rec_acc_desc | replace: sku_with_dash, '' | replace: sku_with_paren, ''
+            endif
+            assign rec_acc_desc = rec_acc_desc | strip
+          -%}
+          <article class="lc-rp-card{% if is_current %} lc-rp-card--current{% endif %}">
+            {%- if is_current -%}
+              <span class="lc-rp-card__badge">You are here</span>
+            {%- endif -%}
+            <a href="{{ rec.url }}" class="lc-rp-card__imglink" aria-label="{{ rec.title | escape }}">
+              <div class="lc-rp-card__image">
+                {%- if rec.featured_image != blank -%}
+                  <img
+                    src="{{ rec.featured_image | image_url: width: 600 }}"
+                    alt="{{ rec.featured_image.alt | default: rec.title | escape }}"
+                    loading="lazy"
+                    width="600"
+                    height="{{ 600 | divided_by: rec.featured_image.aspect_ratio | round }}"
+                  >
+                {%- endif -%}
+              </div>
+            </a>
+            <div class="lc-rp-card__body">
+              <h3 class="lc-rp-card__title">
+                <a href="{{ rec.url }}">
+                  {%- if is_accessory -%}
+                    {{ rec_sku | default: rec.title }}
+                    <span class="lc-rp-card__title-type">
+                      {{- rec_acc_label -}}
+                      {%- if rec_acc_variant != blank and rec_acc_variant != rec_acc_label %} - {{ rec_acc_variant }}{% endif -%}
+                    </span>
+                  {%- else -%}
+                    {%- if rec_bottles_num != blank -%}
+                      {{ rec_bottles_num }} Bottle{%- if rec_sku != blank %} - {{ rec_sku }}{%- endif -%}
+                    {%- else -%}
+                      {{ rec_sku | default: rec.title }}
+                    {%- endif -%}
+                    <span class="lc-rp-card__title-type">{{ rec_type_word | upcase }} {{ rec_container | upcase }}</span>
+                  {%- endif -%}
+                </a>
+              </h3>
+              {%- unless is_accessory -%}
+                {%- if rec_label_zone != blank or rec_label_inst != blank or rec_label_cap != blank -%}
+                  <div class="lc-rp-card__pills">
+                    {%- if rec_label_zone != blank -%}<span class="lc-rp-pill lc-rp-pill--zone">{{ rec_label_zone }}</span>{%- endif -%}
+                    {%- if rec_label_inst != blank -%}<span class="lc-rp-pill lc-rp-pill--inst">{{ rec_label_inst }}</span>{%- endif -%}
+                    {%- if rec_label_cap != blank -%}<span class="lc-rp-pill lc-rp-pill--cap">{{ rec_label_cap }}</span>{%- endif -%}
+                  </div>
+                {%- endif -%}
+              {%- endunless -%}
+              <div class="lc-rp-card__specs">
+                {%- if is_accessory -%}
+                  {%- if rec_acc_desc != blank -%}
+                    <div class="lc-rp-card__spec-row lc-rp-card__spec-row--single">
+                      <span class="lc-rp-card__spec-val lc-rp-card__spec-val--full">{{ rec_acc_desc }}</span>
+                    </div>
+                  {%- endif -%}
+                {%- else -%}
+                  {%- if rec_sp.bottle_capacity.value != blank -%}
+                    <div class="lc-rp-card__spec-row">
+                      <span class="lc-rp-card__spec-label">Capacity</span>
+                      <span class="lc-rp-card__spec-val">{{ rec_sp.bottle_capacity.value }} bottles</span>
+                    </div>
+                  {%- endif -%}
+                  {%- if rec_temp_range != blank -%}
+                    <div class="lc-rp-card__spec-row">
+                      <span class="lc-rp-card__spec-label">Temp Range</span>
+                      <span class="lc-rp-card__spec-val">{{ rec_temp_range }}</span>
+                    </div>
+                  {%- endif -%}
+                  {%- if footprint != blank -%}
+                    <div class="lc-rp-card__spec-row">
+                      <span class="lc-rp-card__spec-label">Dimensions</span>
+                      <span class="lc-rp-card__spec-val">{{ footprint }}</span>
+                    </div>
+                  {%- endif -%}
+                {%- endif -%}
+              </div>
+              <div class="lc-rp-card__footer">
+                <span class="lc-rp-card__price">{{ rec.price | money_without_trailing_zeros }}</span>
+                {%- if is_current -%}
+                  <span class="lc-rp-card__view lc-rp-card__view--current">Selected</span>
+                {%- else -%}
+                  <a href="{{ rec.url }}" class="lc-rp-card__view">View <span aria-hidden="true">→</span></a>
+                {%- endif -%}
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      {%- else -%}
+        <p class="lc-rp-empty">{{ 'sections.related_products.no_product' | t }}</p>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</section>
+
+<style>
+  .lc-rp-section {
+    background: #F5F0E8;
+    padding: clamp(48px, 6vw, 96px) 0;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+  }
+  .lc-rp-container { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+
+  .lc-rp-header { text-align: center; margin-bottom: 36px; }
+  .lc-rp-eyebrow {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: #1A1512;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  .lc-rp-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--lc-rp-cols, 4), 1fr);
+    gap: var(--lc-rp-col-gap, 24px);
+  }
+  @media (max-width: 1100px) {
+    .lc-rp-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .lc-rp-grid {
+      grid-auto-flow: column;
+      grid-auto-columns: 78%;
+      grid-template-columns: none;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 8px;
+    }
+    .lc-rp-card { scroll-snap-align: start; }
+  }
+
+  .lc-rp-card {
+    position: relative;
+    background: #FAF6EE;
+    border: 1px solid rgba(26,21,18,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .lc-rp-card:hover {
+    border-color: rgba(26,21,18,0.18);
+    box-shadow: 0 8px 28px rgba(26,21,18,0.06);
+  }
+  .lc-rp-card--current {
+    border: 1px solid #6B1F2E;
+    box-shadow: 0 0 0 1px #6B1F2E;
+  }
+  .lc-rp-card__badge {
+    position: absolute;
+    top: -1px;
+    left: 20px;
+    transform: translateY(-50%);
+    background: #6B1F2E;
+    color: #F5F0E8;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 2px;
+    z-index: 2;
+  }
+  .lc-rp-card__imglink { display: block; text-decoration: none; }
+  .lc-rp-card__image {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse 62% 52% at 50% 55%, #FBF8F2 0%, #EFE7DB 88%);
+    overflow: hidden;
+  }
+  .lc-rp-card__image img {
+    width: 88%;
+    height: 92%;
+    object-fit: contain;
+    display: block;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lc-rp-card__body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 12px; }
+  .lc-rp-card__title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: #1A1512;
+    margin: 0;
+  }
+  .lc-rp-card__title a { color: inherit; text-decoration: none; display: block; }
+  .lc-rp-card__title a:hover { color: #6B1F2E; }
+  .lc-rp-card__title-type {
+    display: block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    color: rgba(26,21,18,0.55);
+    margin-top: 4px;
+  }
+  .lc-rp-card__pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .lc-rp-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+    line-height: 1.3;
+    white-space: nowrap;
+  }
+  .lc-rp-pill--zone { background: #f0eef8; color: #4a2878; border-color: #c0aae0; }
+  .lc-rp-pill--inst { background: #fdf0f2; color: #7c2838; border-color: #e8b4bc; }
+  .lc-rp-pill--cap  { background: #faf5ee; color: #5a3510; border-color: #d4b896; }
+
+  .lc-rp-card__specs {
+    border-top: 1px solid rgba(26,21,18,0.08);
+    border-bottom: 1px solid rgba(26,21,18,0.08);
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .lc-rp-card__spec-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .lc-rp-card__spec-label { color: rgba(26,21,18,0.55); }
+  .lc-rp-card__spec-val { color: #1A1512; font-weight: 500; }
+  .lc-rp-card__spec-row--single { justify-content: flex-start; }
+  .lc-rp-card__spec-val--full { font-weight: 400; color: rgba(26,21,18,0.85); line-height: 1.4; }
+
+  .lc-rp-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 2px;
+  }
+  .lc-rp-card__price {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #1A1512;
+    letter-spacing: -0.015em;
+  }
+  .lc-rp-card--current .lc-rp-card__price { color: #6B1F2E; }
+  .lc-rp-card__view {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,21,18,0.55);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.15s;
+  }
+  .lc-rp-card__view:hover { color: #6B1F2E; }
+  .lc-rp-card__view--current { color: #6B1F2E; cursor: default; }
+  .lc-rp-empty { color: rgba(26,21,18,0.55); grid-column: 1/-1; text-align: center; padding: 32px 0; }
+
+  @media (max-width: 600px) {
+    .lc-rp-header { margin-bottom: 24px; }
+    .lc-rp-card__body { padding: 16px 18px 18px; }
+    .lc-rp-card__title { font-size: 20px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.related-products.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow label",
+      "default": "— The rest of the range —",
+      "info": "Centered, uppercase, spaced label (same style as 'Featured in')."
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_size",
+      "label": "Eyebrow font size",
+      "min": 10,
+      "max": 28,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "fluid_container",
+      "options": [
+        { "value": "container",      "label": "t:sections.all.section_width.container.label" },
+        { "value": "fluid_container","label": "t:sections.all.section_width.fluid_container.label" },
+        { "value": "stretch_width",  "label": "t:sections.all.section_width.stretch_width.label" },
+        { "value": "full_width",     "label": "t:sections.all.section_width.full_width.label" }
+      ]
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.color_scheme.label", "default": "scheme-1" },
+    { "type": "header", "content": "t:sections.all.section_header.label" },
+    { "type": "text", "id": "heading", "label": "t:sections.all.section_header.heading.label", "default": "The rest of the range" },
+    { "type": "inline_richtext", "id": "description", "label": "t:sections.all.section_header.description.label" },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        { "value": "small",  "label": "t:sections.all.section_header.header_size.small.label" },
+        { "value": "medium", "label": "t:sections.all.section_header.header_size.medium.label" },
+        { "value": "large",  "label": "t:sections.all.section_header.header_size.large.label" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "left",
+      "options": [
+        { "value": "left",   "label": "t:sections.all.section_header.alignment.left.label" },
+        { "value": "center", "label": "t:sections.all.section_header.alignment.center.label" },
+        { "value": "right",  "label": "t:sections.all.section_header.alignment.right.label" }
+      ]
+    },
+    { "type": "header", "content": "t:sections.related-products.settings.products.header" },
+    { "type": "range", "id": "items_to_show",  "label": "t:sections.all.items.items_to_show.label",  "min": 2, "max": 25, "step": 1, "default": 4 },
+    { "type": "range", "id": "items_per_row",  "label": "t:sections.all.items.items_per_row.label",  "min": 1, "max": 5,  "step": 1, "default": 4 },
+    { "type": "range", "id": "column_gap",     "label": "t:sections.all.items.column_gap.label",     "min": 0, "max": 50, "step": 5, "default": 20, "unit": "px" },
+    { "type": "header", "content": "t:sections.all.mobile_options.label" },
+    { "type": "range", "id": "items_per_row_mobile", "label": "t:sections.all.items.items_per_row.label", "min": 1, "max": 2, "step": 0.5, "default": 1 },
+    { "type": "header", "content": "t:sections.all.section_padding.label" },
+    { "type": "range", "id": "padding_top",    "label": "t:sections.all.section_padding.top.label",    "default": 0, "min": 0, "max": 100, "step": 1, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "t:sections.all.section_padding.bottom.label", "default": 0, "min": 0, "max": 100, "step": 1, "unit": "px" },
+    { "type": "checkbox", "id": "reset_spacing", "label": "t:sections.all.section_padding.reset_spacing.label", "default": false }
+  ]
+}
+{% endschema %}

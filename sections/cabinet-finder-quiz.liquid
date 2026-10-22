@@ -1,0 +1,124 @@
+{%- comment -%}
+  Cabinet Finder Quiz — standalone section so it sits in its own
+  rounded card on the product page (extracted from product-nav-tabs).
+{%- endcomment -%}
+
+{%- if section.settings.quiz_url != blank -%}
+{%- liquid
+  assign lc_quiz_ns  = product.metafields.lecavist_specs
+  assign lc_quiz_cap = lc_quiz_ns.bottle_capacity.value
+  if lc_quiz_cap == blank
+    assign lc_quiz_parts = product.title | split: ' '
+    for lc_qp in lc_quiz_parts
+      assign lc_qp_n = lc_qp | plus: 0
+      if lc_qp_n > 0 and lc_quiz_cap == blank
+        assign lc_quiz_cap = lc_qp
+      endif
+    endfor
+  endif
+  if lc_quiz_cap == blank
+    assign lc_quiz_cap = '?'
+  endif
+-%}
+
+<div class="lc-quiz-section">
+  <div class="lc-quiz-banner">
+    <div class="lc-quiz-banner__inner">
+      <span class="lc-quiz-banner__eyebrow">{{ section.settings.eyebrow | default: '— 3-Minute Cabinet Finder —' }}</span>
+      <h2 class="lc-quiz-banner__heading">
+        {{ section.settings.heading_prefix | default: 'Not sure if' }}
+        <em>{{ lc_quiz_cap }}</em>
+        {{ section.settings.heading_suffix | default: 'is your number?' }}
+      </h2>
+      <p class="lc-quiz-banner__sub">{{ section.settings.subheading | default: "A couple of questions about your collection, your kitchen and how often you pour — we'll point you to the cabinet that fits." }}</p>
+      <a href="{{ section.settings.quiz_url }}" class="lc-quiz-banner__btn">{{ section.settings.button_label | default: 'Take the Quiz →' }}</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .lc-quiz-section { padding: 0; }
+  .lc-quiz-banner { background: transparent; padding: 28px 24px; text-align: center; }
+  .lc-quiz-banner__inner { max-width: 620px; margin: 0 auto; }
+  .lc-quiz-banner__eyebrow {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #1A1512;
+    display: block;
+    margin-bottom: 20px;
+  }
+  .lc-quiz-banner__heading {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 400; color: #1A1512;
+    margin: 0 0 18px; line-height: 1.1; letter-spacing: -0.01em;
+  }
+  .lc-quiz-banner__heading em { font-style: italic; color: #7c3030; }
+  .lc-quiz-banner__sub {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 16px; color: rgba(26,21,18,0.6); line-height: 1.65;
+    max-width: 480px; margin: 0 auto 32px;
+  }
+  .lc-quiz-banner__btn {
+    display: inline-block; background: #7c3030; color: #f1eae1;
+    padding: 16px 36px; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none;
+    border-radius: 6px; transition: background 0.2s;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+  }
+  .lc-quiz-banner__btn:hover { background: #4A1420; }
+</style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Cabinet Finder Quiz",
+  "tag": "section",
+  "class": "section-cabinet-finder-quiz",
+  "settings": [
+    {
+      "type": "url",
+      "id": "quiz_url",
+      "label": "Quiz page URL",
+      "info": "Default: /pages/find-my-cabinet"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "— 3-Minute Cabinet Finder —"
+    },
+    {
+      "type": "text",
+      "id": "heading_prefix",
+      "label": "Heading prefix (before bottle capacity)",
+      "default": "Not sure if"
+    },
+    {
+      "type": "text",
+      "id": "heading_suffix",
+      "label": "Heading suffix (after bottle capacity)",
+      "default": "is your number?"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Sub-heading",
+      "default": "A couple of questions about your collection, your kitchen and how often you pour — we'll point you to the cabinet that fits."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Take the Quiz →"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cabinet Finder Quiz"
+    }
+  ]
+}
+{% endschema %}

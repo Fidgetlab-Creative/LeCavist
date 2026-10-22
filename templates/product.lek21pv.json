@@ -1,0 +1,746 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "enable_sticky_content_on_desktop": true,
+        "enable_skeleton_loading": false,
+        "desktop_media_width": 40,
+        "desktop_layout": "thumbnail_left",
+        "image_zoom": "open_lightbox",
+        "enable_video_looping": true,
+        "enable_video_autoplay": true,
+        "enable_frequently_bought_together": true,
+        "enable_on_desktop": true,
+        "enable_on_mobile": true,
+        "mobile_options": "hidden_thumbnail",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false,
+        "video_button_url": "https://cdn.shopify.com/videos/c/o/v/0dccecf1352b42d4a37604b03fecb039.mov",
+        "video_button_label": "Watch in video",
+        "gallery_mobile_ratio": "auto",
+        "gallery_max_height": 520,
+        "trust1_title": "Free Delivery",
+        "trust1_sub": "nationwide",
+        "trust2_title": "Free Installation",
+        "trust2_sub": "at your property",
+        "trust3_title": "5-Year Warranty",
+        "trust3_sub": "on compressor",
+        "trust4_title": "Old Unit Removed",
+        "trust4_sub": "at no extra cost",
+        "collection_installation": "",
+        "collection_zone": "",
+        "collection_size_range": "",
+        "phone_number": "",
+        "faq_q1": "Will this fit in my space?",
+        "faq_a1": "Check the dimensions listed above. Allow at least 100mm clearance on each side and 50mm at the rear for ventilation. Freestanding models can be placed anywhere with a power point. Built-in models require a cabinetry cutout — refer to the installation guide.",
+        "faq_q2": "What is included in the delivery?",
+        "faq_a2": "Every LeCavist order includes white-glove delivery, in-home installation, electrical connection, and removal of your old appliance — all at no additional cost.",
+        "faq_q3": "What if I outgrow this cabinet size?",
+        "faq_a3": "We offer a trade-up programme for existing customers. Contact us and we will provide a quote for your upgrade, with credit applied for your current cabinet.",
+        "featured_in_eyebrow": "— Featured in —",
+        "trusted_by_eyebrow": "— They trust us —"
+      }
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "eyebrow": "— Our Range —",
+        "eyebrow_size": 18,
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 4,
+        "items_per_row": 4,
+        "column_gap": 20,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_GdCNUL": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "eyebrow": "— Recently Viewed —",
+        "eyebrow_size": 18,
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "product_nav_tabs_lc": {
+      "type": "product-nav-tabs",
+      "blocks": {
+        "tab_specs": {
+          "type": "specs",
+          "settings": {
+            "heading": "Specs"
+          }
+        },
+        "tab_manuals": {
+          "type": "documents",
+          "settings": {
+            "heading": "Manuals",
+            "doc1_label": "User Manual",
+            "doc1_url": "https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LEK21PV_manual.pdf?v=1777429215",
+            "doc2_label": "Spec Sheet",
+            "doc2_url": "https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LEK21PV_spec.pdf?v=1777429223"
+          }
+        },
+        "tab_delivery": {
+          "type": "delivery",
+          "settings": {
+            "heading": "Delivery"
+          }
+        },
+        "tab_features": {
+          "type": "features",
+          "settings": {
+            "heading": "Features",
+            "feat_icon_1": "bottle",
+            "feat_title_1": "21 Bordeaux Bottle Capacity",
+            "feat_image_1": "shopify://shop_images/LEK21PV_Bottle_Capacity_98e26bf7-3372-4824-bd19-06ee51f11740.webp",
+            "feat_content_1": "<p>Offering a generous <strong>bottle capacity of 21</strong>, perfect for storing your entire collection in one elegant, organized space.</p>",
+            "feat_icon_2": "shelf",
+            "feat_title_2": "Removable Wire Shelves With Wood Trim",
+            "feat_image_2": "shopify://shop_images/LEK21PV_front_empty_open_door.png",
+            "feat_content_2": "<p>LeCavist wine cabinets are outfitted with <br/>wire shelves with wood trim. The shelves effortlessly slide out, providing easy access to your wine collection. </p><p>This also helps to keep the bottles properly organized and makes it easier to find the right bottle.</p><p></p>",
+            "feat_icon_3": "temperature",
+            "feat_title_3": "Single Zone Convertible Wine & Beverage Cabinet",
+            "feat_image_3": "shopify://shop_images/LEK21PV_Single_Zone_a3deea2f-b3b1-45e1-99cd-08600d00ba90.webp",
+            "feat_content_3": "<p>Keep your collection perfectly stored with this <strong>convertible single-zone cabinet</strong>, offering a precise and consistent temperature range from 2°C to 18°C.<br/></p><p>Whether you’re storing white wine (7–10°C), red wine (10–18°C), beer (2–4°C), or soft drinks (2–4°C), this cabinet ensures your favorite bottles and beverages are always served at their ideal temperature.</p><p>Elegant and versatile, it’s the perfect solution to combine wine sophistication and beverage practicality in one sleek unit.</p>",
+            "feat_icon_4": "led-lighting",
+            "feat_title_4": "Digital LED Control Panel",
+            "feat_image_4": "shopify://shop_images/LEK21PV_control_panel.webp",
+            "feat_content_4": "<p>Featuring a <strong>digital LED control panel</strong>, allowing you to easily adjust and monitor the temperature for perfect wine storage.</p>",
+            "feat_icon_5": "glass-door",
+            "feat_title_5": "Double Pane Glass Door",
+            "feat_image_5": "shopify://shop_images/LEK21PV_Full_glass_door.webp",
+            "feat_content_5": "<p>This LeCavist wine cabinet is equipped with a double pane glass door. </p><p><br/>It is engineered to preserve consistent temperature and block external humidity, ensuring long-term storage stability for your wine collection.</p>",
+            "feat_icon_6": "led-lighting",
+            "feat_title_6": "LED Lighting For Gentle Wine Care",
+            "feat_image_6": "shopify://shop_images/LEK21PV_LED_light_553ba79b-7851-4e13-beac-a2099e7e7d2e.webp",
+            "feat_content_6": "<p>This subtle illumination protects your bottles from heat and light exposure, creating the ideal environment for your wine to age gracefully.</p><p>A perfect blend of functionality and aesthetics, for those who value both preservation and presentation.</p>",
+            "feat_icon_7": "air-flow",
+            "feat_title_7": "Internal Air Flow",
+            "feat_image_7": "shopify://shop_images/ChatGPT_Image_Jun_4_2025_03_55_43_PM.webp",
+            "feat_content_7": "<p>LeCavist wine cabinets use a charcoal filter and an internal fan to maintain  the appropriate conditions for wine storage. </p><p>The charcoal filter keeps the air in the cabinet clean and free from odours and other contaminants, helping to preserve your wine collection.</p><p>The internal fan ensures an even distribution of air throughout the cabinet, helping to keep a consistent temperature and humidity in the cabinet.</p>",
+            "feat_icon_8": "anti-vibration",
+            "feat_title_8": "Anti-Vibration Technology",
+            "feat_image_8": "shopify://shop_images/LEK168PV_anti-vibration_1_1080x_9ac367f1-1cbe-4d80-ab1c-7c2ab7fd58e8.webp",
+            "feat_content_8": "<p>Featuring <strong>anti-vibration technology</strong>, ensuring your wine is stored in a stable environment, free from any disturbances that could affect its quality.</p>",
+            "feat_icon_9": "humidity",
+            "feat_title_9": "Ideal 60-80% Humidity For Wine Quality",
+            "feat_image_9": "shopify://shop_images/Untitled_design_35930f19-0ce1-40b2-ac6c-ef1363a5428f.png",
+            "feat_content_9": "<p>With a humidity range of <strong>60-80%</strong>, our wine cabinets maintain the perfect moisture level to preserve your wine's quality. This optimal humidity prevents corks from drying out and ensures your wine matures at its best, protecting its flavor and integrity.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "tab_features",
+        "tab_specs",
+        "tab_manuals",
+        "tab_delivery"
+      ],
+      "settings": {
+        "section_width": "container"
+      }
+    },
+    "brand_logo_nbjzDt": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_EhttND": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_tKTKJ6": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Ar4iUF": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.22-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_M8Ntbx": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_mQxWcx": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_mRixj8": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_DTHLce": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qqHgPj": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_VNwncL": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_6TyAYq": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_ckkbz8": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_wJ6ixq": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_KFewrV": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_k6RQcY": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_EhttND",
+        "brand_items_tKTKJ6",
+        "brand_items_Ar4iUF",
+        "brand_items_M8Ntbx",
+        "brand_items_mQxWcx",
+        "brand_items_mRixj8",
+        "brand_items_DTHLce",
+        "brand_items_qqHgPj",
+        "brand_items_VNwncL",
+        "brand_items_6TyAYq",
+        "brand_items_ckkbz8",
+        "brand_items_wJ6ixq",
+        "brand_items_KFewrV",
+        "brand_items_k6RQcY"
+      ],
+      "settings": {
+        "eyebrow": "— Restaurants —",
+        "eyebrow_size": 18,
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "items_per_row": 5,
+        "items_per_row_mobile": 2.5,
+        "column_gap": 10,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "infinite": true,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "shopable_video_Wad86g": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_ebV6nX": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/0dccecf1352b42d4a37604b03fecb039.mov"
+          }
+        },
+        "video_dgbdbA": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/fd232e7b2a6d4c13801070ccb6467b05.mov"
+          }
+        },
+        "video_zMrF7m": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/eb2f44e721b34439bda424a2abfb5463.mov"
+          }
+        },
+        "video_KM8PQ6": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/8c579ee0513d46b7afe964b2be4154f9.mov"
+          }
+        },
+        "video_rKj9Kq": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-63-bottle-wine-fridge-single-zone-lkcv63n",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/f3b07d22a1584676bc41f26f7905e303.mov"
+          }
+        },
+        "video_ftWcKU": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/5850bec3128844be94a3fed92bb8da23.mov"
+          }
+        },
+        "video_VwNjga": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "video_url": "https://cdn.shopify.com/videos/c/o/v/272ff63c823c4526a7224e4c5e7c74c2.mov"
+          }
+        }
+      },
+      "block_order": [
+        "video_ebV6nX",
+        "video_dgbdbA",
+        "video_zMrF7m",
+        "video_KM8PQ6",
+        "video_rKj9Kq",
+        "video_ftWcKU",
+        "video_VwNjga"
+      ],
+      "settings": {
+        "eyebrow": "— They trust us —",
+        "eyebrow_size": 18,
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "image_ratio": "custom",
+        "custom_ratio": "9:16",
+        "video_autoplay": true,
+        "items_per_row": 5,
+        "column_gap": 15,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 3,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "brand_logo_Rqg8tE": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_6Jn6pc": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.00-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_47Ckq9": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.44-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_WdNaTX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.06.53-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_DYepTV": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.06-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_kCQFTN": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.37.49-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_fQYxGA": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.16-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_x8kF7A": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.35.23-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_LbMyVe": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.03-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_FkVqKc": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.29-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_3fJVTi": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.24-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_BxqtNL": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.06-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_kPtfyB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.40.17-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_XfCX6P": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.16-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_9FFW4m": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_9BM3E7": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.47-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_hCkxAQ": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_bU33QD": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.37.55-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Tkf6pg": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.38-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_rdrwpC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.28-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_6Jn6pc",
+        "brand_items_47Ckq9",
+        "brand_items_WdNaTX",
+        "brand_items_DYepTV",
+        "brand_items_kCQFTN",
+        "brand_items_fQYxGA",
+        "brand_items_x8kF7A",
+        "brand_items_LbMyVe",
+        "brand_items_FkVqKc",
+        "brand_items_3fJVTi",
+        "brand_items_BxqtNL",
+        "brand_items_kPtfyB",
+        "brand_items_XfCX6P",
+        "brand_items_9FFW4m",
+        "brand_items_9BM3E7",
+        "brand_items_hCkxAQ",
+        "brand_items_bU33QD",
+        "brand_items_Tkf6pg",
+        "brand_items_rdrwpC"
+      ],
+      "settings": {
+        "eyebrow": "— Featured in —",
+        "eyebrow_size": 18,
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": false,
+        "items_per_row": 5,
+        "column_gap": 10,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 4,
+        "reveal": false,
+        "items_per_row_mobile": 2.5,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "lifestyle_grid_lc": {
+      "type": "lifestyle-grid",
+      "blocks": {
+        "lf_half_1": {
+          "type": "half_image",
+          "settings": {
+            "image": "shopify://shop_images/Rockpool_x_LeCavist_landscape.png",
+            "label": "ROCKPOOL BAR & GRILL · Sydney, NSW",
+            "heading": "Where the cellar meets the grill.",
+            "body": "Inside Rockpool Bar & Grill — keeping the reserve list at the temperature the steaks deserve. Every bottle ready, every glass right."
+          }
+        },
+        "lf_quote": {
+          "type": "quote",
+          "settings": {
+            "eyebrow": "◇ From the Trade ◇",
+            "quote": "\"If wines have travelled all the way from Europe, there’s no point leaving them under the kitchen sink.\"",
+            "attribution": "James Johnston · World Wine Estates"
+          }
+        },
+        "lf_half_3": {
+          "type": "half_image",
+          "settings": {
+            "image": "shopify://shop_images/DSCF8221_60b7b147-bcfa-40f7-a2fe-db8ca5fa3127.jpg",
+            "label": "TYRRELL'S WINES · Hunter Valley, NSW",
+            "heading": "Where the vintage waits.",
+            "body": "Inside Tyrrell's cellar — back-vintage releases held at the temperature time deserves. Wine made since 1858. Stored like it matters."
+          }
+        },
+        "lf_half_4": {
+          "type": "half_image",
+          "settings": {
+            "image": "shopify://shop_images/Morena_x_LeCavist_landscape.jpg",
+            "label": "MORENA · Melbourne, VIC",
+            "heading": "Every bottle on show.",
+            "body": "Behind MORENA’s bar — dual-zone, triple-glazed, lit just so. The wall behind every memorable glass."
+          }
+        },
+        "lf_half_lana": {
+          "type": "half_image",
+          "settings": {
+            "image": "shopify://shop_images/THECAVISTxLANA_acdd8383-8543-4d18-be52-4b1a65d2aa39.jpg",
+            "label": "LANA · Sydney, NSW",
+            "heading": "At the chef’s table.",
+            "body": "Inside LANA’s dining room — pouring the cellar’s finest at the exact temperature the sommelier asked for. Where the wine deserves to be."
+          }
+        }
+      },
+      "block_order": [
+        "lf_half_lana",
+        "lf_half_1",
+        "lf_quote",
+        "lf_half_3",
+        "lf_half_4"
+      ],
+      "settings": {
+        "eyebrow": "— Lifestyle —",
+        "eyebrow_size": 18,
+        "color_scheme": "",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "cabinet_finder_quiz_lc": {
+      "type": "cabinet-finder-quiz",
+      "settings": {
+        "quiz_url": "/pages/find-my-cabinet"
+      }
+    },
+    "product_reviews_teaser_lc": {
+      "type": "product-reviews-teaser",
+      "settings": {}
+    },
+    "judgeme_vintage_lc": {
+      "type": "judgeme-vintage-widget",
+      "settings": {
+        "eyebrow": "— All Reviews —",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "product_faq_bottom": {
+      "type": "product-faq-bottom",
+      "blocks": {
+        "qa_capacity": {
+          "type": "qa",
+          "settings": {
+            "question": "Why does my cabinet hold fewer bottles than the advertised capacity?",
+            "answer": "<p>All LeCavist capacities are calculated using the international 750 mL Bordeaux bottle, with shelves removed and bottles stacked end-to-end. In real-world use you'll typically fit <strong>around 80%</strong> of the advertised maximum, depending on:</p><ul><li><strong>Bottle shape</strong> — Burgundy and Champagne bottles are wider than Bordeaux and take more space.</li><li><strong>How many shelves you keep in</strong> — more shelves means easier access but lower total capacity.</li></ul><p>For example, a 168-bottle cabinet comfortably holds 100–130 mixed-shape bottles with most shelves in place. Each cabinet's <strong>specification sheet</strong> shows three stacking layouts — maximum, comfortable and light — so you can plan exactly how many bottles will fit your collection. <a href=\"#product-manuals\">View this cabinet's spec sheet and manuals</a> for the recommended layouts.</p><p>Extra matching shelves are available separately on our website if you want more storage flexibility.</p>"
+          }
+        },
+        "qa_noise": {
+          "type": "qa",
+          "settings": {
+            "question": "How quiet is the wine cabinet?",
+            "answer": "<p>LeCavist cabinets use a quiet compressor cooling system rated between <strong>41–43 dB</strong> depending on the model — comparable to a library or soft conversation. The compressor cycles on and off to maintain temperature, so you'll hear short periods of gentle humming rather than continuous noise.</p><p>For the quietest operation:</p><ul><li>Place the cabinet on a level, hard floor and adjust the front feet so it's perfectly level.</li><li>Leave the right ventilation clearance: <strong>10 cm</strong> on each side and on top for freestanding models, or <strong>3 cm</strong> for built-in models.</li><li>Wait 24 hours after delivery before powering on, so the refrigerant gas can settle.</li></ul><p>A faint trickling sound from circulating refrigerant is normal and indicates the cooling system is healthy.</p>"
+          }
+        },
+        "qa_temp": {
+          "type": "qa",
+          "settings": {
+            "question": "What temperature range does it cover, and will it work in hot or humid climates?",
+            "answer": "<p>All LeCavist cabinets cover a working range of <strong>5–20°C</strong>. Dual-zone and triple-zone models offer independent zones across that range — perfect for whites (6–10°C), reds (14–18°C) and Champagne (5–8°C) in the same cabinet.</p><p>Every LeCavist cabinet is <strong>subtropical climate rated</strong>, tested to maintain set temperature in ambient room temperatures from 10°C up to 38°C. Owners across Queensland, Western Australia and the Northern Territory consistently report stable temperatures through Australian summer. For best efficiency, install the cabinet away from direct sunlight or other heat sources.</p>"
+          }
+        },
+        "qa_delivery": {
+          "type": "qa",
+          "settings": {
+            "question": "What's included with delivery? Will you take my old fridge?",
+            "answer": "<p><strong>Free Australia-wide delivery</strong> is included on every wine cabinet. Our delivery partners provide:</p><ul><li>A 2-hour delivery window communicated in the morning of delivery, with a 30-minute pre-arrival call.</li><li>Unboxing and placement in the room of your choice.</li><li>Removal of all packaging.</li><li><strong>Free old wine fridge removal</strong> on request — just let us know at checkout or contact our team.</li></ul><p>After delivery, leave the cabinet upright and <strong>unplugged for 24 hours</strong> so the refrigerant gas can settle before first use.</p>"
+          }
+        },
+        "qa_warranty": {
+          "type": "qa",
+          "settings": {
+            "question": "What warranty comes with my wine cabinet?",
+            "answer": "<p>Every LeCavist cabinet ships with a <strong>24-month manufacturer warranty</strong> covering parts and labour. You can <strong>extend your warranty to 36 months for free</strong> by registering your product within 90 days of purchase at <a href=\"https://lecavist.com/pages/products-registration\" rel=\"noopener\">lecavist.com/pages/products-registration</a>.</p><p>Our Sydney-based customer service team handles all warranty claims directly — we don't outsource support. For most issues we'll dispatch a replacement unit within 48 hours of confirmation. To raise a claim, email <a href=\"mailto:hello@lecavist.com\">hello@lecavist.com</a> or visit our showroom in Alexandria, NSW.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "qa_capacity",
+        "qa_noise",
+        "qa_temp",
+        "qa_delivery",
+        "qa_warranty"
+      ],
+      "settings": {
+        "heading": "FREQUENTLY ASKED QUESTIONS"
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "product_nav_tabs_lc",
+    "product_reviews_teaser_lc",
+    "cabinet_finder_quiz_lc",
+    "brand_logo_nbjzDt",
+    "shopable_video_Wad86g",
+    "brand_logo_Rqg8tE",
+    "lifestyle_grid_lc",
+    "related_products",
+    "products_recently_viewed_GdCNUL",
+    "judgeme_vintage_lc",
+    "product_faq_bottom"
+  ]
+}

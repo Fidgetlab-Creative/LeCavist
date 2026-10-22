@@ -1,0 +1,99 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collection_list_FyKDrz": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_CjNgNA": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "collection_kegpm4": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "collection_rQNFfg": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        },
+        "collection_7xGc8i": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_CjNgNA",
+        "collection_kegpm4",
+        "collection_rQNFfg",
+        "collection_7xGc8i"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Collection list",
+        "description": "",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "left",
+        "display_mode": "carousel",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "items_per_row": 4,
+        "column_gap": 30,
+        "collection_information_position": "below_image",
+        "design": "default",
+        "text_alignment": "center",
+        "show_product_count": false,
+        "show_description": false,
+        "font_size": 16,
+        "font_weight": "heading_weight",
+        "information_spacing": 12,
+        "rounded_image": false,
+        "image_custom_width": false,
+        "image_width": 200,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "collection_list_FyKDrz"
+  ]
+}

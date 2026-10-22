@@ -1,0 +1,254 @@
+{%- liquid
+  assign section_st  = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme  = section_st.color_scheme
+
+  comment
+    ── LeCavist editorial breadcrumb ──────────────────────────────
+    Format: Home > All Cabinets > [Collection] > XX Bottle [Cabinet]
+
+    Bottle count pulled from:
+      1. lecavist_specs.bottle_capacity metafield
+      2. Parsing product.title for a number preceding "Bottle"
+      3. Falls back to product.title | truncate: 40
+
+    "All Cabinets" links to /collections/all-cabinets — adjust the handle
+    in section settings if you use a different master collection.
+    Accessories instead get: Home > All Accessories > SKU.
+    ────────────────────────────────────────────────────────────────
+  endcomment
+
+  assign lc_bc_sp  = product.metafields.lecavist_specs
+  assign lc_bc_cap = lc_bc_sp.bottle_capacity.value
+
+  if lc_bc_cap == blank
+    assign lc_bc_parts = product.title | split: ' '
+    for lc_bc_p in lc_bc_parts
+      assign lc_bc_p_lc = lc_bc_p | downcase | remove: '-'
+      if lc_bc_p_lc == 'bottle' or lc_bc_p_lc == 'bottles'
+        assign lc_bc_prev_i = forloop.index0 | minus: 1
+        if lc_bc_prev_i >= 0
+          assign lc_bc_cap = lc_bc_parts[lc_bc_prev_i]
+        endif
+      endif
+    endfor
+  endif
+
+  comment — Accessories get their real pathway: Home > All Accessories > SKU
+  endcomment
+  assign lc_bc_is_acc = false
+  if product.template_suffix == 'accessories'
+    assign lc_bc_is_acc = true
+  else
+    for lc_bc_col in product.collections
+      if lc_bc_col.handle == 'accessories'
+        assign lc_bc_is_acc = true
+        break
+      endif
+    endfor
+  endif
+  assign lc_bc_acc_url = routes.collections_url | append: '/accessories'
+  if collections['accessories'].url != blank
+    assign lc_bc_acc_url = collections['accessories'].url
+  endif
+
+  assign lc_bc_all_handle = section_st.all_cabinets_handle | default: 'all-cabinets'
+  assign lc_bc_all_url    = routes.collections_url | append: '/' | append: lc_bc_all_handle
+
+  comment — Detect size range from collections
+  endcomment
+  assign lc_bc_range_col = nil
+  for col in product.collections
+    assign lc_bc_ct = col.title | downcase
+    if lc_bc_ct contains 'small' or lc_bc_ct contains 'medium' or lc_bc_ct contains 'large'
+      assign lc_bc_range_col = col
+      break
+    endif
+  endfor
+
+  comment — Short label for mobile (drops the "XX-XX Bottles" range)
+  endcomment
+  assign lc_bc_range_short = ''
+  if lc_bc_range_col
+    assign lc_bc_range_lc = lc_bc_range_col.title | downcase
+    if lc_bc_range_lc contains 'small'
+      assign lc_bc_range_short = 'Small Cabinets'
+    elsif lc_bc_range_lc contains 'medium'
+      assign lc_bc_range_short = 'Medium Cabinets'
+    elsif lc_bc_range_lc contains 'large'
+      assign lc_bc_range_short = 'Large Cabinets'
+    else
+      assign lc_bc_range_short = lc_bc_range_col.title
+    endif
+  endif
+-%}
+
+<section
+  class="lc-breadcrumb-section color-{{ color_scheme }}"
+  aria-label="Breadcrumb"
+>
+  {%- comment -%} Force stretch_width so the trail's left edge lines up with the
+      header menu (the header is stretch_width). Ignores the per-template
+      section_width setting on purpose. {%- endcomment -%}
+  <div class="stretch_width">
+    <nav class="lc-bc-nav" aria-label="breadcrumb">
+      <ol class="lc-bc-list">
+
+        {%- if lc_bc_is_acc -%}
+          {%- comment -%} Accessories — real collection pathway (Home removed so the trail fits on one line on mobile; the header logo is still the home link) {%- endcomment -%}
+          <li class="lc-bc-item">
+            <a href="{{ lc_bc_acc_url }}" class="lc-bc-link">All Accessories</a>
+          </li>
+
+          {%- comment -%} Current accessory — SKU reference {%- endcomment -%}
+          {%- assign lc_bc_acc_sku = product.selected_or_first_available_variant.sku | upcase | strip -%}
+          <li class="lc-bc-item lc-bc-item--sep" aria-hidden="true">›</li>
+          <li class="lc-bc-item lc-bc-item--current" aria-current="page">
+            {%- if lc_bc_acc_sku != blank -%}
+              {{ lc_bc_acc_sku }}
+            {%- else -%}
+              {{ product.title | truncate: 40 }}
+            {%- endif -%}
+          </li>
+        {%- else -%}
+          {%- comment -%} All Cabinets (Home removed; the header logo is still the home link) {%- endcomment -%}
+          <li class="lc-bc-item">
+            <a href="{{ lc_bc_all_url }}" class="lc-bc-link">All Cabinets</a>
+          </li>
+
+          {%- comment -%} Size range collection (if detected) — full label on desktop, short on mobile {%- endcomment -%}
+          {%- if lc_bc_range_col -%}
+            <li class="lc-bc-item lc-bc-item--sep" aria-hidden="true">›</li>
+            <li class="lc-bc-item">
+              <a href="{{ lc_bc_range_col.url }}" class="lc-bc-link">
+                <span class="lc-bc-range-full">{{ lc_bc_range_col.title }}</span>
+                <span class="lc-bc-range-short">{{ lc_bc_range_short }}</span>
+              </a>
+            </li>
+          {%- elsif collection -%}
+            <li class="lc-bc-item lc-bc-item--sep" aria-hidden="true">›</li>
+            <li class="lc-bc-item">
+              <a href="{{ collection.url }}" class="lc-bc-link">{{ collection.title }}</a>
+            </li>
+          {%- endif -%}
+
+          {%- comment -%} Current product — XX Bottle Cabinet {%- endcomment -%}
+          <li class="lc-bc-item lc-bc-item--sep" aria-hidden="true">›</li>
+          <li class="lc-bc-item lc-bc-item--current" aria-current="page">
+            {%- if lc_bc_cap != blank -%}
+              {{ lc_bc_cap }} Bottle
+            {%- else -%}
+              {{ product.title | truncate: 40 }}
+            {%- endif -%}
+          </li>
+        {%- endif -%}
+
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<style>
+  .lc-breadcrumb-section {
+    padding: 14px 0;
+    background: var(--lc-ed-bg, #F5F0E8);
+    border-bottom: 1px solid rgba(26,21,18,0.08);
+  }
+  .lc-bc-list {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .lc-bc-item {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26,21,18,0.45);
+    white-space: nowrap;
+  }
+  .lc-bc-item--sep {
+    margin: 0 8px;
+    font-size: 11px;
+    color: rgba(26,21,18,0.25);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .lc-bc-link {
+    color: rgba(26,21,18,0.45);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .lc-bc-link:hover { color: #6B1F2E; }
+  .lc-bc-item--current {
+    color: #1A1512;
+    font-weight: 600;
+  }
+  /* Size-range label: full title on desktop, short on mobile */
+  .lc-bc-range-short { display: none; }
+  @media (max-width: 749px) {
+    .lc-bc-range-full  { display: none; }
+    .lc-bc-range-short { display: inline; }
+
+    /* Stick the breadcrumb directly below the sticky header so it stays visible while scrolling
+       and sits flush against the header (no visible gap). --height-header is set by the theme;
+       fallback 70px matches the header default. */
+    .lc-breadcrumb-wrapper {
+      position: sticky;
+      top: var(--height-header, 70px);
+      z-index: 9;
+    }
+    /* Trim the section padding on mobile so the bar isn't taller than it needs to be,
+       and force the trail onto one line (the rest fits now that Home is gone). */
+    .lc-breadcrumb-section { padding: 8px 0; }
+    .lc-bc-list {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .lc-bc-list::-webkit-scrollbar { display: none; }
+    .lc-bc-item--sep { margin: 0 6px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LeCavist Breadcrumb",
+  "tag": "section",
+  "class": "lc-breadcrumb-wrapper",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        { "value": "container",       "label": "Container" },
+        { "value": "fluid_container", "label": "Fluid container" },
+        { "value": "stretch_width",   "label": "Stretch width" },
+        { "value": "full_width",      "label": "Full width" }
+      ],
+      "default": "fluid_container",
+      "label": "Section width"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "text",
+      "id": "all_cabinets_handle",
+      "label": "\"All Cabinets\" collection handle",
+      "default": "all-cabinets",
+      "info": "The handle of your master wine cabinets collection. Default: 'all-cabinets' → /collections/all-cabinets"
+    }
+  ],
+  "presets": [
+    { "name": "LeCavist Breadcrumb" }
+  ]
+}
+{% endschema %}

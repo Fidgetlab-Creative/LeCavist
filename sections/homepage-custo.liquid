@@ -1,0 +1,113 @@
+<section class="lecavist-conditions-section">
+
+  <h2 class="lecavist-icons-title">
+    {{ section.settings.heading }}
+  </h2>
+
+  <!-- Icon list -->
+  <div class="lecavist-icon-list">
+    {% for block in section.blocks %}
+      {% if block.type == 'condition' %}
+        <div class="lecavist-icon-item" {{ block.shopify_attributes }}>
+          <a href="{{ block.settings.link }}" class="lecavist-link">
+            <img
+              src="{{ block.settings.icon | image_url: width: 80 }}"
+              alt="{{ block.settings.title }}"
+              class="lecavist-icon"
+              width="100px" 
+              height="100px"
+            />
+            <div class="lecavist-text">
+              <strong>{{ block.settings.title }}</strong>
+              <div>{{ block.settings.text }}</div>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- Buttons -->
+  <div class="lecavist-five-buttons">
+    {% for block in section.blocks %}
+      {% if block.type == 'button' %}
+        <a
+          href="{{ block.settings.link }}"
+          class="lecavist-button"
+          style="
+            background-color: {{ block.settings.bg_color }};
+            color: {{ block.settings.text_color }};
+          "
+          {{ block.shopify_attributes }}
+        >
+          {{ block.settings.text }}
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+</section>
+
+{% schema %}
+{
+  "name": "Conditions + Buttons",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Every detail matters. Four conditions, one perfect environment."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "condition",
+      "name": "Condition",
+      "settings": [
+        { "type": "image_picker", "id": "icon", "label": "Icon" },
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "text", "label": "Description" },
+        { "type": "url", "id": "link", "label": "Link" }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text" },
+        { "type": "url", "id": "link", "label": "Link" },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background colour",
+          "default": "#eeeeee"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text colour",
+          "default": "#111111"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Conditions + Buttons",
+      "blocks": [
+        { "type": "condition" },
+        { "type": "condition" },
+        { "type": "condition" },
+        { "type": "condition" },
+        { "type": "button" },
+        { "type": "button" },        
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

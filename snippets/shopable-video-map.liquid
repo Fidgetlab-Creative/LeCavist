@@ -1,0 +1,41 @@
+{%- comment -%}
+  Maps a product handle -> its shopable video URL (gathered from the shopable-video
+  sections across the whole site, including the homepage "shop the look" carousel).
+  Used as a fallback for the product page's "Watch in video" button + appended at the
+  end of the gallery's product images when the product has its own / a linked video.
+  Echoes the URL (or nothing). Usage:
+    {%- capture v -%}{%- render 'shopable-video-map', handle: product.handle -%}{%- endcapture -%}
+  To refresh: run _scan-all-shopvid.js (lists every template's shopable-video block:
+  product + video_url + local_video) then _resolve-shopvid.js (resolves local_video
+  filenames -> CDN mp4 urls). Picked the most product-specific clip per product.
+{%- endcomment -%}
+{%- liquid
+  case handle
+    when 'lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro'
+      echo 'https://cdn.shopify.com/videos/c/vp/0dccecf1352b42d4a37604b03fecb039/0dccecf1352b42d4a37604b03fecb039.SD-480p-1.2Mbps-62561889.mp4'
+    when 'lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d'
+      echo 'https://cdn.shopify.com/videos/c/vp/fd232e7b2a6d4c13801070ccb6467b05/fd232e7b2a6d4c13801070ccb6467b05.SD-480p-1.0Mbps-62297633.mp4'
+    when 'lecavist-168-bottle-cellar-bordeaux-lkv168pdbx'
+      echo 'https://cdn.shopify.com/videos/c/vp/272ff63c823c4526a7224e4c5e7c74c2/272ff63c823c4526a7224e4c5e7c74c2.SD-480p-1.0Mbps-62297655.mp4'
+    when 'lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d'
+      echo 'https://cdn.shopify.com/videos/c/vp/5850bec3128844be94a3fed92bb8da23/5850bec3128844be94a3fed92bb8da23.SD-480p-1.2Mbps-62297701.mp4'
+    when 'lecavist-63-bottle-wine-fridge-single-zone-lkcv63n'
+      echo 'https://cdn.shopify.com/videos/c/vp/f3b07d22a1584676bc41f26f7905e303/f3b07d22a1584676bc41f26f7905e303.SD-480p-1.2Mbps-62297742.mp4'
+    when 'lecavist-140-bottle-wine-cabinet-triple-zone-stainless-steel-lek1403zpvx'
+      echo 'https://cdn.shopify.com/videos/c/vp/8e1d930351974851bc3a14d6cbe83888/8e1d930351974851bc3a14d6cbe83888.SD-480p-0.9Mbps-56614508.mp4'
+    when 'lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy'
+      echo 'https://cdn.shopify.com/videos/c/vp/280e1e9186564e39aa333f7ec881d849/280e1e9186564e39aa333f7ec881d849.SD-480p-0.9Mbps-56614504.mp4'
+    when 'lecavist-56-bottle-wine-fridge-dual-zone-black-lks56vn2z'
+      echo 'https://cdn.shopify.com/videos/c/vp/bf1e9f6b755e4ff5b8fe4253f74ec1bd/bf1e9f6b755e4ff5b8fe4253f74ec1bd.SD-480p-1.5Mbps-48429737.mp4'
+    when 'lecavist-188-bottle-wine-fridge-dual-zone-side-by-side-black-lcs200vn2z'
+      echo 'https://cdn.shopify.com/videos/c/vp/35f5d0e763c5476aab203b064b169767/35f5d0e763c5476aab203b064b169767.SD-480p-1.5Mbps-47879079.mp4'
+    when 'lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu'
+      echo 'https://cdn.shopify.com/videos/c/vp/d66d43e568b9478fa73bcdbea6bb468b/d66d43e568b9478fa73bcdbea6bb468b.SD-480p-1.5Mbps-55434208.mp4'
+    when 'lecavist-168-bottle-wine-cabinet-single-zone-black-lek168pv'
+      echo 'https://cdn.shopify.com/videos/c/vp/df1009c660014cb1aeef61bb6cd49b0d/df1009c660014cb1aeef61bb6cd49b0d.SD-480p-1.5Mbps-61494517.mp4'
+    when 'lecavist-294-bottle-single-zone-lj294vn'
+      echo 'https://cdn.shopify.com/videos/c/vp/845152c02ac745109438b422bdd0c676/845152c02ac745109438b422bdd0c676.SD-480p-1.5Mbps-61494677.mp4'
+    when 'lecavist-303-bottle-wine-fridge-dual-zone-lcs300vn2z1d'
+      echo 'https://cdn.shopify.com/videos/c/vp/a03dd69f89bd496ebb09b7d47a452bcd/a03dd69f89bd496ebb09b7d47a452bcd.SD-480p-1.0Mbps-61494816.mp4'
+  endcase
+-%}

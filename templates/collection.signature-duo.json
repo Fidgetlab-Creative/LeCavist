@@ -1,0 +1,473 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "lc_video_hero": {
+      "type": "lc-video-hero",
+      "settings": {
+        "video": "shopify://files/videos/LANDSCAPE DUO SIGNATURE_2535acce-b221-4304-965c-9205de47ebdb.mp4",
+        "video_fit": "contain",
+        "focal_point": "center",
+        "overlay_opacity": 45,
+        "scroll_length": 180,
+        "alignment": "left",
+        "eyebrow": "Signature Duo Range",
+        "title": "Perfectly paired.\nBeautifully bold.",
+        "subtitle": "Matched pairs of our finest wine cabinets — double the capacity, perfect symmetry, and a centrepiece worthy of any cellar.",
+        "cta1_label": "Explore",
+        "cta1_link": "#explore",
+        "cta2_label": "Call our expert.",
+        "cta2_link": "tel:+61293989933",
+        "show_scroll_cue": true
+      }
+    },
+    "lc_duo_hero": {
+      "type": "lc-duo-hero",
+      "disabled": true,
+      "settings": {
+        "bg_color": "#0a0a0a",
+        "image_asset": "duo-premium-1.png",
+        "eyebrow": "Signature Duo Range",
+        "title": "Two cabinets. One statement.",
+        "subtitle": "Matched pairs of our finest wine cabinets — double the capacity, perfect symmetry, and a centrepiece worthy of any cellar or living space.",
+        "cta_label": "Explore the pairs",
+        "cta_link": "shopify://collections/duo",
+        "cta2_label": "Book a consultation",
+        "cta2_link": "shopify://pages/contact",
+        "show_stats": true,
+        "stat1_v": "×2",
+        "stat1_l": "The capacity",
+        "stat2_v": "Up to 588",
+        "stat2_l": "Bottles per pair",
+        "stat3_v": "Matched",
+        "stat3_l": "Symmetrical design"
+      }
+    },
+    "lc_duo_carousel": {
+      "type": "lc-duo-carousel",
+      "blocks": {
+        "d11": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-beverage-cabinet-duo-52-bottle-140l-lj52vnbu-lj140bc-single-zone-wine-storage-beverage-cooling-built-in-black",
+            "single_product": "lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu",
+            "image_asset": "duo-premium-11.png",
+            "title": ""
+          }
+        },
+        "d0": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-104-bottle-capacity-2-52-single-zone-built-in-black-lj52vnbux2",
+            "single_product": "lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu",
+            "image_asset": "duo-premium-0.png",
+            "title": ""
+          }
+        },
+        "d5": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cellar-duo-2-168-bottle-single-zone-cabinets-freestanding-black-lkv168pndxx2",
+            "single_product": "lecavist-168-bottle-wine-cabinet-single-zone-black-lek168pv",
+            "image_asset": "duo-premium-5.png",
+            "title": ""
+          }
+        },
+        "d9": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-308-bottle-140-168-triple-zone-single-zone-freestanding-stainless-steel-lek208pvxx2",
+            "single_product": "lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy",
+            "image_asset": "duo-premium-9.png",
+            "title": ""
+          }
+        },
+        "d1": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-280-bottle-2-x-140-triple-zone-freestanding-black-lek1403zpvx2",
+            "single_product": "lecavist-140-bottle-wine-cabinet-single-zone-black-lek1403zpv",
+            "image_asset": "duo-premium-1.png",
+            "title": ""
+          }
+        },
+        "d4": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-336-bottle-capacity-2-168-single-zone-freestanding-stainless-steel-lek168pvx2",
+            "single_product": "lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy",
+            "image_asset": "duo-premium-4.png",
+            "title": ""
+          }
+        },
+        "d8": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-308-bottle-140-168-triple-zone-single-zone-freestanding-black-lek208pvx2",
+            "single_product": "lecavist-168-bottle-wine-cabinet-single-zone-black-lek168pv",
+            "image_asset": "duo-premium-8.png",
+            "title": ""
+          }
+        },
+        "d2": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-280-bottle-2-x-140-triple-zone-freestanding-stainless-steel-lek1403zpvxx2",
+            "single_product": "lecavist-140-bottle-wine-cabinet-triple-zone-stainless-steel-lek1403zpvx",
+            "image_asset": "duo-premium-2.png",
+            "title": ""
+          }
+        },
+        "d3": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-336-bottle-2-x-168-single-zone-freestanding-stainless-steel-lek168pvxx2",
+            "single_product": "lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy",
+            "image_asset": "duo-premium-3.png",
+            "title": ""
+          }
+        },
+        "d7": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-588-bottle-capacity-2-294-single-zone-freestanding-black-lj294vnx2",
+            "single_product": "lecavist-294-bottle-single-zone-lj294vn",
+            "image_asset": "duo-premium-7.png",
+            "title": ""
+          }
+        },
+        "d6": {
+          "type": "duo",
+          "settings": {
+            "product": "lecavist-wine-cabinet-duo-496-bottle-capacity-2-248-single-zone-freestanding-black-lcs240vn1z1d2",
+            "single_product": "lecavist-189-bottle-wine-cabinet-single-zone-full-shelves-lcs240vn1z1dfs",
+            "image_asset": "duo-premium-6.png",
+            "title": ""
+          }
+        }
+      },
+      "block_order": [
+        "d11",
+        "d0",
+        "d5",
+        "d9",
+        "d1",
+        "d4",
+        "d8",
+        "d2",
+        "d3",
+        "d7",
+        "d6"
+      ],
+      "settings": {
+        "bg_color": "#f5f0e8",
+        "eyebrow": "Signature Duo",
+        "title": "Twice the elegance.",
+        "max": 12,
+        "show_rating": false,
+        "show_hint": true,
+        "hint_text": "Drag to explore"
+      }
+    },
+    "lc_feature_tiles": {
+      "type": "lc-feature-tiles",
+      "blocks": {
+        "t1": { "type": "tile", "settings": { "icon": "truck", "title": "Free Delivery & Connection", "text": "<p>Bonus : Free Removal</p>", "link": "", "link_label": "Learn more" } },
+        "t2": { "type": "tile", "settings": { "icon": "shield", "title": "2 Year Warranty", "text": "<p>5 Year Compressor.</p>", "link": "", "link_label": "Learn more" } },
+        "t3": { "type": "tile", "settings": { "icon": "headset", "title": "Expert Advice", "text": "<p>Our entire team of experts is at your disposal to create a bespoke offer tailored to your needs.</p>", "link": "shopify://pages/contact", "link_label": "Learn more" } },
+        "t4": { "type": "tile", "settings": { "icon": "lock", "title": "Secure payment", "text": "<p>Encrypted checkout with trusted providers.</p>", "link": "", "link_label": "Learn more" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": { "bg_color": "#f5f0e8", "eyebrow": "", "title": "Shopping with LeCavist" }
+    },
+    "banner": {
+      "type": "main-collection-heading",
+      "blocks": {
+        "heading_title": {
+          "type": "heading",
+          "settings": {
+            "page_title": "",
+            "header_size": "default"
+          }
+        }
+      },
+      "block_order": [
+        "heading_title"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "scheme-3d10de96-a479-49bd-819c-e044746b4f3e",
+        "alignment": "center",
+        "show_collection_image": false,
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "show_title": true,
+        "show_description": false,
+        "show_breadcrumb": false,
+        "padding_top": 10,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "main-collection-product",
+      "blocks": {
+        "filter_giBtHK": {
+          "type": "filter",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "filter_giBtHK"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "section_width": "full_width",
+        "enable_filtering": true,
+        "show_filter_counts": true,
+        "filter_layout": "horizontal",
+        "vertical_posion": "left",
+        "number_products_per_page": true,
+        "sorting": true,
+        "grid_list": true,
+        "items_to_show": 12,
+        "items_per_row": 4,
+        "column_gap": 10,
+        "pagination": "infinit_scrolling",
+        "button_show_more": "Load more",
+        "promotion_link": "shopify://collections/best-seller",
+        "promotion_postion": 6,
+        "items_per_row_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "subcollection": {
+      "type": "subcollection-list",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "image_ratio": "portrait",
+        "custom_ratio": "",
+        "items_per_row": 5,
+        "column_gap": 30,
+        "collection_information_position": "below_image",
+        "design": "default",
+        "text_alignment": "center",
+        "show_product_count": false,
+        "font_size": 16,
+        "font_weight": "subheading_weight",
+        "information_spacing": 6,
+        "rounded_image": false,
+        "image_custom_width": false,
+        "image_width": 200,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0
+      },
+      "disabled": true
+    },
+    "lc_testimonials_heading": {
+      "type": "lc-heading",
+      "settings": { "bg_color": "#FDFAF5", "eyebrow": "Choice of professionals", "title": "Trusted by experts", "padding_top": 88, "padding_bottom": 0 }
+    },
+    "lc_duo_video": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_iajgHi": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "video_url": "",
+            "local_video": "shopify://files/videos/manu HD Final_caeb9c78-9f9b-4402-82bb-67f541aba57e.mp4"
+          }
+        },
+        "video_tBzBMb": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-63-bottle-wine-fridge-single-zone-lkcv63n",
+            "video_url": "",
+            "local_video": "shopify://files/videos/REELS - WHY LECAVIST BY CHATEAU TANUNDA SHORT.mp4"
+          }
+        },
+        "video_tEAtFT": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "video_url": "",
+            "local_video": "shopify://files/videos/REELS - WHY LE CAVIST BY 40RES SHORT.mp4"
+          }
+        },
+        "video_K3gMjq": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "video_url": "",
+            "local_video": "shopify://files/videos/REELS - WHY LECAVIST BY LANA SHORT.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "video_iajgHi",
+        "video_tBzBMb",
+        "video_tEAtFT",
+        "video_K3gMjq"
+      ],
+      "name": "t:sections.shopable-video.name",
+      "settings": {
+        "eyebrow": "",
+        "eyebrow_size": 11,
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "video_autoplay": true,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 4,
+        "reveal": true,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 24,
+        "padding_bottom": 30,
+        "reset_spacing": false
+      }
+    },
+    "lc_duo_reviews": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonials_items_Hym7UU": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/lecavist-wine-cabinet-168-bottle-single-zone-freestanding-black-lek168pv-2180095.png",
+            "author_rating": 5,
+            "author_text": "<p>LeCavist was recommended by a close friend and they did not disappoint. Communication throughout was great and the delivery was seamless. The cabinet itself looks great and brings the wine to temperature super quick. Excellent value for money, no need to look elsewhere in my opinion. 5 STAR!</p>",
+            "author_name": "Chris",
+            "author_address": "Sydney, Australia",
+            "author_published": "Published on 26/9/2025"
+          }
+        },
+        "testimonials_items_zWXaMR": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/lecavist-63-bottle-wine-cabinet-single-zone-black-lkcv63n-730121.jpg",
+            "author_rating": 5,
+            "author_text": "<p>When it comes to purchasing a product online, I always research thoroughly and so in this case it was a no brainer choosing a LeCavist wine fridge. The reviews were excellent and the service / delivery was brilliant. The fridge is up and running and we are might impressed so far. We purchased the 56 bottle dual zone. Love the colour scheme and it fits in the house perfectly. Thank you for a quality product and great service.</p>",
+            "author_name": "John Northfield",
+            "author_address": "Brisbane, Australia",
+            "author_published": "Published on 02/09/2025"
+          }
+        },
+        "testimonials_items_Lg8tJh": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/lecavist-76-bottle-wine-cabinet-single-zone-black-full-shelves-lcs100vnfs-472973.jpg",
+            "author_rating": 5,
+            "author_text": "<p>I bought the 97 bottle wine fridge. The fridge is immaculate, high quality product and finish. Love the full front glass door. Looks amazing. Very quiet and has super easy to set desired temperature. Aslo, your Sydney staff went above and beyond to have the product delivered before my house warming. Really appreciate her help. I would definitely recommend this product for its quality and price.</p>",
+            "author_name": "Mark",
+            "author_address": "Melbourne, Australia",
+            "author_published": "Published on 29/03/2025"
+          }
+        },
+        "testimonials_items_c4K7rw": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/lecavist-wine-cabinet-77-bottle-dual-zone-freestanding-black-lek1052zpvfs-2205777.png",
+            "author_rating": 5,
+            "author_text": "<p>First class advice, service and product. To begin, I booked a phone call with Le Caviste’s “expert”. Seán turned out to be far more than the giver of thorough and honest advice. With his advice I was able to decide the most suitable fridge from a wide range available. When I rang to order, it was Seán again! He took my order then followed up throughout the buying, delivery and after-sales. Faultless. The wine fridge itself looks brilliant: solid, first class finish and stylish. I should note that this is replacing a wine fridge from a very well know brand. Not only does it look better, it was about half the price of the more “famous” brand and appears to be at least as good as, and I suspect better than, the one it’s replacing. If I could give 10 stars I would!</p>",
+            "author_name": "Jessica",
+            "author_address": "Sydney, Australia",
+            "author_published": "Published on 01/09/2024"
+          }
+        },
+        "testimonials_items_gfE8PJ": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/LCS155VN1ZPRO.png",
+            "author_rating": 5,
+            "author_text": "<p>I heard about Lecavist from a friend who recommended checking them out. In need of a small capacity unit, I checked their range and chose the 18 bottle model. The purchase experience was flawless and their customer service was swift to act when I mistyped the delivery address. Delivery via Startrack only took a couple of day. The product looks very stylish and perfectly fit for purpose. I recommend this site and their products!</p>",
+            "author_name": "Paul C.",
+            "author_address": "Melbourne, Australia",
+            "author_published": "Published on 29/1/2024"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_Hym7UU",
+        "testimonials_items_zWXaMR",
+        "testimonials_items_Lg8tJh",
+        "testimonials_items_c4K7rw",
+        "testimonials_items_gfE8PJ"
+      ],
+      "name": "t:sections.testimonials.presets.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Testimonials",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "show_rate": true,
+        "show_date_published": true,
+        "show_author_image": true,
+        "show_author_name": true,
+        "show_author_info": true,
+        "content_alignment": "center",
+        "img_position": "top",
+        "img_width": 80,
+        "framed": true,
+        "rate_color": "#ff9c05",
+        "items_per_row": 3,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 4,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 60,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    }
+  },
+  "order": [
+    "lc_video_hero",
+    "lc_duo_hero",
+    "lc_duo_carousel",
+    "lc_testimonials_heading",
+    "lc_duo_video",
+    "lc_feature_tiles",
+    "lc_duo_reviews",
+    "banner",
+    "main",
+    "subcollection"
+  ]
+}

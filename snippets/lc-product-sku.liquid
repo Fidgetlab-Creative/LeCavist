@@ -1,0 +1,23 @@
+{%- comment -%}
+  LeCavist — SKU resolver with title fallback.
+  Returns variant.sku, or — when blank — the text inside the last
+  parenthesised segment of product.title (e.g. "... (LCS100VNFS) PRE-ORDER"
+  → "LCS100VNFS"). Intended to be captured, not echoed inline.
+
+  Params:
+    product (required)
+    variant (optional; defaults to product.selected_or_first_available_variant)
+{%- endcomment -%}
+{%- liquid
+  if variant == blank
+    assign variant = product.selected_or_first_available_variant
+  endif
+  assign _lc_sku = variant.sku
+  if _lc_sku == blank
+    assign _lc_parts = product.title | split: '('
+    if _lc_parts.size > 1
+      assign _lc_sku = _lc_parts | last | split: ')' | first | strip
+    endif
+  endif
+-%}
+{{- _lc_sku -}}

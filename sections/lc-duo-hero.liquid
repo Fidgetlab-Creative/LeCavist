@@ -1,0 +1,137 @@
+{%- comment -%}
+  LeCavist — Signature Duo cinematic hero.
+  Dark, editorial: copy on the left, a detoured "pair" product floating on the
+  right over a burgundy glow. Reveal + gentle float. Uses a theme asset image.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+
+<section class="lc-duohero" id="lc-duohero-{{ section.id }}" data-lc-duohero style="--lc-duohero-bg: {{ s.bg_color }};">
+  <div class="lc-duohero__glow" aria-hidden="true"></div>
+  <div class="lc-duohero__inner">
+    <div class="lc-duohero__copy">
+      {%- if s.eyebrow != blank -%}<p class="lc-duohero__eyebrow" data-lc-reveal>{{ s.eyebrow }}</p>{%- endif -%}
+      {%- if s.title != blank -%}<h1 class="lc-duohero__title" data-lc-reveal>{{ s.title }}</h1>{%- endif -%}
+      {%- if s.subtitle != blank -%}<p class="lc-duohero__subtitle" data-lc-reveal>{{ s.subtitle }}</p>{%- endif -%}
+      {%- if s.cta_label != blank -%}
+        <div class="lc-duohero__actions" data-lc-reveal>
+          <a class="lc-duohero__btn" href="{{ s.cta_link | default: '#' }}">{{ s.cta_label }}</a>
+          {%- if s.cta2_label != blank -%}<a class="lc-duohero__btn lc-duohero__btn--ghost" href="{{ s.cta2_link | default: '#' }}">{{ s.cta2_label }}
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>{%- endif -%}
+        </div>
+      {%- endif -%}
+      {%- if s.show_stats -%}
+        <div class="lc-duohero__stats" data-lc-reveal>
+          {%- for i in (1..3) -%}
+            {%- assign v = 'stat' | append: i | append: '_v' -%}{%- assign l = 'stat' | append: i | append: '_l' -%}
+            {%- if s[v] != blank -%}<div class="lc-duohero__stat"><span class="lc-duohero__stat-v">{{ s[v] }}</span><span class="lc-duohero__stat-l">{{ s[l] }}</span></div>{%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="lc-duohero__stage" data-lc-reveal>
+      {%- if s.image_asset != blank -%}
+        <img class="lc-duohero__product" data-lc-float src="{{ s.image_asset | asset_url }}" alt="{{ s.title | escape }}" loading="eager" fetchpriority="high" width="1200" height="1200">
+      {%- else -%}
+        <div class="lc-duohero__product lc-duohero__product--ph"></div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #lc-duohero-{{ section.id }}.lc-duohero {
+    --cream:#F5F0E8; --ink:#F5F0E8; --muted:rgba(245,240,232,0.62); --acc:#B34B62; --line:rgba(245,240,232,0.18);
+    --disp:'Cormorant Garamond','Times New Roman',serif; --body:'Inter Tight',-apple-system,sans-serif;
+    position: relative; width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);
+    background: var(--lc-duohero-bg, #0a0a0a); color: var(--ink); overflow: hidden; isolation: isolate;
+    padding: clamp(70px,10vh,130px) clamp(22px,6vw,90px);
+  }
+  #lc-duohero-{{ section.id }} * { box-sizing: border-box; }
+  #lc-duohero-{{ section.id }} .lc-duohero__glow { position: absolute; z-index: 0; right: 12%; top: 46%; transform: translateY(-50%); width: 60vw; height: 60vw; max-width: 900px; max-height: 900px; pointer-events: none; background: radial-gradient(ellipse at center, rgba(150,40,60,0.42) 0%, rgba(150,40,60,0.10) 42%, transparent 70%); filter: blur(10px); }
+  #lc-duohero-{{ section.id }} .lc-duohero__inner { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px,4vw,64px); align-items: center; min-height: clamp(460px,66vh,680px); }
+
+  #lc-duohero-{{ section.id }} .lc-duohero__copy { max-width: 560px; }
+  #lc-duohero-{{ section.id }} .lc-duohero__eyebrow { font-family: var(--body); font-size: clamp(11px,1vw,13px); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--acc); margin: 0 0 clamp(16px,2vw,24px); }
+  #lc-duohero-{{ section.id }} .lc-duohero__eyebrow::before { content:""; display:inline-block; vertical-align:middle; width:26px; height:1px; background: var(--acc); margin-right:14px; margin-bottom:3px; }
+  #lc-duohero-{{ section.id }} .lc-duohero__title { font-family: var(--disp); font-weight: 300; font-size: clamp(2.8rem,5.6vw,5rem); line-height: 1.0; letter-spacing: -0.01em; margin: 0 0 clamp(18px,2.4vw,28px); text-wrap: balance; color: var(--ink); }
+  #lc-duohero-{{ section.id }} .lc-duohero__subtitle { font-family: var(--body); font-weight: 300; font-size: clamp(1rem,1.4vw,1.2rem); line-height: 1.6; color: var(--muted); max-width: 30em; margin: 0 0 clamp(28px,3vw,38px); }
+  #lc-duohero-{{ section.id }} .lc-duohero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn { display: inline-flex; align-items: center; gap: 9px; font-family: var(--body); font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 16px 34px; border-radius: 2px; text-decoration: none; border: 1px solid transparent; background: var(--cream); color: #1a1512; transition: transform .3s, box-shadow .3s, background .3s, color .3s, border-color .3s; }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(0,0,0,0.4); }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn--ghost { background: transparent; color: var(--cream); border-color: var(--line); }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn--ghost:hover { background: rgba(245,240,232,0.08); border-color: var(--cream); }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn--ghost svg { transition: transform .3s; }
+  #lc-duohero-{{ section.id }} .lc-duohero__btn--ghost:hover svg { transform: translateX(4px); }
+
+  #lc-duohero-{{ section.id }} .lc-duohero__stats { display: flex; gap: clamp(24px,3vw,44px); margin-top: clamp(32px,4vw,48px); border-top: 1px solid var(--line); padding-top: clamp(22px,2.4vw,28px); }
+  #lc-duohero-{{ section.id }} .lc-duohero__stat { display: flex; flex-direction: column; gap: 5px; }
+  #lc-duohero-{{ section.id }} .lc-duohero__stat-v { font-family: var(--disp); font-weight: 300; font-size: clamp(1.6rem,2.6vw,2.2rem); line-height: 1; color: var(--ink); }
+  #lc-duohero-{{ section.id }} .lc-duohero__stat-l { font-family: var(--body); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+
+  #lc-duohero-{{ section.id }} .lc-duohero__stage { position: relative; display: flex; align-items: center; justify-content: center; }
+  #lc-duohero-{{ section.id }} .lc-duohero__product { display: block; width: 100%; max-width: 560px; height: auto; max-height: 76vh; object-fit: contain; filter: drop-shadow(0 40px 70px rgba(0,0,0,0.6)); will-change: transform; }
+  #lc-duohero-{{ section.id }} .lc-duohero__product--ph { width: 100%; max-width: 520px; aspect-ratio: 1/1; background: radial-gradient(120% 100% at 50% 0%, #2a2226, #14100f); border-radius: 10px; }
+
+  #lc-duohero-{{ section.id }} [data-lc-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 1s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1); }
+  #lc-duohero-{{ section.id }}.is-ready [data-lc-reveal] { opacity: 1; transform: none; }
+  #lc-duohero-{{ section.id }}.is-ready .lc-duohero__title { transition-delay:.1s; }
+  #lc-duohero-{{ section.id }}.is-ready .lc-duohero__subtitle { transition-delay:.2s; }
+  #lc-duohero-{{ section.id }}.is-ready .lc-duohero__actions { transition-delay:.3s; }
+  #lc-duohero-{{ section.id }}.is-ready .lc-duohero__stats { transition-delay:.4s; }
+  #lc-duohero-{{ section.id }}.is-ready .lc-duohero__stage { transition-delay:.25s; transition-duration:1.2s; }
+
+  @media (max-width: 849px) {
+    #lc-duohero-{{ section.id }} .lc-duohero__inner { grid-template-columns: 1fr; text-align: center; }
+    #lc-duohero-{{ section.id }} .lc-duohero__copy { max-width: none; }
+    #lc-duohero-{{ section.id }} .lc-duohero__eyebrow::before { display:none; }
+    #lc-duohero-{{ section.id }} .lc-duohero__actions, #lc-duohero-{{ section.id }} .lc-duohero__stats { justify-content: center; }
+    #lc-duohero-{{ section.id }} .lc-duohero__stage { order: -1; }
+    #lc-duohero-{{ section.id }} .lc-duohero__product { max-height: 46vh; }
+  }
+  @media (prefers-reduced-motion: reduce) { #lc-duohero-{{ section.id }} [data-lc-reveal] { transition:none !important; opacity:1 !important; transform:none !important; } }
+{% endstyle %}
+
+<script>
+  (function(){
+    var root=document.getElementById('lc-duohero-{{ section.id }}');
+    if(!root) return;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ root.classList.add('is-ready'); }); });
+    var prod=root.querySelector('[data-lc-float]');
+    if(prod && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      var ticking=false;
+      function upd(){ var r=root.getBoundingClientRect(); if(r.bottom>0 && r.top<window.innerHeight){ var p=r.top/window.innerHeight; var y=Math.max(-30,Math.min(30,p*36)); prod.style.transform='translate3d(0,'+y.toFixed(1)+'px,0)'; } ticking=false; }
+      window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd);}},{passive:true});
+      upd();
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC Duo Hero",
+  "tag": "section",
+  "class": "lc-duo-hero-section",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background", "default": "#0A0A0A" },
+    { "type": "text", "id": "image_asset", "label": "Product image asset (e.g. duo-premium-1.png)", "default": "duo-premium-1.png" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Signature Duo Range" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "Two cabinets. One statement." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtitle", "default": "Matched pairs of our finest wine cabinets — double the capacity, perfect symmetry, and a centrepiece worthy of any cellar or living space." },
+    { "type": "text", "id": "cta_label", "label": "Primary button", "default": "Explore the pairs" },
+    { "type": "url", "id": "cta_link", "label": "Primary link" },
+    { "type": "text", "id": "cta2_label", "label": "Secondary button", "default": "Book a consultation" },
+    { "type": "url", "id": "cta2_link", "label": "Secondary link" },
+    { "type": "header", "content": "Stats" },
+    { "type": "checkbox", "id": "show_stats", "label": "Show stats", "default": true },
+    { "type": "text", "id": "stat1_v", "label": "Stat 1 value", "default": "×2" },
+    { "type": "text", "id": "stat1_l", "label": "Stat 1 label", "default": "The capacity" },
+    { "type": "text", "id": "stat2_v", "label": "Stat 2 value", "default": "Up to 588" },
+    { "type": "text", "id": "stat2_l", "label": "Stat 2 label", "default": "Bottles per pair" },
+    { "type": "text", "id": "stat3_v", "label": "Stat 3 value", "default": "Matched" },
+    { "type": "text", "id": "stat3_l", "label": "Stat 3 label", "default": "Symmetrical design" }
+  ],
+  "presets": [ { "name": "LC Duo Hero" } ]
+}
+{% endschema %}

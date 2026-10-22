@@ -1,0 +1,28 @@
+{%- comment -%}
+  LeCavist — Effective tags for Full Shelves (FS) products.
+  Outputs product.tags joined by `|`. When the resolved SKU ends in "FS",
+  the non-FS parent's tags are appended.
+
+  Parent handle resolution is delegated to `lc-fs-parent-handle`.
+
+  Params: product (required)
+{%- endcomment -%}
+{%- liquid
+  assign _tags_out = product.tags | join: '|'
+-%}
+{%- capture _lc_parent_handle -%}{%- render 'lc-fs-parent-handle', product: product -%}{%- endcapture -%}
+{%- assign _lc_parent_handle = _lc_parent_handle | strip -%}
+{%- if _lc_parent_handle != '' -%}
+  {%- assign _lc_parent = all_products[_lc_parent_handle] -%}
+  {%- if _lc_parent != blank -%}
+    {%- assign _parent_tags = _lc_parent.tags | join: '|' -%}
+    {%- if _parent_tags != blank -%}
+      {%- if _tags_out == blank -%}
+        {%- assign _tags_out = _parent_tags -%}
+      {%- else -%}
+        {%- assign _tags_out = _tags_out | append: '|' | append: _parent_tags -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+{{- _tags_out -}}

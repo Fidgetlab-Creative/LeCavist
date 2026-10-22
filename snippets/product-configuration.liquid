@@ -1,0 +1,1179 @@
+{%- comment -%}
+  Product Configuration block — 3 rows of chip selectors.
+
+  All three rows behave as cross-product navigation (this catalog has no
+  true Shopify variants — each shelving/finish/capacity option is a
+  separate product). Visually they look identical so the customer perceives
+  them as configuration choices.
+
+  Row 1 · Capacity   — siblings derived from the SKU family pattern
+                       (same prefix + suffix, different digit run).
+  Row 2 · Shelving   — siblings linked via `custom.parent_product` or
+                       `website-rev.parent_product` (FS variants).
+  Row 3 · Finish     — Black ↔ Stainless sibling pair derived by toggling
+                       a single 'X' suffix character in the canonical SKU.
+
+  Generalized for any product whose siblings follow the suffix-modifier
+  pattern: append `X` for stainless, `FS` for full shelves, `X2` for the
+  black duo, `XX2` for the stainless duo, or `XFS` for the stainless FS
+  variant. Renders nothing when a product has zero siblings in this scheme.
+{%- endcomment -%}
+
+{%- liquid
+  # ── 1. Resolve current SKU (fall back to custom.fs_sku for FS variants
+  #       which have an empty variant.sku in this catalog).
+  assign lc_cfg_sku = product.selected_or_first_available_variant.sku | upcase | strip
+  if lc_cfg_sku == blank
+    assign lc_cfg_sku = product.metafields.custom.fs_sku.value | upcase | strip
+  endif
+-%}
+
+{%- if lc_cfg_sku != blank -%}
+
+{%- liquid
+  # ── 3. Parse current SKU into family parts: <prefix><digits><suffix>
+  #       e.g. LEK168PVX → prefix=LEK, digits=168, suffix=PVX
+  assign lc_cfg_prefix = ''
+  assign lc_cfg_digits = ''
+  assign lc_cfg_suffix = ''
+  assign lc_cfg_phase = 'prefix'
+  assign lc_cfg_chars = lc_cfg_sku | split: ''
+  for c in lc_cfg_chars
+    assign c_is_digit = false
+    if c == '0' or c == '1' or c == '2' or c == '3' or c == '4' or c == '5' or c == '6' or c == '7' or c == '8' or c == '9'
+      assign c_is_digit = true
+    endif
+    if lc_cfg_phase == 'prefix'
+      if c_is_digit
+        assign lc_cfg_phase = 'digits'
+        assign lc_cfg_digits = lc_cfg_digits | append: c
+      else
+        assign lc_cfg_prefix = lc_cfg_prefix | append: c
+      endif
+    elsif lc_cfg_phase == 'digits'
+      if c_is_digit
+        assign lc_cfg_digits = lc_cfg_digits | append: c
+      else
+        assign lc_cfg_phase = 'suffix'
+        assign lc_cfg_suffix = lc_cfg_suffix | append: c
+      endif
+    else
+      assign lc_cfg_suffix = lc_cfg_suffix | append: c
+    endif
+  endfor
+
+  # ── 4. Bottle capacity of the current product (read metafield + fallback
+  #       to title parse for resilience).
+  assign lc_cfg_cap = product.metafields.lecavist_specs.bottle_capacity.value
+  if lc_cfg_cap == blank
+    assign lc_cfg_cap = product.metafields.custom.bottle_capacity.value
+  endif
+
+  # ── 5. Current finish / shelving / form labels derived from SKU shape.
+  #       Suffix patterns (this family):
+  #         PV       → black single, standard shelves
+  #         PVX      → stainless single, standard shelves
+  #         PVFS     → black single, full shelves
+  #         PVXFS    → stainless single, full shelves
+  #         PVX2     → black duo, standard shelves    (X here = duo prefix, not stainless)
+  #         PVXX2    → stainless duo, standard shelves
+  #       To classify: does the suffix contain 'X2' (duo)? Does it end FS?
+  #       Once duo/FS removed, is there an 'X' indicating stainless?
+  assign lc_cfg_sfx_u = lc_cfg_suffix | upcase
+  assign lc_cfg_is_duo  = false
+  assign lc_cfg_is_fs   = false
+  assign lc_cfg_is_steel = false
+  if lc_cfg_sfx_u contains 'X2'
+    assign lc_cfg_is_duo = true
+  endif
+  if lc_cfg_sfx_u contains 'FS'
+    assign lc_cfg_is_fs = true
+  endif
+  # Stainless detection — check for the doubled-X markers *first*, before
+  # any stripping. XFS = stainless FS, XX2 = stainless duo, trailing X (after
+  # stripping non-X modifiers) = stainless single.
+  if lc_cfg_sfx_u contains 'XFS'
+    assign lc_cfg_is_steel = true
+  elsif lc_cfg_sfx_u contains 'XX2'
+    assign lc_cfg_is_steel = true
+  else
+    assign lc_cfg_sfx_strip = lc_cfg_sfx_u | replace: 'X2', '' | replace: 'FS', ''
+    if lc_cfg_sfx_strip == 'PVX'
+      assign lc_cfg_is_steel = true
+    endif
+  endif
+
+  # ── 5b. Door type. Solid-door products (LKV cellars, e.g. LKV168PNDX) have
+  #        no stainless finish, and the trailing 'X' in their SKU is part of
+  #        the model name — NOT the stainless marker. Detect via door_type and
+  #        neutralise the finish/base logic so it doesn't self-reference.
+  assign lc_cfg_door_t = product.metafields.lecavist_specs.door_type.value | default: '' | downcase
+  assign lc_cfg_is_solid = false
+  if lc_cfg_door_t != ''
+    unless lc_cfg_door_t contains 'glass'
+      assign lc_cfg_is_solid = true
+    endunless
+  endif
+  if lc_cfg_is_solid
+    assign lc_cfg_is_steel = false
+  endif
+
+  # ── 6. Derive the family BASE SKU (= the black, standard-shelves, single
+  #       variant) by stripping the suffix modifier from the current SKU.
+  #       Order: longest match first — XX2/XFS before X2/FS, X2/FS before
+  #       trailing X.  Each "expected sibling" is then base + a known
+  #       modifier (or just base for the black standard).
+  assign lc_cfg_base_sku = lc_cfg_sku
+  assign lc_cfg_skulen   = lc_cfg_base_sku.size
+  assign lc_cfg_last3    = lc_cfg_base_sku | slice: -3, 3
+  assign lc_cfg_last2    = lc_cfg_base_sku | slice: -2, 2
+  assign lc_cfg_last1    = lc_cfg_base_sku | slice: -1, 1
+  assign lc_cfg_strip    = 0
+  if lc_cfg_last3 == 'XX2' or lc_cfg_last3 == 'XFS'
+    # Glass: leading X = stainless (strip 3). Solid: the X is the model name,
+    # only the duo/FS modifier is stripped (strip 2, keep the X).
+    if lc_cfg_is_solid
+      assign lc_cfg_strip = 2
+    else
+      assign lc_cfg_strip = 3
+    endif
+  elsif lc_cfg_last2 == 'X2' or lc_cfg_last2 == 'FS'
+    assign lc_cfg_strip = 2
+  elsif lc_cfg_last1 == 'X'
+    # Trailing X = stainless marker on glass products only; on solid-door
+    # products it belongs to the model name, so keep it.
+    unless lc_cfg_is_solid
+      assign lc_cfg_strip = 1
+    endunless
+  endif
+  if lc_cfg_strip > 0
+    assign lc_cfg_minus = lc_cfg_skulen | minus: lc_cfg_strip
+    assign lc_cfg_base_sku = lc_cfg_base_sku | slice: 0, lc_cfg_minus
+  endif
+
+  # Expected SKUs for each of the 6 possible variants.
+  assign lc_cfg_s_BLACK_STD = lc_cfg_base_sku
+  assign lc_cfg_s_STEEL_STD = lc_cfg_base_sku | append: 'X'
+  assign lc_cfg_s_BLACK_FS  = lc_cfg_base_sku | append: 'FS'
+  assign lc_cfg_s_STEEL_FS  = lc_cfg_base_sku | append: 'XFS'
+  assign lc_cfg_s_BLACK_DUO = lc_cfg_base_sku | append: 'X2'
+  assign lc_cfg_s_STEEL_DUO = lc_cfg_base_sku | append: 'XX2'
+
+  # Discovered handle + capacity for each — populated by the loop below.
+  assign lc_cfg_h_BLACK_STD = ''
+  assign lc_cfg_h_STEEL_STD = ''
+  assign lc_cfg_h_BLACK_FS  = ''
+  assign lc_cfg_h_STEEL_FS  = ''
+  assign lc_cfg_h_BLACK_DUO = ''
+  assign lc_cfg_h_STEEL_DUO = ''
+  assign lc_cfg_cap_BLACK_STD = ''
+  assign lc_cfg_cap_STEEL_STD = ''
+  assign lc_cfg_cap_BLACK_FS  = ''
+  assign lc_cfg_cap_STEEL_FS  = ''
+  assign lc_cfg_cap_BLACK_DUO = ''
+  assign lc_cfg_cap_STEEL_DUO = ''
+
+  # ── 7. Single pass through the all-cabinets collection.  Each product is
+  #       checked against (a) the capacity family — same prefix + same
+  #       suffix shape, different digits — and (b) the 6 expected sibling
+  #       SKUs derived above.
+  assign lc_cfg_cap_family = ''
+  for p in collections['all-cabinets'].products
+    assign p_sku = p.variants.first.sku | upcase | strip
+    if p_sku == blank
+      assign p_sku = p.metafields.custom.fs_sku.value | upcase | strip
+    endif
+    if p_sku == blank
+      continue
+    endif
+
+    # Sibling lookups — handle + capacity from this product if SKU matches.
+    if p_sku == lc_cfg_s_BLACK_STD
+      assign lc_cfg_h_BLACK_STD   = p.handle
+      assign lc_cfg_cap_BLACK_STD = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    elsif p_sku == lc_cfg_s_STEEL_STD
+      assign lc_cfg_h_STEEL_STD   = p.handle
+      assign lc_cfg_cap_STEEL_STD = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    elsif p_sku == lc_cfg_s_BLACK_FS
+      assign lc_cfg_h_BLACK_FS   = p.handle
+      assign lc_cfg_cap_BLACK_FS = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    elsif p_sku == lc_cfg_s_STEEL_FS
+      assign lc_cfg_h_STEEL_FS   = p.handle
+      assign lc_cfg_cap_STEEL_FS = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    elsif p_sku == lc_cfg_s_BLACK_DUO
+      assign lc_cfg_h_BLACK_DUO   = p.handle
+      assign lc_cfg_cap_BLACK_DUO = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    elsif p_sku == lc_cfg_s_STEEL_DUO
+      assign lc_cfg_h_STEEL_DUO   = p.handle
+      assign lc_cfg_cap_STEEL_DUO = p.metafields.lecavist_specs.bottle_capacity.value | default: p.metafields.custom.bottle_capacity.value
+    endif
+
+    # Capacity-family extraction (parse digit-run + non-digit shell).
+    assign pp_prefix = ''
+    assign pp_digits = ''
+    assign pp_suffix = ''
+    assign pp_phase = 'prefix'
+    for ch in p_sku
+      assign ch_is_d = false
+      if ch == '0' or ch == '1' or ch == '2' or ch == '3' or ch == '4' or ch == '5' or ch == '6' or ch == '7' or ch == '8' or ch == '9'
+        assign ch_is_d = true
+      endif
+      if pp_phase == 'prefix'
+        if ch_is_d
+          assign pp_phase = 'digits'
+          assign pp_digits = pp_digits | append: ch
+        else
+          assign pp_prefix = pp_prefix | append: ch
+        endif
+      elsif pp_phase == 'digits'
+        if ch_is_d
+          assign pp_digits = pp_digits | append: ch
+        else
+          assign pp_phase = 'suffix'
+          assign pp_suffix = pp_suffix | append: ch
+        endif
+      else
+        assign pp_suffix = pp_suffix | append: ch
+      endif
+    endfor
+    if pp_prefix == lc_cfg_prefix and pp_suffix == lc_cfg_suffix and pp_digits != blank
+      assign p_cap = p.metafields.lecavist_specs.bottle_capacity.value
+      if p_cap == blank
+        assign p_cap = p.metafields.custom.bottle_capacity.value
+      endif
+      if p_cap != blank
+        assign row = p_cap | append: '|' | append: p.url | append: '|' | append: p_sku
+        assign lc_cfg_cap_family = lc_cfg_cap_family | append: row | append: '||'
+      endif
+    endif
+  endfor
+
+  # Sibling count — render the block only if at least 2 variants exist
+  # (otherwise there's no choice to offer the user).
+  assign lc_cfg_sib_count = 0
+  if lc_cfg_h_BLACK_STD != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+  if lc_cfg_h_STEEL_STD != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+  if lc_cfg_h_BLACK_FS != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+  if lc_cfg_h_STEEL_FS != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+  if lc_cfg_h_BLACK_DUO != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+  if lc_cfg_h_STEEL_DUO != ''
+    assign lc_cfg_sib_count = lc_cfg_sib_count | plus: 1
+  endif
+
+  # ── 8. SHELVING ROW. We're either the parent (no parent metafield set)
+  #       and its FS variants point at us, or we're the FS variant pointing
+  #       at the parent.
+  assign lc_cfg_shelving_pairs = ''
+  assign lc_cfg_parent_handle = ''
+  assign lc_cfg_parent_handle = product.metafields['website-rev'].parent_product.value.handle | default: ''
+  if lc_cfg_parent_handle == ''
+    assign lc_cfg_parent_handle = product.metafields.custom.parent_product.value.handle | default: ''
+  endif
+  if lc_cfg_parent_handle == ''
+    assign lc_cfg_parent_text = product.metafields.custom.parent_product.value | default: ''
+    if lc_cfg_parent_text != ''
+      assign lc_cfg_parent_target = lc_cfg_parent_text | upcase | strip
+      # Treat as SKU; look up handle by iterating all-cabinets
+      for p in collections['all-cabinets'].products
+        assign p_sku = p.variants.first.sku | upcase | strip
+        if p_sku == lc_cfg_parent_target
+          assign lc_cfg_parent_handle = p.handle
+          break
+        endif
+      endfor
+    endif
+  endif
+-%}
+
+{%- liquid
+  # Door variant (glass ↔ solid) — explicit product-reference metafield used to
+  # link cross-SKU-family door siblings the pattern can't infer (LEK ↔ LKV).
+  assign lc_cfg_door_variant = product.metafields.custom.door_variant.value
+  assign lc_cfg_has_door = false
+  if lc_cfg_door_variant != blank and lc_cfg_door_variant.handle != blank
+    assign lc_cfg_has_door = true
+  endif
+-%}
+{%- if lc_cfg_sib_count >= 2 or lc_cfg_has_door -%}
+<div class="lc-cfg" data-current-sku="{{ lc_cfg_sku }}">
+  <header class="lc-cfg__header">
+    <span class="lc-cfg__eyebrow">— Choose your —</span>
+    <span class="lc-cfg__title">Configuration</span>
+  </header>
+
+  {%- comment %} ── DOOR (Glass ↔ Solid) — explicit metafield link across SKU
+       families (LEK glass ↔ LKV solid); the pattern parser can't infer it. {%- endcomment %}
+  {%- if lc_cfg_has_door -%}
+    {%- assign lc_var_door = lc_cfg_door_variant.metafields.lecavist_specs.door_type.value | default: '' | downcase -%}
+    {%- if lc_cfg_door_t contains 'glass' -%}
+      {%- assign lc_door_glass_url = product.url -%}{%- assign lc_door_glass_active = true -%}
+      {%- assign lc_door_solid_url = lc_cfg_door_variant.url -%}{%- assign lc_door_solid_active = false -%}
+    {%- else -%}
+      {%- assign lc_door_glass_url = lc_cfg_door_variant.url -%}{%- assign lc_door_glass_active = false -%}
+      {%- assign lc_door_solid_url = product.url -%}{%- assign lc_door_solid_active = true -%}
+    {%- endif -%}
+    <div class="lc-cfg__row" data-cfg-row="door">
+      <div class="lc-cfg__label">Door</div>
+      <div class="lc-cfg__chips" role="radiogroup" aria-label="Door">
+        <a href="{{ lc_door_glass_url }}" class="lc-cfg__chip{% if lc_door_glass_active %} is-active{% endif %}" role="radio" aria-checked="{% if lc_door_glass_active %}true{% else %}false{% endif %}">Glass Door</a>
+        <a href="{{ lc_door_solid_url }}" class="lc-cfg__chip{% if lc_door_solid_active %} is-active{% endif %}" role="radio" aria-checked="{% if lc_door_solid_active %}true{% else %}false{% endif %}">Solid Door</a>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment %} ── FINISH (shown first) ── Solid-door products have no
+       stainless finish, so this row is hidden for them. {%- endcomment %}
+  {%- unless lc_cfg_is_solid -%}
+  {%- if lc_cfg_is_duo -%}
+    {%- assign black_handle = lc_cfg_h_BLACK_DUO -%}
+    {%- assign steel_handle = lc_cfg_h_STEEL_DUO -%}
+  {%- elsif lc_cfg_is_fs -%}
+    {%- assign black_handle = lc_cfg_h_BLACK_FS -%}
+    {%- assign steel_handle = lc_cfg_h_STEEL_FS -%}
+  {%- else -%}
+    {%- assign black_handle = lc_cfg_h_BLACK_STD -%}
+    {%- assign steel_handle = lc_cfg_h_STEEL_STD -%}
+  {%- endif -%}
+  {%- if black_handle != '' or steel_handle != '' -%}
+  <div class="lc-cfg__row" data-cfg-row="finish">
+    <div class="lc-cfg__label">Finish</div>
+    <div class="lc-cfg__chips" role="radiogroup" aria-label="Finish">
+      {%- if black_handle != '' -%}
+      <a
+        href="/products/{{ black_handle }}"
+        class="lc-cfg__chip lc-cfg__chip--swatch{% unless lc_cfg_is_steel %} is-active{% endunless %}"
+        role="radio"
+        aria-checked="{% unless lc_cfg_is_steel %}true{% else %}false{% endunless %}"
+        aria-label="Black"
+      >
+        <span class="lc-cfg__swatch lc-cfg__swatch--black"></span>
+        <span class="lc-cfg__chip-text">Black</span>
+      </a>
+      {%- endif -%}
+      {%- if steel_handle != '' -%}
+        <a
+          href="/products/{{ steel_handle }}"
+          class="lc-cfg__chip lc-cfg__chip--swatch{% if lc_cfg_is_steel %} is-active{% endif %}"
+          role="radio"
+          aria-checked="{% if lc_cfg_is_steel %}true{% else %}false{% endif %}"
+          aria-label="Stainless Steel"
+        >
+          <span class="lc-cfg__swatch lc-cfg__swatch--steel"></span>
+          <span class="lc-cfg__chip-text">Stainless Steel</span>
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+  {%- endunless -%}
+
+  {%- comment %} ── ROW 1 · CAPACITY ── {%- endcomment %}
+  {%- assign cap_entries = lc_cfg_cap_family | split: '||' -%}
+  {%- if cap_entries.size > 1 -%}
+    <div class="lc-cfg__row" data-cfg-row="capacity">
+      <div class="lc-cfg__label">Capacity</div>
+      <div class="lc-cfg__chips" role="radiogroup" aria-label="Capacity">
+        {%- assign cap_seen = '' -%}
+        {%- for entry in cap_entries -%}
+          {%- assign parts = entry | split: '|' -%}
+          {%- if parts.size < 3 -%}{%- continue -%}{%- endif -%}
+          {%- assign cap_v = parts[0] -%}
+          {%- assign cap_url = parts[1] -%}
+          {%- assign cap_sku = parts[2] -%}
+          {%- comment %} Dedupe by capacity value {%- endcomment %}
+          {%- assign cap_key = '|' | append: cap_v | append: '|' -%}
+          {%- if cap_seen contains cap_key -%}{%- continue -%}{%- endif -%}
+          {%- assign cap_seen = cap_seen | append: cap_key -%}
+          {%- assign is_active = false -%}
+          {%- if cap_sku == lc_cfg_sku -%}{%- assign is_active = true -%}{%- endif -%}
+          <a
+            href="{{ cap_url }}"
+            class="lc-cfg__chip{% if is_active %} is-active{% endif %}"
+            role="radio"
+            aria-checked="{% if is_active %}true{% else %}false{% endif %}"
+            data-cap-value="{{ cap_v }}"
+          >
+            <span class="lc-cfg__chip-value">{{ cap_v }}</span>
+            <span class="lc-cfg__chip-unit">Bottle</span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment %} ── ROW · SET (Single / Duo) ──
+       Duo SKU = single SKU + "X2".  LEK168PV ↔ LEK168PVX2,
+                                      LEK168PVX ↔ LEK168PVXX2.
+       FS variants have no duo in scope → row hides for FS. {%- endcomment %}
+  {%- comment %} Single/Duo pair within the same finish (single↔duo). For
+       FS variants we don't render this row — there's no FS duo in the
+       catalog yet. {%- endcomment %}
+  {%- assign set_single_handle = '' -%}
+  {%- assign set_duo_handle = '' -%}
+  {%- assign set_single_cap = '' -%}
+  {%- assign set_duo_cap = '' -%}
+  {%- unless lc_cfg_is_fs -%}
+    {%- if lc_cfg_is_steel -%}
+      {%- assign set_single_handle = lc_cfg_h_STEEL_STD -%}
+      {%- assign set_duo_handle    = lc_cfg_h_STEEL_DUO -%}
+      {%- assign set_single_cap    = lc_cfg_cap_STEEL_STD -%}
+      {%- assign set_duo_cap       = lc_cfg_cap_STEEL_DUO -%}
+    {%- else -%}
+      {%- assign set_single_handle = lc_cfg_h_BLACK_STD -%}
+      {%- assign set_duo_handle    = lc_cfg_h_BLACK_DUO -%}
+      {%- assign set_single_cap    = lc_cfg_cap_BLACK_STD -%}
+      {%- assign set_duo_cap       = lc_cfg_cap_BLACK_DUO -%}
+    {%- endif -%}
+  {%- endunless -%}
+  {%- if set_single_handle != '' and set_duo_handle != '' -%}
+    <div class="lc-cfg__row" data-cfg-row="set">
+      <div class="lc-cfg__label">Set</div>
+      <div class="lc-cfg__chips" role="radiogroup" aria-label="Set">
+        <a
+          href="/products/{{ set_single_handle }}"
+          class="lc-cfg__chip lc-cfg__chip--visual{% unless lc_cfg_is_duo %} is-active{% endunless %}"
+          role="radio"
+          aria-checked="{% unless lc_cfg_is_duo %}true{% else %}false{% endunless %}"
+        >
+          <span class="lc-cfg__chip-stack">
+            <span class="lc-cfg__chip-text">Single</span>
+            {%- if set_single_cap != blank -%}<span class="lc-cfg__chip-cap">{{ set_single_cap }} B.</span>{%- endif -%}
+          </span>
+          <svg class="lc-cfg__chip-icon" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="4" y="2" width="16" height="28" rx="1"/>
+            <line x1="4" y1="8"  x2="20" y2="8"/>
+            <line x1="4" y1="14" x2="20" y2="14"/>
+            <line x1="4" y1="20" x2="20" y2="20"/>
+            <line x1="4" y1="26" x2="20" y2="26"/>
+          </svg>
+        </a>
+        <a
+          href="/products/{{ set_duo_handle }}"
+          class="lc-cfg__chip lc-cfg__chip--visual{% if lc_cfg_is_duo %} is-active{% endif %}"
+          role="radio"
+          aria-checked="{% if lc_cfg_is_duo %}true{% else %}false{% endif %}"
+        >
+          <span class="lc-cfg__chip-stack">
+            <span class="lc-cfg__chip-text">Duo</span>
+            {%- if set_duo_cap != blank -%}<span class="lc-cfg__chip-cap">{{ set_duo_cap }} B.</span>{%- endif -%}
+          </span>
+          <svg class="lc-cfg__chip-icon lc-cfg__chip-icon--wide" viewBox="0 0 36 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="2"  y="2" width="14" height="28" rx="1"/>
+            <line x1="2"  y1="9"  x2="16" y2="9"/>
+            <line x1="2"  y1="16" x2="16" y2="16"/>
+            <line x1="2"  y1="23" x2="16" y2="23"/>
+            <rect x="20" y="2" width="14" height="28" rx="1"/>
+            <line x1="20" y1="9"  x2="34" y2="9"/>
+            <line x1="20" y1="16" x2="34" y2="16"/>
+            <line x1="20" y1="23" x2="34" y2="23"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- comment %} ── ROW 2 · SHELVING ──
+       Hardcoded for this 5-SKU scope. Standard = LEK168PV, Full Shelves = LEK168PVFS.
+       For the duo SKUs (X2/XX2) shelving doesn't apply — we hide this row. {%- endcomment %}
+  {%- unless lc_cfg_is_duo -%}
+    {%- if lc_cfg_is_steel -%}
+      {%- assign std_handle = lc_cfg_h_STEEL_STD -%}
+      {%- assign std_cap    = lc_cfg_cap_STEEL_STD -%}
+      {%- assign fs_handle  = lc_cfg_h_STEEL_FS -%}
+      {%- assign fs_cap     = lc_cfg_cap_STEEL_FS -%}
+    {%- else -%}
+      {%- assign std_handle = lc_cfg_h_BLACK_STD -%}
+      {%- assign std_cap    = lc_cfg_cap_BLACK_STD -%}
+      {%- assign fs_handle  = lc_cfg_h_BLACK_FS -%}
+      {%- assign fs_cap     = lc_cfg_cap_BLACK_FS -%}
+    {%- endif -%}
+    {%- if std_handle != '' and fs_handle != '' -%}
+    <div class="lc-cfg__row" data-cfg-row="shelving">
+      <div class="lc-cfg__label">Shelving</div>
+      <div class="lc-cfg__chips" role="radiogroup" aria-label="Shelving">
+        <a
+          href="/products/{{ std_handle }}"
+          class="lc-cfg__chip lc-cfg__chip--visual{% unless lc_cfg_is_fs %} is-active{% endunless %}"
+          role="radio"
+          aria-checked="{% unless lc_cfg_is_fs %}true{% else %}false{% endunless %}"
+        >
+          <span class="lc-cfg__chip-stack">
+            <span class="lc-cfg__chip-text">Standard</span>
+            {%- if std_cap != blank -%}<span class="lc-cfg__chip-cap">{{ std_cap }} B.</span>{%- endif -%}
+          </span>
+          <svg class="lc-cfg__chip-icon" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="4" y="2" width="16" height="28" rx="1"/>
+            <line x1="4" y1="9"  x2="20" y2="9"/>
+            <line x1="4" y1="17" x2="20" y2="17"/>
+            <line x1="4" y1="25" x2="20" y2="25"/>
+          </svg>
+        </a>
+        <a
+          href="/products/{{ fs_handle }}"
+          class="lc-cfg__chip lc-cfg__chip--visual{% if lc_cfg_is_fs %} is-active{% endif %}"
+          role="radio"
+          aria-checked="{% if lc_cfg_is_fs %}true{% else %}false{% endif %}"
+        >
+          <span class="lc-cfg__chip-stack">
+            <span class="lc-cfg__chip-text">Full Shelves</span>
+            {%- if fs_cap != blank -%}<span class="lc-cfg__chip-cap">{{ fs_cap }} B.</span>{%- endif -%}
+          </span>
+          <svg class="lc-cfg__chip-icon" viewBox="0 0 24 32" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+            <rect x="4" y="2" width="16" height="28" rx="1"/>
+            <line x1="4" y1="6"  x2="20" y2="6"/>
+            <line x1="4" y1="10" x2="20" y2="10"/>
+            <line x1="4" y1="14" x2="20" y2="14"/>
+            <line x1="4" y1="18" x2="20" y2="18"/>
+            <line x1="4" y1="22" x2="20" y2="22"/>
+            <line x1="4" y1="26" x2="20" y2="26"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    {%- endif -%}
+  {%- endunless -%}
+
+  {%- comment %} ── Compare all options button ── {%- endcomment %}
+  <button type="button" class="lc-cfg__compare-btn" data-lc-cmp-open aria-haspopup="dialog" aria-controls="lc-cfg-compare">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1"/>
+      <rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/>
+      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span>Compare all options</span>
+  </button>
+</div>
+
+{%- comment %} ── Compare modal ──
+     Pre-renders rows for each in-scope handle with set / finish / shelving /
+     capacity / price columns. Tap a row to navigate to that product. {%- endcomment %}
+{%- assign lc_cmp_handles = '' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_BLACK_STD | append: '|' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_STEEL_STD | append: '|' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_BLACK_FS  | append: '|' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_STEEL_FS  | append: '|' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_BLACK_DUO | append: '|' -%}
+{%- assign lc_cmp_handles = lc_cmp_handles | append: lc_cfg_h_STEEL_DUO -%}
+{%- assign lc_cmp_h_arr = lc_cmp_handles | split: '|' -%}
+
+<div class="lc-cfg-compare" id="lc-cfg-compare" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Compare all configuration options">
+  <div class="lc-cfg-compare__backdrop" data-lc-cmp-close></div>
+  <div class="lc-cfg-compare__inner" role="document">
+    <button type="button" class="lc-cfg-compare__close" data-lc-cmp-close aria-label="Close comparison">✕</button>
+
+    <header class="lc-cfg-compare__header">
+      <span class="lc-cfg-compare__eyebrow">— Compare options —</span>
+      <h2 class="lc-cfg-compare__heading">All configurations side by side</h2>
+      <p class="lc-cfg-compare__sub">Tap a row to view that configuration.</p>
+    </header>
+
+    <div class="lc-cfg-compare__table-wrap">
+      <table class="lc-cfg-compare__table">
+        <thead>
+          <tr>
+            <th scope="col" aria-label="Preview"></th>
+            <th scope="col">Set</th>
+            <th scope="col">Finish</th>
+            <th scope="col">Shelving</th>
+            <th scope="col">Capacity</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for h in lc_cmp_h_arr -%}
+            {%- assign cp = all_products[h] -%}
+            {%- if cp == empty or cp.handle == blank -%}{%- continue -%}{%- endif -%}
+            {%- liquid
+              # Resolve SKU (FS variant has empty variant.sku)
+              assign cp_sku = cp.variants.first.sku | upcase | strip
+              if cp_sku == blank
+                assign cp_sku = cp.metafields.custom.fs_sku.value | upcase | strip
+              endif
+              # Classify by suffix (same logic as the main snippet)
+              assign cp_is_duo = false
+              assign cp_is_fs = false
+              assign cp_is_steel = false
+              if cp_sku contains 'X2'
+                assign cp_is_duo = true
+              endif
+              if cp_sku contains 'FS'
+                assign cp_is_fs = true
+              endif
+              # Check XFS / XX2 (stainless markers) BEFORE stripping anything.
+              if cp_sku contains 'XFS'
+                assign cp_is_steel = true
+              elsif cp_sku contains 'XX2'
+                assign cp_is_steel = true
+              else
+                assign cp_strip = cp_sku | replace: 'X2', '' | replace: 'FS', ''
+                assign cp_last = cp_strip | slice: -1, 1
+                if cp_last == 'X'
+                  assign cp_is_steel = true
+                endif
+              endif
+              # Solid-door products (door_type not "glass") have no stainless
+              # finish — their SKU 'X' is part of the model name, not a marker.
+              assign cp_door = cp.metafields.lecavist_specs.door_type.value | default: '' | downcase
+              if cp_door != ''
+                unless cp_door contains 'glass'
+                  assign cp_is_steel = false
+                endunless
+              endif
+              # Capacity from metafield
+              assign cp_cap = cp.metafields.lecavist_specs.bottle_capacity.value
+              if cp_cap == blank
+                assign cp_cap = cp.metafields.custom.bottle_capacity.value
+              endif
+              # Shelves description (lecavist_specs.shelves metafield)
+              assign cp_shelves = cp.metafields.lecavist_specs.shelves.value | default: ''
+              # Is this the row for the current product?
+              assign cp_is_current = false
+              if cp_sku == lc_cfg_sku
+                assign cp_is_current = true
+              endif
+            -%}
+            <tr class="lc-cfg-compare__row{% if cp_is_current %} is-current{% endif %}" data-href="{{ cp.url }}">
+              <td class="lc-cfg-compare__thumb-cell">
+                {%- if cp.featured_image != blank -%}
+                  <img
+                    src="{{ cp.featured_image | image_url: width: 160 }}"
+                    alt="{{ cp.title | escape }}"
+                    class="lc-cfg-compare__thumb"
+                    width="56" height="56" loading="lazy"
+                  >
+                {%- endif -%}
+              </td>
+              <td>
+                <a href="{{ cp.url }}" class="lc-cfg-compare__cell-link" aria-label="View {{ cp_sku }}">
+                  {%- if cp_is_duo -%}Duo{%- else -%}Single{%- endif -%}
+                </a>
+              </td>
+              <td>
+                <span class="lc-cfg-compare__finish">
+                  <span class="lc-cfg-compare__dot lc-cfg-compare__dot--{% if cp_is_steel %}steel{% else %}black{% endif %}"></span>
+                  {%- if cp_is_steel -%}Stainless{%- else -%}Black{%- endif -%}
+                </span>
+              </td>
+              <td>
+                <span class="lc-cfg-compare__shelving-label">
+                  {%- if cp_is_fs -%}Full Shelves{%- else -%}Standard{%- endif -%}
+                </span>
+                {%- if cp_shelves != '' -%}
+                  <span class="lc-cfg-compare__shelving-detail">{{ cp_shelves }}</span>
+                {%- endif -%}
+              </td>
+              <td>{{ cp_cap | default: '—' }}{%- if cp_cap != blank %} bottles{% endif -%}</td>
+              <td><strong>{{ cp.price | money_without_trailing_zeros }}</strong></td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+
+    <p class="lc-cfg-compare__footnote">Full-shelves variants hold fewer bottles end-to-end but offer easier access. Duos are two cabinets joined for a 336-bottle total.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  if (window.__lcCfgCmpInit) return;
+  window.__lcCfgCmpInit = true;
+  function init() {
+    // The snippet is rendered in BOTH the mobile-pdp and desktop-pdp wrappers,
+    // so the modal markup exists twice in the DOM (duplicate IDs). Whichever
+    // wrapper is hidden by responsive CSS hides ITS copy of the modal, so we
+    // apply state to *every* `.lc-cfg-compare` instance — only the visible
+    // wrapper's copy will actually render.
+    var modals = document.querySelectorAll('.lc-cfg-compare');
+    if (!modals.length) return;
+    var anyOpen = false;
+    function open() {
+      modals.forEach(function(m) {
+        m.classList.add('is-open');
+        m.setAttribute('aria-hidden', 'false');
+      });
+      document.body.classList.add('lc-cfg-cmp-locked');
+      anyOpen = true;
+    }
+    function close() {
+      modals.forEach(function(m) {
+        m.classList.remove('is-open');
+        m.setAttribute('aria-hidden', 'true');
+      });
+      document.body.classList.remove('lc-cfg-cmp-locked');
+      anyOpen = false;
+    }
+    document.querySelectorAll('[data-lc-cmp-open]').forEach(function(el) {
+      el.addEventListener('click', open);
+    });
+    document.querySelectorAll('[data-lc-cmp-close]').forEach(function(el) {
+      el.addEventListener('click', close);
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && anyOpen) close();
+    });
+    document.querySelectorAll('.lc-cfg-compare [data-href]').forEach(function(row) {
+      row.addEventListener('click', function(e) {
+        if (e.target.tagName === 'A') return;
+        window.location.href = row.getAttribute('data-href');
+      });
+    });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<style>
+  /* ── Container ─────────────────────────────────────────── */
+  .lc-cfg {
+    background: #F5F0E8;
+    border: 1px solid rgba(26,21,18,0.12);
+    border-radius: 6px;
+    padding: 18px 18px 14px;
+    margin: 16px 0 18px;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+  }
+  /* Header bar — exact match of `.lc-d-avail-header` typography:
+     Inter Tight, weight 400 (NOT bold), #6B1F2E eyebrow, #1A1512 title,
+     #EBE4D8 bar. So it reads identically to the Availability/Delivery
+     block header. */
+  .lc-cfg__header {
+    background: #EBE4D8;
+    border-bottom: 1px solid rgba(26,21,18,0.12);
+    padding: 10px 16px;
+    text-align: center;
+    margin: -18px -18px 14px;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+  }
+  .lc-cfg__eyebrow {
+    display: block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B1F2E;
+    margin-bottom: 2px;
+  }
+  .lc-cfg__title {
+    display: block;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1A1512;
+  }
+
+  /* ── Row ───────────────────────────────────────────────── */
+  .lc-cfg__row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 0;
+    border-top: 1px solid rgba(212,205,191,0.7);
+  }
+  .lc-cfg__row:first-of-type { border-top: none; padding-top: 4px; }
+  .lc-cfg__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+  }
+  .lc-cfg__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ── Chip base ─────────────────────────────────────────── */
+  .lc-cfg__chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 8px 14px;
+    background: #F5F0E8;
+    border: 1px solid #D4CDBF;
+    border-radius: 4px;
+    color: #1A1A1A;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.15;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+  .lc-cfg__chip:hover {
+    border-color: #1A1A1A;
+  }
+  .lc-cfg__chip:active {
+    transform: scale(0.98);
+  }
+  .lc-cfg__chip.is-active {
+    background: #5C0F1A;
+    border-color: #5C0F1A;
+    color: #F7F1E6;
+    box-shadow: 0 1px 0 rgba(92,15,26,0.06);
+  }
+  .lc-cfg__chip.is-active:hover {
+    border-color: #5C0F1A;
+  }
+
+  /* ── Capacity chip — number stacked over unit ─────────── */
+  .lc-cfg__chip-value {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .lc-cfg__chip-unit {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-left: 5px;
+    opacity: 0.78;
+  }
+  .lc-cfg__chip.is-active .lc-cfg__chip-unit { opacity: 0.85; }
+
+  /* ── Text chip (legacy) ────────────────────────────────── */
+  .lc-cfg__chip--text { font-size: 13.5px; }
+
+  /* ── Visual chip (Set + Shelving rows: text stack + icon row) ─ */
+  .lc-cfg__chip--visual {
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 8px 12px;
+    min-height: 48px;
+    min-width: 120px;
+  }
+  .lc-cfg__chip-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.05;
+    gap: 2px;
+    text-align: left;
+  }
+  .lc-cfg__chip--visual .lc-cfg__chip-text {
+    font-size: 13.5px;
+    font-weight: 500;
+    line-height: 1.1;
+  }
+  .lc-cfg__chip-cap {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: rgba(26,26,26,0.55);
+    line-height: 1;
+  }
+  .lc-cfg__chip.is-active .lc-cfg__chip-cap { color: rgba(247,241,230,0.78); }
+  .lc-cfg__chip--visual .lc-cfg__chip-icon {
+    width: 18px;
+    height: 24px;
+    opacity: 0.55;
+    transition: opacity 0.15s;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .lc-cfg__chip--visual .lc-cfg__chip-icon--wide { width: 26px; }
+  .lc-cfg__chip--visual:hover .lc-cfg__chip-icon { opacity: 0.85; }
+  .lc-cfg__chip--visual.is-active .lc-cfg__chip-icon { opacity: 1; }
+
+  /* ── Swatch chip (Finish) ──────────────────────────────── */
+  .lc-cfg__chip--swatch { padding-left: 10px; gap: 8px; }
+  .lc-cfg__swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,26,26,0.25);
+    flex-shrink: 0;
+    display: inline-block;
+  }
+  .lc-cfg__swatch--black { background: #1A1A1A; }
+  .lc-cfg__swatch--steel {
+    background: linear-gradient(135deg, #d8d8d8 0%, #b0b0b0 45%, #e6e6e6 60%, #a8a8a8 100%);
+  }
+  .lc-cfg__chip-text { font-size: 13.5px; }
+
+  /* ── Compare button (sits below the chip rows) ──────────── */
+  .lc-cfg__compare-btn {
+    width: 100%;
+    margin-top: 14px;
+    background: #EBE4D8;
+    border: 1px solid rgba(26,21,18,0.12);
+    border-radius: 4px;
+    padding: 10px 14px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: #1A1512;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lc-cfg__compare-btn:hover {
+    border-color: #6B1F2E;
+    color: #6B1F2E;
+    background: #E3D8C5;
+  }
+  .lc-cfg__compare-btn svg { flex-shrink: 0; }
+
+  /* ── Compare modal ─────────────────────────────────────── */
+  .lc-cfg-compare {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Inter Tight', 'Helvetica', -apple-system, sans-serif;
+  }
+  .lc-cfg-compare.is-open { display: flex; }
+  .lc-cfg-compare__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,26,26,0.55);
+    backdrop-filter: blur(2px);
+  }
+  .lc-cfg-compare__inner {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    background: #F7F1E6;
+    border-radius: 8px;
+    padding: clamp(28px, 4vw, 44px) clamp(20px, 3vw, 36px);
+    box-shadow: 0 24px 64px rgba(26,26,26,0.25);
+    color: #1A1A1A;
+  }
+  .lc-cfg-compare__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(26,26,26,0.06);
+    color: #1A1A1A;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+    z-index: 2;
+  }
+  .lc-cfg-compare__close:hover { background: rgba(26,26,26,0.14); }
+
+  .lc-cfg-compare__header { text-align: center; margin-bottom: 18px; }
+  .lc-cfg-compare__eyebrow {
+    font-family: 'Inter Tight', 'Helvetica', sans-serif;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6B1F2E;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  .lc-cfg-compare__heading {
+    font-family: 'Cormorant Garamond', 'Times New Roman', Times, serif;
+    font-weight: 400;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.15;
+    margin: 0 0 6px;
+  }
+  .lc-cfg-compare__sub {
+    font-size: 16px;
+    color: rgba(26,26,26,0.6);
+    margin: 0;
+  }
+
+  .lc-cfg-compare__table-wrap {
+    margin: 22px 0 14px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .lc-cfg-compare__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+    min-width: 480px;
+  }
+  .lc-cfg-compare__table thead th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(26,26,26,0.55);
+    padding: 8px 10px;
+    border-bottom: 1px solid #D4CDBF;
+    background: transparent;
+  }
+  .lc-cfg-compare__row {
+    cursor: pointer;
+    transition: background 0.12s;
+    border-bottom: 1px solid rgba(212,205,191,0.55);
+  }
+  .lc-cfg-compare__row:hover { background: rgba(92,15,26,0.04); }
+  .lc-cfg-compare__row.is-current {
+    background: rgba(92,15,26,0.08);
+    box-shadow: inset 3px 0 0 #5C0F1A;
+  }
+  .lc-cfg-compare__row td {
+    padding: 12px 10px;
+    vertical-align: middle;
+    color: #1A1A1A;
+  }
+  .lc-cfg-compare__thumb-cell {
+    width: 72px;
+    padding: 8px !important;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .lc-cfg-compare__thumb {
+    display: block;
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    object-fit: contain;
+    background: radial-gradient(ellipse 70% 65% at 50% 55%, #E8DFD0 0%, #FAF6EE 75%);
+    border: 1px solid rgba(212,205,191,0.55);
+    border-radius: 4px;
+  }
+  .lc-cfg-compare__row td:last-child {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .lc-cfg-compare__cell-link {
+    color: inherit;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .lc-cfg-compare__shelving-label {
+    display: block;
+    font-weight: 500;
+  }
+  .lc-cfg-compare__shelving-detail {
+    display: block;
+    font-size: 11px;
+    color: rgba(26,26,26,0.55);
+    margin-top: 3px;
+    line-height: 1.35;
+  }
+  .lc-cfg-compare__finish {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .lc-cfg-compare__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(26,26,26,0.25);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .lc-cfg-compare__dot--black { background: #1A1A1A; }
+  .lc-cfg-compare__dot--steel {
+    background: linear-gradient(135deg, #d8d8d8 0%, #b0b0b0 45%, #e6e6e6 60%, #a8a8a8 100%);
+  }
+  .lc-cfg-compare__footnote {
+    font-size: 12px;
+    color: rgba(26,26,26,0.6);
+    line-height: 1.55;
+    margin: 6px 0 0;
+    text-align: center;
+  }
+
+  body.lc-cfg-cmp-locked { overflow: hidden; }
+
+  @media (max-width: 600px) {
+    .lc-cfg-compare { padding: 0; }
+    .lc-cfg-compare__inner {
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 58px 16px 24px;
+    }
+  }
+
+  /* ── Desktop scope: tighter margins, no horizontal page margin ──*/
+  @media (min-width: 768px) {
+    .lc-cfg { margin: 18px 0 22px; padding: 22px 22px 18px; }
+    .lc-cfg__header { margin: -22px -22px 16px; padding: 12px 18px; }
+    .lc-cfg__row { padding: 12px 0; }
+    .lc-cfg__chip { font-size: 14px; }
+  }
+
+  /* ── Mobile: keep the two visual chips (Set / Shelving) on one line ── */
+  @media (max-width: 767px) {
+    /* Tighter spacing between each row's label (Finish / Capacity / Set / Shelving)
+       and its button group — desktop's 8px gap + 10px row padding feels airy on phones. */
+    .lc-cfg__row { gap: 4px; padding: 6px 0; }
+    .lc-cfg__row:first-of-type { padding-top: 2px; }
+    .lc-cfg__chip--visual {
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 8px 10px;
+      gap: 6px;
+    }
+    /* Finish row: bare colour circles (no button box); selected = red ring */
+    .lc-cfg__chip--swatch .lc-cfg__chip-text { display: none; }
+    .lc-cfg__chip--swatch {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      min-width: 40px;
+      min-height: 40px;
+      padding: 0;
+      gap: 0;
+      border-radius: 50%;
+    }
+    .lc-cfg__chip--swatch:hover { border: none; }
+    .lc-cfg__chip--swatch .lc-cfg__swatch { width: 26px; height: 26px; }
+    .lc-cfg__chip--swatch.is-active {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+    .lc-cfg__chip--swatch.is-active .lc-cfg__swatch {
+      box-shadow: 0 0 0 2px #F5F0E8, 0 0 0 4px #7c3030;
+    }
+  }
+</style>
+{%- endif -%}{%- comment %} /lc_cfg_sib_count >= 2 {%- endcomment -%}
+{%- endif -%}{%- comment %} /lc_cfg_sku != blank {%- endcomment -%}

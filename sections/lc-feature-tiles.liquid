@@ -1,0 +1,170 @@
+{%- comment -%}
+  LeCavist — "Shopping with LeCavist" feature tiles.
+  Card tiles matched to the KitchenAid AU reference dimensions:
+  card padding 40/27/45, 48px icon, 20px title, 14px description (max 282px),
+  bordered "Learn more" button (min-width 173px). LeCavist colours.
+{%- endcomment -%}
+
+{%- assign s = section.settings -%}
+
+<section class="lc-tiles" id="lc-tiles-{{ section.id }}" style="--lc-tiles-bg: {{ s.bg_color }}; --lc-card-bg: {{ s.card_color }}; --lc-card-hover: {{ s.card_hover_color }};">
+  <div class="lc-tiles__wrap">
+    {%- if s.eyebrow != blank or s.title != blank -%}
+      <div class="lc-tiles__head" data-lc-reveal>
+        {%- if s.eyebrow != blank -%}<p class="lc-tiles__eyebrow">{{ s.eyebrow }}</p>{%- endif -%}
+        {%- if s.title != blank -%}<h2 class="lc-tiles__title">{{ s.title }}</h2>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lc-tiles__grid" style="--lc-tiles-cols: {{ section.blocks.size | at_most: 4 }};">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'tile' -%}
+          {%- assign tlink = block.settings.link -%}
+          <div class="lc-tiles__cell" data-lc-reveal {{ block.shopify_attributes }}>
+            <div class="lc-tiles__tile">
+              <span class="lc-tiles__ico" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'truck' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="13" height="10" rx="1"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="6" cy="18" r="1.6"/><circle cx="18" cy="18" r="1.6"/></svg>
+                  {%- when 'shield' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 11-4.5-2.5-8-6-8-11V5z"/><path d="M9 12l2 2 4-4"/></svg>
+                  {%- when 'headset' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="2.5" y="13" width="4" height="6" rx="1.4"/><rect x="17.5" y="13" width="4" height="6" rx="1.4"/><path d="M20 19v1a3 3 0 0 1-3 3h-3"/></svg>
+                  {%- when 'lock' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.4"/></svg>
+                  {%- when 'award' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M9 14.5L7.5 22l4.5-2.6L16.5 22 15 14.5"/></svg>
+                  {%- when 'thermometer' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.5V4a2 2 0 0 0-4 0v10.5a4 4 0 1 0 4 0z"/><path d="M12 9v6"/></svg>
+                  {%- when 'globe' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 3.5 6 3.5 9S14.5 18.5 12 21c-2.5-2.5-3.5-6-3.5-9S9.5 5.5 12 3z"/></svg>
+                  {%- when 'refresh' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/></svg>
+                  {%- when 'tag' -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12l-8 8-9-9V3h8z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>
+                  {%- else -%}<svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+                {%- endcase -%}
+              </span>
+              {%- if block.settings.title != blank -%}<p class="lc-tiles__t">{{ block.settings.title }}</p>{%- endif -%}
+              {%- if block.settings.text != blank -%}<div class="lc-tiles__d">{{ block.settings.text }}</div>{%- endif -%}
+              {%- if block.settings.link_label != blank -%}
+                {%- if tlink != blank -%}
+                  <a class="lc-tiles__btn" href="{{ tlink }}"><span>{{ block.settings.link_label }}</span></a>
+                {%- else -%}
+                  <span class="lc-tiles__btn lc-tiles__btn--static"><span>{{ block.settings.link_label }}</span></span>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  #lc-tiles-{{ section.id }} {
+    --cream:#F5F0E8; --ink:#1A1512; --muted:rgba(26,21,18,0.62); --acc:#6B1F2E; --line:rgba(26,21,18,0.16);
+    --disp:'Cormorant Garamond','Times New Roman',serif; --body:'Inter Tight',-apple-system,sans-serif;
+    background: var(--lc-tiles-bg, #F5F0E8); color: var(--ink);
+    padding: clamp(20px,4vw,56px) 0 clamp(44px,6vw,80px);
+  }
+  #lc-tiles-{{ section.id }} * { box-sizing: border-box; }
+  #lc-tiles-{{ section.id }} .lc-tiles__wrap { max-width: 1440px; margin: 0 auto; padding: 0 clamp(20px,5vw,64px); }
+  #lc-tiles-{{ section.id }} .lc-tiles__head { text-align: center; margin: 0 0 clamp(30px,4vw,48px); }
+  #lc-tiles-{{ section.id }} .lc-tiles__eyebrow { font-family: var(--body); font-size: clamp(11px,1vw,13px); font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--acc); margin: 0 0 14px; }
+  #lc-tiles-{{ section.id }} .lc-tiles__title { font-family: var(--disp); font-weight: 300; font-size: clamp(1.9rem,3.6vw,3rem); letter-spacing: -0.01em; line-height: 1.05; margin: 0; color: var(--ink); }
+
+  /* grid: 4 columns, KitchenAid-style gutters */
+  #lc-tiles-{{ section.id }} .lc-tiles__grid { display: grid; grid-template-columns: repeat(var(--lc-tiles-cols,4), 1fr); gap: clamp(20px,2vw,32px); }
+  #lc-tiles-{{ section.id }} .lc-tiles__cell { display: flex; }
+
+  /* card — matched to reference: bg card, padding 40/27/45 (lg 45/27/50), centred, equal height */
+  #lc-tiles-{{ section.id }} .lc-tiles__tile { background: var(--lc-card-bg, #FFFFFF); width: 100%; height: 100%; text-align: center; padding: 40px 27px 45px; display: flex; flex-direction: column; align-items: center; transform-origin: center center; will-change: transform; transition: transform .35s cubic-bezier(.2,.7,.2,1), background-color .35s ease, box-shadow .35s ease; }
+  @media (min-width: 1200px) { #lc-tiles-{{ section.id }} .lc-tiles__tile { padding: 45px 27px 50px; } }
+  #lc-tiles-{{ section.id }} .lc-tiles__cell:hover .lc-tiles__tile { transform: scale(1.035); background-color: var(--lc-card-hover, #E7DCCB); box-shadow: 0 20px 44px rgba(26,21,18,0.14); }
+  @media (prefers-reduced-motion: reduce) { #lc-tiles-{{ section.id }} .lc-tiles__cell:hover .lc-tiles__tile { transform: none; } }
+
+  #lc-tiles-{{ section.id }} .lc-tiles__ico { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin: 0 auto; color: var(--acc); }
+  #lc-tiles-{{ section.id }} .lc-tiles__ico svg { width: 48px; height: 48px; }
+  #lc-tiles-{{ section.id }} .lc-tiles__t { font-family: var(--body); font-weight: 500; font-size: 20px; line-height: 27px; letter-spacing: 0; margin: 24px 0 0; color: var(--ink); }
+  #lc-tiles-{{ section.id }} .lc-tiles__d { font-family: var(--body); font-weight: 300; font-size: 14px; line-height: 19px; letter-spacing: 0.01em; color: var(--ink); margin: 24px auto 24px; max-width: 282px; }
+  #lc-tiles-{{ section.id }} .lc-tiles__d p { margin: 0 0 8px; }
+  #lc-tiles-{{ section.id }} .lc-tiles__d p:last-child { margin-bottom: 0; }
+
+  /* button — matched: bordered, min-width 173px, py 13px, text 16px uppercase medium, px 34px */
+  #lc-tiles-{{ section.id }} .lc-tiles__btn { display: inline-block; text-align: center; text-decoration: none; margin-top: auto; margin-top: 24px; margin-top: auto; padding: 13px 0; min-width: 173px; border: 1px solid var(--line); color: var(--ink); background: transparent; transition: background .25s, color .25s, border-color .25s; }
+  #lc-tiles-{{ section.id }} .lc-tiles__tile .lc-tiles__btn { margin-top: auto; }
+  #lc-tiles-{{ section.id }} .lc-tiles__btn > span { display: block; font-family: var(--body); font-size: 16px; line-height: 22px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.02em; padding: 0 34px; }
+  #lc-tiles-{{ section.id }} a.lc-tiles__btn:hover { background: var(--acc); border-color: var(--acc); color: #fff; }
+  #lc-tiles-{{ section.id }} .lc-tiles__btn--static { cursor: default; opacity: .85; }
+
+  #lc-tiles-{{ section.id }} [data-lc-reveal] { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  #lc-tiles-{{ section.id }} [data-lc-reveal].is-in { opacity: 1; transform: none; }
+  #lc-tiles-{{ section.id }} .lc-tiles__cell[data-lc-reveal]:nth-child(2){ transition-delay:.08s; }
+  #lc-tiles-{{ section.id }} .lc-tiles__cell[data-lc-reveal]:nth-child(3){ transition-delay:.16s; }
+  #lc-tiles-{{ section.id }} .lc-tiles__cell[data-lc-reveal]:nth-child(4){ transition-delay:.24s; }
+
+  @media (max-width: 989px) { #lc-tiles-{{ section.id }} .lc-tiles__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 559px) {
+    #lc-tiles-{{ section.id }} .lc-tiles__grid { grid-template-columns: 1fr; }
+    #lc-tiles-{{ section.id }} .lc-tiles__tile { padding: 30px 24px 34px; }
+    #lc-tiles-{{ section.id }} .lc-tiles__t { margin-top: 18px; }
+    #lc-tiles-{{ section.id }} .lc-tiles__d { margin: 14px auto 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #lc-tiles-{{ section.id }} [data-lc-reveal]{ transition:none !important; opacity:1 !important; transform:none !important; } }
+{% endstyle %}
+
+<script>
+  (function(){
+    var root=document.getElementById('lc-tiles-{{ section.id }}');
+    if(!root) return;
+    var reveals=root.querySelectorAll('[data-lc-reveal]');
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-in'); io.unobserve(e.target); } }); },{threshold:.16});
+      reveals.forEach(function(el){ io.observe(el); });
+    } else { reveals.forEach(function(el){ el.classList.add('is-in'); }); }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC Feature Tiles",
+  "tag": "section",
+  "class": "lc-feature-tiles-section",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Section background", "default": "#F5F0E8" },
+    { "type": "color", "id": "card_color", "label": "Tile background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_hover_color", "label": "Tile background on hover", "default": "#E7DCCB" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Shopping with LeCavist" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "default": "truck", "options": [
+          { "value": "truck", "label": "Delivery (truck)" },
+          { "value": "shield", "label": "Warranty (shield)" },
+          { "value": "headset", "label": "Advice (headset)" },
+          { "value": "lock", "label": "Secure (lock)" },
+          { "value": "award", "label": "Quality (award)" },
+          { "value": "thermometer", "label": "Climate (thermometer)" },
+          { "value": "globe", "label": "Made in France (globe)" },
+          { "value": "refresh", "label": "Returns (refresh)" },
+          { "value": "tag", "label": "Price (tag)" },
+          { "value": "star", "label": "Star" }
+        ] },
+        { "type": "text", "id": "title", "label": "Title", "default": "Free delivery" },
+        { "type": "richtext", "id": "text", "label": "Text", "default": "<p>Complimentary delivery across Australia.</p>" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "link_label", "label": "Button label (blank = no button)", "default": "Learn more" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "LC Feature Tiles",
+      "blocks": [
+        { "type": "tile", "settings": { "icon": "truck", "title": "Free delivery", "text": "<p>Complimentary delivery across Australia.</p>" } },
+        { "type": "tile", "settings": { "icon": "shield", "title": "2-year warranty", "text": "<p>Full manufacturer cover on every cabinet.</p>" } },
+        { "type": "tile", "settings": { "icon": "headset", "title": "Expert advice", "text": "<p>Book a free call with a wine-storage specialist.</p>" } },
+        { "type": "tile", "settings": { "icon": "lock", "title": "Secure payment", "text": "<p>Encrypted checkout with trusted providers.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

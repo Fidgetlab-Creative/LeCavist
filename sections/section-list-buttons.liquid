@@ -1,0 +1,113 @@
+{% style %}
+.five-buttons {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .five-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.five-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  border-radius: 16px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.five-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(0,0,0,0.08);
+  opacity: 0.95;
+}
+{% endstyle %}
+
+<div class="section">
+  {% if section.settings.title != blank %}
+    <h2 style="text-align:center; margin-bottom:24px;">
+      {{ section.settings.title }}
+    </h2>
+  {% endif %}
+
+  <div class="five-buttons">
+    {% for block in section.blocks %}
+      <a
+        href="{{ block.settings.link | default: '#' }}"
+        class="five-button"
+        style="
+          background-color: {{ block.settings.bg_color | default: '#f2f2f2' }};
+          color: {{ block.settings.text_color | default: '#111' }};
+        "
+        {{ block.shopify_attributes }}
+      >
+        {{ block.settings.text }}
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "5 Button List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Button"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background colour",
+          "default": "#eaeaea"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text colour",
+          "default": "#111111"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 5,
+  "presets": [
+    {
+      "name": "5 Button List",
+      "blocks": [
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}

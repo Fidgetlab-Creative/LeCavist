@@ -1,0 +1,290 @@
+{%- comment -%}
+  LeCavist — Product page FAQ section.
+  Five most-asked customer questions distilled from product reviews,
+  answered using product spec sheets, manuals, the brochure and
+  website pages. Sits at the bottom of every product page.
+
+  Block-based so individual Q&As can be edited from the theme editor.
+{%- endcomment -%}
+{%- liquid
+  assign section_st = section.settings
+  assign heading = settings.faq_heading | default: section_st.heading
+  assign sub = section_st.sub
+  # Shared FAQ: pull Q&As from GLOBAL theme settings (faq_q1..6) so every product page stays in sync.
+  # If none are set (e.g. a theme without these settings), fall back to this section's own blocks.
+  assign lc_faq_shared = false
+  if settings.faq_q1 != blank or settings.faq_q2 != blank or settings.faq_q3 != blank or settings.faq_q4 != blank or settings.faq_q5 != blank or settings.faq_q6 != blank
+    assign lc_faq_shared = true
+  endif
+-%}
+
+<section class="lc-faq-bottom" aria-labelledby="lc-faq-bottom-heading-{{ section.id }}">
+  <div class="lc-faq-bottom__container">
+    {%- if heading != blank -%}
+      <div class="section__header mb-33 mb-sm-20 text-center">
+        <h2 class="section__header-heading heading-letter-spacing mt-0 mb-0" id="lc-faq-bottom-heading-{{ section.id }}">
+          {{ heading }}
+        </h2>
+        {%- if sub != blank -%}
+          <div class="section__header-des rich__text-m0 mt-10">{{ sub }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- comment %}
+      Auto-generated "Dimensions" Q&A — appears on every product that has
+      lecavist_specs width/height/depth metafields, no per-template setup.
+      Converts the stored mm values to cm and includes clearance guidance.
+    {%- endcomment %}
+    {%- liquid
+      assign lc_dim_sp = product.metafields.lecavist_specs
+      assign lc_w = lc_dim_sp.width_mm.value
+      assign lc_h = lc_dim_sp.height_mm.value
+      assign lc_d = lc_dim_sp.depth_mm.value
+      assign lc_has_dims = false
+      if lc_w != blank and lc_h != blank and lc_d != blank
+        assign lc_has_dims = true
+        assign lc_w_cm = lc_w | divided_by: 10.0 | round: 1
+        assign lc_h_cm = lc_h | divided_by: 10.0 | round: 1
+        assign lc_d_cm = lc_d | divided_by: 10.0 | round: 1
+      endif
+    -%}
+
+    {%- if lc_faq_shared or section.blocks.size > 0 or lc_has_dims -%}
+      <div class="lc-faq-bottom__list">
+
+        {%- if lc_has_dims -%}
+          <details class="lc-faq-bottom__item" open>
+            <summary class="lc-faq-bottom__q">
+              <span class="lc-faq-bottom__q-text">What are the exact dimensions, and how much clearance does it need?</span>
+              <svg class="lc-faq-bottom__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </summary>
+            <div class="lc-faq-bottom__a">
+              <p>This cabinet measures <strong>W&nbsp;{{ lc_w }}&nbsp;mm &times; H&nbsp;{{ lc_h }}&nbsp;mm &times; D&nbsp;{{ lc_d }}&nbsp;mm</strong>.</p>
+              <p>For <strong>freestanding</strong> installation, allow at least <strong>100&nbsp;mm</strong> clearance on each side, top and back for ventilation. <strong>Built-in</strong> models only require a <strong>20&nbsp;mm</strong> clearance on all sides.</p>
+              <p>Measure your doorways and the final location before ordering. If you'd like help confirming the fit, our Sydney team can advise, email <a href="mailto:hello@lecavist.com">hello@lecavist.com</a>.</p>
+            </div>
+          </details>
+        {%- endif -%}
+
+        {%- if lc_faq_shared -%}
+          {%- comment %} Shared FAQ — content lives in Theme settings → "Product FAQ" (edit once, shows on every product page) {%- endcomment %}
+          {%- capture lc_chev -%}<svg class="lc-faq-bottom__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>{%- endcapture -%}
+          {%- if settings.faq_q1 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q1 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a1 }}</div></details>{%- endif -%}
+          {%- if settings.faq_q2 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q2 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a2 }}</div></details>{%- endif -%}
+          {%- if settings.faq_q3 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q3 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a3 }}</div></details>{%- endif -%}
+          {%- if settings.faq_q4 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q4 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a4 }}</div></details>{%- endif -%}
+          {%- if settings.faq_q5 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q5 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a5 }}</div></details>{%- endif -%}
+          {%- if settings.faq_q6 != blank -%}<details class="lc-faq-bottom__item"><summary class="lc-faq-bottom__q"><span class="lc-faq-bottom__q-text">{{ settings.faq_q6 }}</span>{{ lc_chev }}</summary><div class="lc-faq-bottom__a">{{ settings.faq_a6 }}</div></details>{%- endif -%}
+        {%- else -%}
+          {%- comment %} Fallback: this section's own blocks (per-product) {%- endcomment %}
+          {%- for block in section.blocks -%}
+            {%- assign q = block.settings.question | strip -%}
+            {%- assign a = block.settings.answer -%}
+            {%- if q != blank or a != blank -%}
+              <details class="lc-faq-bottom__item" {{ block.shopify_attributes }}>
+                <summary class="lc-faq-bottom__q">
+                  <span class="lc-faq-bottom__q-text">{{ q }}</span>
+                  <svg class="lc-faq-bottom__chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </summary>
+                <div class="lc-faq-bottom__a">{{ a }}</div>
+              </details>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+<style>
+  .lc-faq-bottom {
+    background: transparent;
+    padding: clamp(48px, 6vw, 96px) 0;
+    color: #1A1512;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+  }
+  .lc-faq-bottom__container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+
+  /* Heading rendered in the same "eyebrow" treatment as Recently Viewed /
+     Our Range section titles (— TRACKED UPPERCASE — with em-dashes added
+     via ::before / ::after so per-product heading text can stay simple). */
+  .lc-faq-bottom .section__header-heading {
+    font-family: 'Inter Tight', -apple-system, sans-serif !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    letter-spacing: 0.28em !important;
+    color: #1A1512 !important;
+    text-transform: uppercase !important;
+    display: inline-block;
+  }
+  .lc-faq-bottom .section__header-heading::before { content: '— '; }
+  .lc-faq-bottom .section__header-heading::after  { content: ' —'; }
+  .lc-faq-bottom .section__header-des {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 16px;
+    color: rgba(26,21,18,0.6);
+    line-height: 1.6;
+    margin-top: 10px;
+  }
+  @media (max-width: 600px) {
+    .lc-faq-bottom .section__header-heading {
+      font-size: 18px !important;
+      letter-spacing: 0.28em !important;
+    }
+  }
+  .lc-faq-bottom__list {
+    border-top: 1px solid rgba(26,21,18,0.12);
+  }
+  .lc-faq-bottom__item {
+    border-bottom: 1px solid rgba(26,21,18,0.12);
+  }
+  .lc-faq-bottom__q {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px 0;
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(18px, 1.6vw, 22px);
+    font-weight: 400;
+    line-height: 1.3;
+    color: #1A1512;
+    transition: color 0.15s ease;
+  }
+  .lc-faq-bottom__q::-webkit-details-marker { display: none; }
+  .lc-faq-bottom__q::marker { display: none; content: ''; }
+  .lc-faq-bottom__q:hover { color: #7c3030; }
+  .lc-faq-bottom__q-text { flex: 1; }
+  .lc-faq-bottom__chevron {
+    flex-shrink: 0;
+    color: rgba(26,21,18,0.55);
+    transition: transform 0.25s ease, color 0.15s ease;
+  }
+  .lc-faq-bottom__item[open] .lc-faq-bottom__chevron {
+    transform: rotate(180deg);
+    color: #7c3030;
+  }
+  .lc-faq-bottom__a {
+    padding: 0 0 26px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(26,21,18,0.78);
+    max-width: 760px;
+  }
+  .lc-faq-bottom__a p { margin: 0 0 12px; }
+  .lc-faq-bottom__a p:last-child { margin-bottom: 0; }
+  .lc-faq-bottom__a ul,
+  .lc-faq-bottom__a ol {
+    padding-left: 22px;
+    margin: 8px 0 14px;
+  }
+  .lc-faq-bottom__a li { margin-bottom: 6px; }
+  .lc-faq-bottom__a a {
+    color: #7c3030;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .lc-faq-bottom__a a:hover { color: #3a0d16; }
+  .lc-faq-bottom__a strong { color: #1A1512; font-weight: 600; }
+
+  @media (max-width: 600px) {
+    .lc-faq-bottom__q { padding: 18px 0; gap: 14px; }
+    .lc-faq-bottom__a { padding-bottom: 22px; font-size: 16px; }
+  }
+</style>
+
+<script>
+  (function () {
+    if (window.__lcFaqCapInit) return; window.__lcFaqCapInit = true;
+    // FAQ "enter your expected capacity" link → open the capacity-calculator popup
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest('a[href$="#find-my-capacity"]');
+      if (!link) return;
+      e.preventDefault();
+      var opener = document.querySelector('[data-lc-cc-open]');
+      if (opener) opener.click();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product FAQ (bottom)",
+  "tag": "section",
+  "class": "section-product-faq-bottom",
+  "settings": [
+    { "type": "paragraph", "content": "⚠ FAQ questions & answers are edited in ONE place — Theme settings → Product FAQ — and automatically apply to every product page. Editing/adding Q&A blocks here has NO effect." },
+    { "type": "text",            "id": "heading", "label": "Heading", "default": "FREQUENTLY ASKED QUESTIONS" },
+    { "type": "inline_richtext", "id": "sub",     "label": "Subheading" }
+  ],
+  "blocks": [
+    {
+      "type": "qa",
+      "name": "Unused (Theme settings)",
+      "settings": [
+        { "type": "paragraph", "content": "Not used here. Edit the FAQ in Theme settings → Product FAQ — it applies to every product page." },
+        { "type": "text",     "id": "question", "label": "Question" },
+        { "type": "richtext", "id": "answer",   "label": "Answer" }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    {
+      "name": "Product FAQ (bottom)",
+      "settings": {
+        "heading": "FREQUENTLY ASKED QUESTIONS"
+      },
+      "blocks": [
+        {
+          "type": "qa",
+          "settings": {
+            "question": "Why does my cabinet hold fewer bottles than the advertised capacity?",
+            "answer": "<p>All LeCavist capacities are calculated using the international 750 mL Bordeaux bottle, with shelves removed and bottles stacked end-to-end. In real-world use you'll typically fit <strong>around 80%</strong> of the advertised maximum, depending on:</p><ul><li><strong>Bottle shape</strong> — Burgundy and Champagne bottles are wider than Bordeaux and take more space.</li><li><strong>How many shelves you keep in</strong> — more shelves means easier access but lower total capacity.</li></ul><p>For example, a 168-bottle cabinet comfortably holds 100–130 mixed-shape bottles with most shelves in place. Each cabinet's <strong>specification sheet</strong> shows three stacking layouts — maximum, comfortable and light — so you can plan exactly how many bottles will fit your collection. <a href=\"#product-manuals\">View this cabinet's spec sheet and manuals</a> for the recommended layouts.</p><p>Extra matching shelves are available separately on our website if you want more storage flexibility.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "How quiet is the wine cabinet?",
+            "answer": "<p>LeCavist cabinets use a quiet compressor cooling system rated between <strong>41–43 dB</strong> depending on the model — comparable to a library or soft conversation. The compressor cycles on and off to maintain temperature, so you'll hear short periods of gentle humming rather than continuous noise.</p><p>For the quietest operation:</p><ul><li>Place the cabinet on a level, hard floor and adjust the front feet so it's perfectly level.</li><li>Leave the right ventilation clearance: <strong>10 cm</strong> on each side and on top for freestanding models, or <strong>3 cm</strong> for built-in models.</li><li>Wait 24 hours after delivery before powering on, so the refrigerant gas can settle.</li></ul><p>A faint trickling sound from circulating refrigerant is normal and indicates the cooling system is healthy.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "What temperature range does it cover, and will it work in hot or humid climates?",
+            "answer": "<p>All LeCavist cabinets cover a working range of <strong>5–20°C</strong>. Dual-zone and triple-zone models offer independent zones across that range — perfect for whites (6–10°C), reds (14–18°C) and Champagne (5–8°C) in the same cabinet.</p><p>Every LeCavist cabinet is <strong>subtropical climate rated</strong>, tested to maintain set temperature in ambient room temperatures from 10°C up to 38°C. Owners across Queensland, Western Australia and the Northern Territory consistently report stable temperatures through Australian summer. For best efficiency, install the cabinet away from direct sunlight or other heat sources.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "What's included with delivery? Will you take my old fridge?",
+            "answer": "<p><strong>Free Australia-wide delivery</strong> is included on every wine cabinet. Our delivery partners provide:</p><ul><li>A 2-hour delivery window communicated in the morning of delivery, with a 30-minute pre-arrival call.</li><li>Unboxing and placement in the room of your choice.</li><li>Removal of all packaging.</li><li><strong>Free old wine fridge removal</strong> on request — just let us know at checkout or contact our team.</li></ul><p>After delivery, leave the cabinet upright and <strong>unplugged for 24 hours</strong> so the refrigerant gas can settle before first use.</p>"
+          }
+        },
+        {
+          "type": "qa",
+          "settings": {
+            "question": "What warranty comes with my wine cabinet?",
+            "answer": "<p>Every LeCavist cabinet ships with a <strong>24-month manufacturer warranty</strong> covering parts and labour. You can <strong>extend your warranty to 36 months for free</strong> by registering your product within 90 days of purchase at <a href=\"https://lecavist.com/pages/products-registration\" rel=\"noopener\">lecavist.com/pages/products-registration</a>.</p><p>Our Sydney-based customer service team handles all warranty claims directly — we don't outsource support. For most issues we'll dispatch a replacement unit within 48 hours of confirmation. To raise a claim, email <a href=\"mailto:hello@lecavist.com\">hello@lecavist.com</a> or visit our showroom in Alexandria, NSW.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

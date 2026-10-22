@@ -1,0 +1,188 @@
+{% style %}
+  #{{ section.id }} .image-with-text__inner {
+    background-color: {{ section.settings.color_bg }};
+  }
+  {%- unless section.settings.color_text contains ',0' -%}
+    #{{ section.id }} {
+      color: {{ section.settings.color_text }};
+    }
+  {%- endunless -%}
+  {%- unless section.settings.color_head contains ',0' -%}
+    #{{ section.id }} .image-with-text__title,
+    #{{ section.id }} .feature-link,
+    #{{ section.id }} .feature-link:hover {
+      color: {{ section.settings.color_head }};
+    }
+  {%- endunless -%}
+  /*{{ section.id }} .image-with-text__content {
+    padding-top: 10px;     
+    padding-bottom: 0px;
+  }*/
+{% endstyle %}
+
+{%- liquid
+  assign full_width = false
+  if section.settings.skip_container
+    assign full_width = true
+  endif
+  assign scroll_animation = settings.scroll_animation
+-%}
+
+{%- capture text_html -%}
+  <div class="column half">
+    <div class="image-with-text__content image-with-text__text">
+      <div class="content content--align-{{ section.settings.text_alignment }}">
+        {%- if section.settings.title != blank -%}
+          <h2 class="image-with-text__title {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="{% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}">
+            {{ section.settings.text }}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.button_text != blank -%}
+          <div class="h2-margin-top {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}">
+            <a class="feature-link" href="{{ section.settings.button_link }}">
+              {{- section.settings.button_text -}}
+            </a>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endcapture -%}
+
+<div
+  class="image-with-text {% if full_width %}image-with-text--full-width{% else %}spaced-section-sm{% endif %}"
+  id="{{ section.id }}"
+  data-section-type="image-with-text"
+  data-cc-animate
+>
+  <div class="{% unless full_width %}container container--not-mobile section-content section-content--no-padding {% endunless %}image-with-text__inner">
+    <div class="grid image-with-text__wrapper image-with-text__layout-{{ section.settings.layout }}">
+      {%- if section.settings.layout == 'right' -%}
+        {{ text_html }}
+      {%- endif -%}
+
+      <div class="column half">
+        <div class="image-with-text__image">
+          {% if section.settings.image %}
+            <div class="image-with-text__image-image image-with-text__image-image--{{ section.id }}" data-cc-animate>
+              {% render 'responsive-image', image: section.settings.image %}
+            </div>
+          {% else %}
+            <div class="image-with-text__placeholder placeholder-image">
+              {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      {%- if section.settings.layout == 'left' -%}
+        {{ text_html }}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image with text",
+  "class": "section-image-with-text",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Image alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Image with text"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Pair large text with an image to give focus to your chosen product, collection or blog post. Add details on availability, style or even provide a review.<\/p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Link text",
+      "default": "Shop"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Link URL"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background",
+      "default": "#eeeeee"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text color",
+      "default": "#454f5b"
+    },
+    {
+      "type": "color",
+      "id": "color_head",
+      "label": "Heading and links color",
+      "default": "#212b36"
+    },
+    {
+      "type": "checkbox",
+      "id": "skip_container",
+      "label": "Full page width",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with text"
+    }
+  ]
+}
+{% endschema %}

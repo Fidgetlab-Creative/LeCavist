@@ -1,0 +1,532 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "multi_content_4TqbTg": {
+      "type": "multi-content",
+      "blocks": {
+        "image_tpLD6J": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/ambasador.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "text_custom_CwdwdA": {
+          "type": "text_custom",
+          "settings": {
+            "color_scheme": "",
+            "content_width": "50%",
+            "image_sign_cs": "shopify://shop_images/signature_7f2ccb9d-af31-4d2f-b404-5074b1ce068f.png",
+            "vertical_align": "center",
+            "image_link_cs": "",
+            "subheading_cs": "",
+            "question": "Ask a question",
+            "ques_link": "shopify://pages/contact",
+            "heading_cs": "Welcome to our Family - Manu!",
+            "description_cs": "<p>LeCavist x Manu Feildel 2024 Ambassador Campaign </p>",
+            "first_button_label_cs": "Learn More...",
+            "first_button_link_cs": "#",
+            "first_button_type_cs": "primary",
+            "second_button_label_cs": "",
+            "second_button_link_cs": "",
+            "second_button_type_cs": "primary",
+            "content_alignment_cs": "left",
+            "subheading_font_size_cs": 12,
+            "subheading_font_weight_cs": "subheading_weight",
+            "subheading_spacing_bottom_cs": 15,
+            "heading_font_size_cs": 36,
+            "heading_font_weight_cs": "body_weight",
+            "heading_uppercase_cs": false,
+            "heading_spacing_bottom_cs": 20,
+            "des_font_size_cs": 20,
+            "des_font_weight_cs": "subheading_weight",
+            "des_spacing_bottom_cs": 30
+          }
+        }
+      },
+      "block_order": [
+        "image_tpLD6J",
+        "text_custom_CwdwdA"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 0,
+        "equal_height_adjustment": true,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "custom_html_mHJiFH": {
+      "type": "custom-html",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "html_custom": "<h1 style=\"text-align: center;\" data-mce-style=\"text-align: center;\">\n<span data-mce-fragment=\"1\">We are proud to welcome <br></span><strong data-mce-fragment=\"1\">Chef and TV Host, Manu Fieldel <br>as our official LeCavist Ambassador.</strong>\n</h1>\n<p style=\"text-align: center;\" data-mce-style=\"text-align: center;\"><span>As wine lovers, we believe that </span><strong>pairing</strong><span> your cherished collection </span><strong>with the right food is as important as cellaring your wine itself.</strong><br><br><strong>Chef Manu,</strong><span> known for his acclaimed restaurants, bestselling cookbooks, television appearances and lighthearted personality </span><strong>is a natural fit to our mission to enhance the enjoyment of fine wine.</strong><br><br><span>With Manu, we will share </span><strong>experts tips</strong><span> into the art of wine and food pairing, invite you to </span><strong>exclusive events</strong><span> hosted by Manu himself and </span><strong>elevate our wine &amp; dining experience together - it's all about enjoyment!</strong><br><br><strong>Bienvenue Manu,</strong><span> looking forward to </span><strong>sharing perfectly cellared wines and delicious dishes together - Sant<span data-mce-fragment=\"1\">é!</span><br></strong></p>",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "video_width_text_ovlerlay_GtGGAq": {
+      "type": "video-width-text-ovlerlay",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "video_url": "https://www.youtube.com/watch?v=fw-sXqfGmbw&t=8s",
+        "video_poster": "shopify://shop_images/LeCavist_5fd74f9b-cee6-4574-8572-3f89e1d4abb7.png",
+        "content_alignment": "left",
+        "content_position": "top-left",
+        "content_width": "container",
+        "content_max_width": 100,
+        "content_padding_block": 50,
+        "content_padding_inline": 50,
+        "show_content_background": false,
+        "content_background": "#F5F0E8",
+        "content_box_opacity": 100,
+        "content_below_image": false,
+        "content_alignment_mobile": "left",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "slideshow_xJVDcF": {
+      "type": "slideshow",
+      "blocks": {
+        "slider_item_dCTntN": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/lecavist_x_Manu-Ambassador_Image_3.png",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_XnnNTK": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/lecavist_x_Manu-Ambassador_Image_14.png",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_m7az4m": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/1400_x_940_lecavist_x_Manu-Ambassador_Image-Hero_Image_with_signature_2.png",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_dEyRFz": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/lecavist_2.png",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_A79NRt": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/lecavist_x_Manu-Ambassador_Image_2.png",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#F5F0E8",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        }
+      },
+      "block_order": [
+        "slider_item_dCTntN",
+        "slider_item_XnnNTK",
+        "slider_item_m7az4m",
+        "slider_item_dEyRFz",
+        "slider_item_A79NRt"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "slide_height": "full_screen",
+        "desktop_height": 800,
+        "mobile_height": 360,
+        "color_scheme": "",
+        "subheading_font_size": 14,
+        "subheading_font_weight": "body_weight",
+        "subheading_spacing_bottom": 10,
+        "heading_font_size": 70,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "des_spacing_bottom": 40,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "pagination_position": "center",
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "content_below_image": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "image_with_text_overlay_FHejeJ": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_B8iwE7": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 24
+          }
+        },
+        "description_RagrNi": {
+          "type": "description",
+          "settings": {
+            "description": "",
+            "font_size": 14,
+            "font_weight": "body_weight",
+            "spacing_bottom": 25
+          }
+        },
+        "button_WXVaM4": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "spacing_bottom": 24
+          }
+        }
+      },
+      "block_order": [
+        "heading_B8iwE7",
+        "description_RagrNi",
+        "button_WXVaM4"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "image": "shopify://shop_images/mid_banner.jpg",
+        "overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_height": 600,
+        "mobile_height": 500,
+        "content_alignment": "left",
+        "content_position": "top-left",
+        "content_width": "container",
+        "content_max_width": 100,
+        "content_padding_block": 50,
+        "content_padding_inline": 50,
+        "show_content_background": false,
+        "content_background": "#F5F0E8",
+        "content_box_opacity": 100,
+        "content_below_image": false,
+        "content_alignment_mobile": "left",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "collection_list_36AidN": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_pCXz8i": {
+          "type": "collection",
+          "settings": {
+            "collection": "petite-series",
+            "collection_title": ""
+          }
+        },
+        "collection_YWjJwc": {
+          "type": "collection",
+          "settings": {
+            "collection": "built-in-wine-fridge",
+            "collection_title": ""
+          }
+        },
+        "collection_FhkjBt": {
+          "type": "collection",
+          "settings": {
+            "collection": "service-series",
+            "collection_title": ""
+          }
+        },
+        "collection_qBdCYC": {
+          "type": "collection",
+          "settings": {
+            "collection": "professional-range",
+            "collection_title": ""
+          }
+        },
+        "collection_DxCGaz": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_pCXz8i",
+        "collection_YWjJwc",
+        "collection_FhkjBt",
+        "collection_qBdCYC",
+        "collection_DxCGaz"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Collection list",
+        "description": "",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "center",
+        "display_mode": "grid",
+        "image_ratio": "portrait",
+        "custom_ratio": "",
+        "items_per_row": 5,
+        "column_gap": 30,
+        "collection_information_position": "below_image",
+        "design": "default",
+        "text_alignment": "center",
+        "show_product_count": false,
+        "show_description": false,
+        "font_size": 16,
+        "font_weight": "heading_weight",
+        "information_spacing": 12,
+        "rounded_image": false,
+        "image_custom_width": false,
+        "image_width": 200,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "icon_box_kWHDeA": {
+      "type": "icon-box",
+      "blocks": {
+        "icon_box_j7BAXJ": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_delivery_Icon_af0ba902-6539-4dea-afb2-c232894157f9.png",
+            "icon_svg": "free_shipping",
+            "custom_svg": "",
+            "heading": "Free Next Day Delivery*",
+            "description": ""
+          }
+        },
+        "icon_box_AzrgJJ": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_connection_Icon_1f8fbdfe-9205-4cf0-b870-70397618e74f.png",
+            "icon_svg": "check_badge",
+            "custom_svg": "",
+            "heading": "Free Connection",
+            "description": ""
+          }
+        },
+        "icon_box_BWGDH8": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_removal_Icon_ed76b409-f1ac-4766-893c-20e90432f59b.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Free Removal",
+            "description": ""
+          }
+        },
+        "icon_box_QkVkty": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Free_match_guarantee_Icon_48dd8d59-30e9-4a5e-8516-ff3ae9da7a13.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Price Match Guarantee",
+            "description": ""
+          }
+        },
+        "icon_box_MRFddf": {
+          "type": "icon_box",
+          "settings": {
+            "icon_image": "shopify://shop_images/Flexible_payment_options_Icon_b2f8c9b8-e613-4bda-9c22-4a5dff409ed9.png",
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Flexible Payment Options",
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_j7BAXJ",
+        "icon_box_AzrgJJ",
+        "icon_box_BWGDH8",
+        "icon_box_QkVkty",
+        "icon_box_MRFddf"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
+        "type": "default",
+        "column_gap": 30,
+        "icon_position": "top",
+        "icon_size": 60,
+        "spacing": 15,
+        "content_alignment": "center",
+        "heading_font_size": 18,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": "2",
+        "padding_top": 30,
+        "padding_bottom": 40,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "multi_content_4TqbTg",
+    "custom_html_mHJiFH",
+    "video_width_text_ovlerlay_GtGGAq",
+    "slideshow_xJVDcF",
+    "image_with_text_overlay_FHejeJ",
+    "collection_list_36AidN",
+    "icon_box_kWHDeA"
+  ]
+}

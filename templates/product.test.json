@@ -1,0 +1,512 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "enable_sticky_content_on_desktop": true,
+        "enable_skeleton_loading": false,
+        "desktop_media_width": 50,
+        "desktop_layout": "thumbnail_left",
+        "image_zoom": "open_lightbox",
+        "enable_video_looping": true,
+        "enable_video_autoplay": true,
+        "enable_frequently_bought_together": true,
+        "enable_on_desktop": true,
+        "enable_on_mobile": true,
+        "mobile_options": "hidden_thumbnail",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "brand_logo_DdXM8H": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_eaGeVi": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_byP7CC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_bhAxkb": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.22-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_pBUh7U": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_3AEzPm": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_aQKTHX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JHzBbP": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_VfLfh6": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_RmcjPy": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_4eCCNe": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cByDMD": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_yFdm9g": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qbaWQ8": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cqX8pC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_eaGeVi",
+        "brand_items_byP7CC",
+        "brand_items_bhAxkb",
+        "brand_items_pBUh7U",
+        "brand_items_3AEzPm",
+        "brand_items_aQKTHX",
+        "brand_items_JHzBbP",
+        "brand_items_VfLfh6",
+        "brand_items_RmcjPy",
+        "brand_items_4eCCNe",
+        "brand_items_cByDMD",
+        "brand_items_yFdm9g",
+        "brand_items_qbaWQ8",
+        "brand_items_cqX8pC"
+      ],
+      "name": "t:sections.brand-logo.presets.name",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>Restaurants</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": false,
+        "items_per_row": 5,
+        "column_gap": 10,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "reveal": false,
+        "items_per_row_mobile": 2.5,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "shopable_video_Ah8q6G": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_UXiBFH": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "local_video": "shopify://files/videos/WHY LECAVIST short- by Tyrrell's - REEL-with captions_comp.mov"
+          }
+        },
+        "video_hQmyVW": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by Lana - REEL-with captions_comp.mov"
+          }
+        },
+        "video_XPTVfh": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "local_video": "shopify://files/videos/manu HD Final_480_comp.mov"
+          }
+        },
+        "video_z9amJt": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "local_video": "shopify://files/videos/NEW - WHY LE CAVIST BY CUSTOMERS_comp.mov"
+          }
+        },
+        "video_phPqyh": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-63-bottle-wine-fridge-single-zone-lkcv63n",
+            "local_video": "shopify://files/videos/WHY LECAVIST short- by Château Tanunda - REEL-with captions_comp.mov"
+          }
+        },
+        "video_jEMiTp": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by Morena - REEL-with captions_comp.mov"
+          }
+        },
+        "video_TmYecr": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-cellar-bordeaux-lkv168pdbx",
+            "local_video": "shopify://files/videos/WHY LECAVIST short - by 40res - REEL-with captions_comp.mov"
+          }
+        }
+      },
+      "block_order": [
+        "video_UXiBFH",
+        "video_hQmyVW",
+        "video_XPTVfh",
+        "video_z9amJt",
+        "video_phPqyh",
+        "video_jEMiTp",
+        "video_TmYecr"
+      ],
+      "name": "t:sections.shopable-video.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>They trust us</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "video_autoplay": true,
+        "items_per_row": 5,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 3,
+        "reveal": false,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "brand_logo_CTGQJM": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_VKzT7W": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JGBdjX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_jXqN9e": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.22-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_YiwtnJ": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_MiJ9Bx": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_dhnKqF": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qqfiJC": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_d67rGB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_yjX3ND": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_cEUNGB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_x4jPVE": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_weRr78": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_VDdjrg": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_L73NFR": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_VKzT7W",
+        "brand_items_JGBdjX",
+        "brand_items_jXqN9e",
+        "brand_items_YiwtnJ",
+        "brand_items_MiJ9Bx",
+        "brand_items_dhnKqF",
+        "brand_items_qqfiJC",
+        "brand_items_d67rGB",
+        "brand_items_yjX3ND",
+        "brand_items_cEUNGB",
+        "brand_items_x4jPVE",
+        "brand_items_weRr78",
+        "brand_items_VDdjrg",
+        "brand_items_L73NFR"
+      ],
+      "name": "t:sections.brand-logo.presets.name",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "<h1>Restaurants</h1>",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": false,
+        "items_per_row": 5,
+        "column_gap": 10,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "reveal": false,
+        "items_per_row_mobile": 2.5,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    },
+    "product-set": {
+      "type": "product-set",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Combination Styles",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "items_per_row": 2,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots",
+        "infinite": false,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "1716793714ce89e457": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_KyV3NB": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_KyV3NB"
+      ],
+      "settings": {}
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "eyebrow": "— Our Range —",
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "People Also Bought",
+        "description": "Here’s some of our most similar products people are buying. Click to discover trending style.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 4,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_GdCNUL": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "brand_logo_DdXM8H",
+    "shopable_video_Ah8q6G",
+    "brand_logo_CTGQJM",
+    "product-set",
+    "1716793714ce89e457",
+    "related_products",
+    "products_recently_viewed_GdCNUL"
+  ]
+}

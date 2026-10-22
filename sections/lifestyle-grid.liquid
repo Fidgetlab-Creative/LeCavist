@@ -1,0 +1,334 @@
+{%- liquid
+  assign section_st = section.settings
+  assign eyebrow = section_st.eyebrow
+  assign eyebrow_size = section_st.eyebrow_size | default: 18
+  assign color_scheme = section_st.color_scheme
+-%}
+{%- capture section_style -%}
+  --section-pt: {{ section_st.padding_top }}px; --section-pb: {{ section_st.padding_bottom }}px;
+{%- endcapture -%}
+
+<section class="lc-lf color-{{ color_scheme }} gradient" style="{{ section_style | strip | strip_newlines }}">
+  <div class="lc-lf__container">
+    {%- if eyebrow != blank -%}
+      <div class="lc-lf__header">
+        <span class="lc-lf__eyebrow" style="font-size: {{ eyebrow_size }}px;">{{ eyebrow }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="lc-lf__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'hero_image' -%}
+            {%- if block.settings.image != blank -%}
+              <figure class="lc-lf__card lc-lf__card--hero" {{ block.shopify_attributes }}>
+                <img
+                  src="{{ block.settings.image | image_url: width: 2200 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
+                  loading="lazy"
+                  width="2200"
+                  height="{{ 2200 | divided_by: block.settings.image.aspect_ratio | round }}"
+                >
+                <span class="lc-lf__dot" aria-hidden="true"></span>
+                <figcaption class="lc-lf__caption">
+                  {%- if block.settings.label != blank -%}
+                    <span class="lc-lf__caption-label">{{ block.settings.label }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.heading != blank -%}
+                    <h3 class="lc-lf__caption-title">{{ block.settings.heading }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.body != blank -%}
+                    <p class="lc-lf__caption-body">{{ block.settings.body }}</p>
+                  {%- endif -%}
+                </figcaption>
+              </figure>
+            {%- endif -%}
+          {%- when 'half_image' -%}
+            {%- if block.settings.image != blank -%}
+              <figure class="lc-lf__card lc-lf__card--half" {{ block.shopify_attributes }}>
+                <img
+                  src="{{ block.settings.image | image_url: width: 1400 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.heading | escape }}"
+                  loading="lazy"
+                  width="1400"
+                  height="{{ 1400 | divided_by: block.settings.image.aspect_ratio | round }}"
+                >
+                <span class="lc-lf__dot" aria-hidden="true"></span>
+                <figcaption class="lc-lf__caption">
+                  {%- if block.settings.label != blank -%}
+                    <span class="lc-lf__caption-label">{{ block.settings.label }}</span>
+                  {%- endif -%}
+                  {%- if block.settings.heading != blank -%}
+                    <h3 class="lc-lf__caption-title">{{ block.settings.heading }}</h3>
+                  {%- endif -%}
+                  {%- if block.settings.body != blank -%}
+                    <p class="lc-lf__caption-body">{{ block.settings.body }}</p>
+                  {%- endif -%}
+                </figcaption>
+              </figure>
+            {%- endif -%}
+          {%- when 'quote' -%}
+            <div class="lc-lf__quote-block" {{ block.shopify_attributes }}>
+              {%- if block.settings.eyebrow != blank -%}
+                <span class="lc-lf__quote-eyebrow">{{ block.settings.eyebrow }}</span>
+              {%- endif -%}
+              {%- if block.settings.quote != blank -%}
+                <p class="lc-lf__quote">{{ block.settings.quote }}</p>
+              {%- endif -%}
+              {%- if block.settings.attribution != blank -%}
+                <span class="lc-lf__quote-attr">— {{ block.settings.attribution }}</span>
+              {%- endif -%}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  .lc-lf {
+    background: #F0E8D8;
+    padding: var(--section-pt, 72px) 0 var(--section-pb, 72px);
+    color: #1A1512;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+  }
+  .lc-lf__container { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 32px); }
+
+  /* Header — matches Featured In style (centered eyebrow) */
+  .lc-lf__header {
+    text-align: center;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+  .lc-lf__eyebrow {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: #1A1512;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  /* Grid */
+  .lc-lf__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(14px, 1.6vw, 20px);
+  }
+  .lc-lf__card {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    background: #0f0c0a;
+    color: #F0E9DE;
+  }
+  .lc-lf__card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s cubic-bezier(.2,.8,.2,1);
+  }
+  .lc-lf__card:hover img { transform: scale(1.03); }
+  .lc-lf__card--hero { grid-column: 1 / -1; min-height: 640px; }
+  .lc-lf__card--half { min-height: 520px; }
+  .lc-lf__card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(15,12,10,0.75) 0%, rgba(15,12,10,0.2) 40%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .lc-lf__dot {
+    position: absolute;
+    top: 22px;
+    left: 24px;
+    width: 28px;
+    height: 28px;
+    border: 1.5px solid rgba(255,255,255,0.65);
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .lc-lf__caption {
+    position: absolute;
+    left: 28px;
+    right: 28px;
+    bottom: 28px;
+    color: #F0E9DE;
+    z-index: 1;
+  }
+  .lc-lf__caption-label {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    color: rgba(240,233,222,0.85);
+    font-weight: 500;
+  }
+  .lc-lf__caption-label::before {
+    content: "";
+    display: inline-block;
+    width: 22px;
+    height: 1px;
+    background: rgba(240,233,222,0.55);
+  }
+  .lc-lf__caption-title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 400;
+    color: #F0E9DE;
+    margin: 0 0 10px;
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+  }
+  .lc-lf__caption-body {
+    font-size: 16px;
+    color: rgba(240,233,222,0.8);
+    max-width: 440px;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* Quote */
+  .lc-lf__quote-block {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: clamp(48px, 6vw, 80px) 24px;
+  }
+  .lc-lf__quote-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: #6B1F2E;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  .lc-lf__quote {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(26px, 3.2vw, 42px);
+    font-weight: 400;
+    font-style: italic;
+    color: #1A1512;
+    margin: 0 auto 28px;
+    max-width: 840px;
+    line-height: 1.2;
+  }
+  .lc-lf__quote-attr {
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: #6B1F2E;
+    text-transform: uppercase;
+    display: block;
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px) {
+    .lc-lf__header {
+      grid-template-columns: 1fr;
+      padding: 0 clamp(16px, 4vw, 24px);
+      gap: 20px;
+    }
+    .lc-lf__grid { grid-template-columns: 1fr; }
+    .lc-lf__card--hero, .lc-lf__card--half { min-height: 420px; }
+    .lc-lf__caption { left: 20px; right: 20px; bottom: 20px; }
+    .lc-lf__dot { top: 18px; left: 18px; }
+  }
+  @media (max-width: 560px) {
+    .lc-lf__card--hero, .lc-lf__card--half { min-height: 360px; }
+    .lc-lf__caption-title { font-size: 22px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Lifestyle grid",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "— Lifestyle —" },
+    { "type": "range", "id": "eyebrow_size", "label": "Eyebrow font size", "min": 10, "max": 28, "step": 1, "default": 18, "unit": "px" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top",    "label": "Top",    "default": 72, "min": 0, "max": 180, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "default": 72, "min": 0, "max": 180, "step": 4, "unit": "px" }
+  ],
+  "blocks": [
+    {
+      "type": "hero_image",
+      "name": "Hero image",
+      "limit": 2,
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "label", "label": "Overlay label", "default": "At the Winery · Hunter Valley, NSW" },
+        { "type": "text", "id": "heading", "label": "Overlay headline", "default": "Where the wine is made." },
+        { "type": "textarea", "id": "body", "label": "Overlay body", "default": "Standing between hundred-year-old foudres — because even makers trust it with what comes next." }
+      ]
+    },
+    {
+      "type": "half_image",
+      "name": "Half image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "label", "label": "Overlay label", "default": "Cellar Door · Margaret River, WA" },
+        { "type": "text", "id": "heading", "label": "Overlay headline", "default": "The first pour of the day." },
+        { "type": "textarea", "id": "body", "label": "Overlay body", "default": "Beside the tasting bench, holding the flights at 11°C — exactly where the winemaker wanted them." }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Pull quote",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "◇ From the Trade ◇" },
+        { "type": "textarea", "id": "quote", "label": "Quote text", "default": "\"We chose LeCavist for the same reason we chose the rest of the room. It belongs there.\"" },
+        { "type": "text", "id": "attribution", "label": "Attribution", "default": "Head Sommelier · Est Restaurant, Sydney" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lifestyle grid",
+      "settings": {
+        "eyebrow": "— Lifestyle —",
+        "eyebrow_size": 18
+      },
+      "blocks": [
+        { "type": "hero_image", "settings": {
+          "label": "At the Winery · Hunter Valley, NSW",
+          "heading": "Where the wine is made.",
+          "body": "Standing between hundred-year-old foudres — because even makers trust it with what comes next."
+        }},
+        { "type": "half_image", "settings": {
+          "label": "Cellar Door · Margaret River, WA",
+          "heading": "The first pour of the day.",
+          "body": "Beside the tasting bench, holding the flights at 11°C — exactly where the winemaker wanted them."
+        }},
+        { "type": "half_image", "settings": {
+          "label": "Tasting Room · Barossa Valley, SA",
+          "heading": "On the counter, not in the basement.",
+          "body": "Built into the joinery, ready to host. Because serious storage belongs in the room with the people."
+        }},
+        { "type": "quote", "settings": {
+          "eyebrow": "◇ From the Trade ◇",
+          "quote": "\"We chose LeCavist for the same reason we chose the rest of the room. It belongs there.\"",
+          "attribution": "Head Sommelier · Est Restaurant, Sydney"
+        }},
+        { "type": "half_image", "settings": {
+          "label": "The Restaurant · Surry Hills, NSW",
+          "heading": "Open kitchens. Open cellars.",
+          "body": "Flanking the bar, glowing through the service. Sommeliers choose it for the same reason chefs choose copper — it just works."
+        }},
+        { "type": "half_image", "settings": {
+          "label": "The Wine Bar · Fitzroy, VIC",
+          "heading": "Every bottle, on show.",
+          "body": "Dual-zone, triple-glazed, lit just so. The wall behind every memorable glass in Melbourne."
+        }}
+      ]
+    }
+  ]
+}
+{% endschema %}

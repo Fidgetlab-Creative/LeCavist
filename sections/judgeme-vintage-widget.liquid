@@ -1,0 +1,105 @@
+{%- comment -%}
+  Judge.me Review Widget — Vintage installation pattern.
+  Renders the widget div server-side so its content (title, stars,
+  review cards) appears in the DOM with predictable .jdgm-* class
+  names that can be styled with theme CSS.
+
+  Reference: https://judge.me/help/en/articles/8205142
+{%- endcomment -%}
+
+{%- liquid
+  assign has_legacy = false
+  if product.metafields.judgeme.widget.size > 20
+    assign has_legacy = true
+  endif
+-%}
+
+<div class="lc-jdgm-section" id="lc-jdgm-reviews-target"
+     style="padding-top: {{ section.settings.padding_top }}px; padding-bottom: {{ section.settings.padding_bottom }}px;">
+  <div class="lc-jdgm-container">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="lc-jdgm-eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+
+    <div style="clear:both"></div>
+    <div id="judgeme_product_reviews"
+         class="jdgm-widget jdgm-review-widget"
+         data-product-title="{{ product.title | escape }}"
+         data-id="{{ product.id }}"
+         data-product-id="{{ product.id }}"
+         data-widget="review"
+         data-auto-install="false"
+         data-shop-reviews-count="{{ shop.metafields.judgeme.shop_reviews_count | default: 0 | escape }}"
+         data-entry-point="review_widget.js"
+         data-entry-key="review-widget/main.js">
+      {%- if has_legacy -%}
+        <div class="jdgm-legacy-widget-content" style="display: none;">{{ product.metafields.judgeme.widget }}</div>
+      {%- endif -%}
+    </div>
+    {%- if product.metafields.judgeme.review_widget_data -%}
+      <script>
+        jdgm.data ||= {};
+        jdgm.data.reviewWidget ||= {};
+        jdgm.data.reviewWidget[{{ product.id }}] = {{ product.metafields.judgeme.review_widget_data }}
+      </script>
+    {%- endif -%}
+  </div>
+</div>
+
+<style>
+  .lc-jdgm-section { background: transparent; font-family: 'Inter Tight', -apple-system, sans-serif; }
+  .lc-jdgm-container { max-width: 1200px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 56px); }
+  .lc-jdgm-eyebrow {
+    display: block;
+    text-align: center;
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: #1A1512;
+    margin: 0 0 28px;
+  }
+  /* Hide Judge.me's internal widget title — the eyebrow above replaces it */
+  .lc-jdgm-section .jdgm-rev-widg__title,
+  .lc-jdgm-section .jdgm-widget-title { display: none !important; }
+</style>
+
+{% schema %}
+{
+  "name": "Judge.me Reviews",
+  "tag": "section",
+  "class": "section-judgeme-vintage",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Title",
+      "default": "— All Reviews —"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    { "name": "Judge.me Reviews" }
+  ]
+}
+{% endschema %}

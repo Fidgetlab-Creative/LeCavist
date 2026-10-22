@@ -1,0 +1,152 @@
+{%- liquid
+  assign section_st = section.settings
+  assign eyebrow = section_st.eyebrow
+  assign eyebrow_size = section_st.eyebrow_size | default: 18
+  assign heading = section_st.heading
+  assign color_scheme = section_st.color_scheme
+-%}
+{%- capture section_style -%}
+  --section-pt: {{ section_st.padding_top }}px; --section-pb: {{ section_st.padding_bottom }}px;
+{%- endcapture -%}
+
+<section class="lc-all-reviews-section color-{{ color_scheme }} gradient" id="lc-all-reviews-full" style="{{ section_style | strip | strip_newlines }}">
+  <div class="lc-all-reviews-section__container">
+    <header class="lc-all-reviews-section__header">
+      {%- if eyebrow != blank -%}
+        <span class="lc-all-reviews-section__eyebrow" style="font-size: {{ eyebrow_size }}px;">{{ eyebrow }}</span>
+      {%- endif -%}
+      {%- if heading != blank -%}
+        <h2 class="lc-all-reviews-section__title">{{ heading }}</h2>
+      {%- else -%}
+        <h2 class="lc-all-reviews-section__title"><em>Every</em> review for the {{ product.title | split: ' - ' | first }}</h2>
+      {%- endif -%}
+    </header>
+    {%- render 'lc-all-reviews', product: product -%}
+  </div>
+</section>
+
+<style>
+  .lc-all-reviews-section {
+    background: #F5F0E8;
+    padding: var(--section-pt, 72px) 0 var(--section-pb, 72px);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    color: #1A1512;
+    scroll-margin-top: 80px;
+  }
+  .lc-all-reviews-section__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 4vw, 56px);
+  }
+  .lc-all-reviews-section__header {
+    text-align: center;
+    margin-bottom: clamp(32px, 4vw, 52px);
+  }
+  .lc-all-reviews-section__eyebrow {
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    color: #6B1F2E;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 16px;
+  }
+  .lc-all-reviews-section__title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: #1A1512;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  .lc-all-reviews-section__title em { font-style: italic; color: #6B1F2E; }
+
+  .lc-all-reviews__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .lc-all-reviews__list .lc-review-card {
+    background: #FAF6EE;
+    border: 1px solid rgba(26,21,18,0.1);
+    border-radius: 4px;
+    padding: 22px 24px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .lc-all-reviews__list .lc-review-card__stars {
+    color: #c9a84c;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+  }
+  .lc-all-reviews__list .lc-review-card__title {
+    font-family: 'Cormorant Garamond', 'Times New Roman', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #1A1512;
+    margin: 0;
+    line-height: 1.25;
+  }
+  .lc-all-reviews__list .lc-review-card__body {
+    font-size: 16px;
+    line-height: 1.6;
+    color: rgba(26,21,18,0.78);
+    margin: 0;
+    font-style: normal;
+  }
+  .lc-all-reviews__list .lc-review-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-top: 10px;
+    border-top: 1px solid rgba(26,21,18,0.08);
+    margin-top: auto;
+  }
+  .lc-all-reviews__list .lc-review-card__author {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(26,21,18,0.55);
+    font-weight: 500;
+  }
+  .lc-all-reviews__list .lc-review-card__date {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(26,21,18,0.4);
+    text-transform: uppercase;
+  }
+  .lc-all-reviews__empty {
+    grid-column: 1/-1;
+    text-align: center;
+    color: rgba(26,21,18,0.5);
+    font-style: italic;
+    padding: 40px 0;
+  }
+
+  @media (max-width: 600px) {
+    .lc-all-reviews__list { grid-template-columns: 1fr; gap: 12px; }
+    .lc-all-reviews__list .lc-review-card { padding: 18px 20px; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "All reviews (product)",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "— All reviews —" },
+    { "type": "range", "id": "eyebrow_size", "label": "Eyebrow font size", "min": 10, "max": 24, "step": 1, "default": 14, "unit": "px" },
+    { "type": "text", "id": "heading", "label": "Heading", "info": "Leave blank to auto-use the product title." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top",    "label": "Top",    "default": 72, "min": 0, "max": 180, "step": 4, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom", "default": 72, "min": 0, "max": 180, "step": 4, "unit": "px" }
+  ],
+  "presets": [
+    { "name": "All reviews (product)" }
+  ]
+}
+{% endschema %}

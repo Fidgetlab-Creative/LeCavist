@@ -1,0 +1,540 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_fQ3hkj": {
+      "type": "rich-text",
+      "blocks": {
+        "description_WjzBz7": {
+          "type": "description",
+          "settings": {
+            "description": "<p>The Lecavist wine cooling range was born out of a Frenchman’s passion for wine and the desire to provide every home with the ideal cellar conditions for their wine. Offering a range of capacities, from slim and compact fridges for small apartments, to larger-sized cabinets for serious collectors, there’s a Lecavist wine fridge for every household.</p>",
+            "font_size": 15,
+            "font_weight": "body_weight",
+            "spacing_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "description_WjzBz7"
+      ],
+      "name": "t:sections.rich_text.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "content_alignment": "center",
+        "content_max_width": 70,
+        "enable_expand_content": false,
+        "expand_content_button": "See all Information",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "counter_9jaXEq": {
+      "type": "counter",
+      "blocks": {
+        "counter_9xjHYA": {
+          "type": "counter",
+          "settings": {
+            "starting_number": 0,
+            "ending_number": 33,
+            "unit": "",
+            "heading": "Different wine cabinets for sale",
+            "description": "<p>That's why we strive to offer a diverse range of products that cater to all styles.</p>"
+          }
+        },
+        "counter_FrGAC7": {
+          "type": "counter",
+          "settings": {
+            "starting_number": 0,
+            "ending_number": 3500,
+            "unit": "",
+            "heading": "Happy Customer",
+            "description": "<p>We pride ourselves on creating great products and experiences with our valued customers.</p>"
+          }
+        },
+        "counter_RLbzg3": {
+          "type": "counter",
+          "settings": {
+            "starting_number": 0,
+            "ending_number": 5,
+            "unit": "",
+            "heading": "Years of Experience",
+            "description": "<p>With 5 years of expertise, we’re committed to delivering quality, trust, and innovation.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "counter_9xjHYA",
+        "counter_FrGAC7",
+        "counter_RLbzg3"
+      ],
+      "name": "t:sections.counter.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "speed": 5,
+        "items_per_row": 3,
+        "column_gap": 30,
+        "content_alignment": "center",
+        "number_font_size": 36,
+        "number_font_weight": "heading_weight",
+        "number_spacing_bottom": 25,
+        "heading_font_size": 18,
+        "heading_font_weight": "heading_weight",
+        "heading_spacing_bottom": 25,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "des_spacing_bottom": 0,
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "reset_spacing": true
+      }
+    },
+    "multi_content_BNWppe": {
+      "type": "multi-content",
+      "blocks": {
+        "text_gmAQhH": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "",
+            "heading": "",
+            "description": "<p><em>\"At LeCavist, we believe in making quality wine storage accessible to everyone. Our mission is to help wine enthusiasts of all backgrounds enjoy and preserve their favorite wines, one affordable cellar at a time.\"</em><br/>Alexandre CLERCH - Co-Founder of LeCavist</p>",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "image_TAmGdn": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Design_sans_titre_2_1.png",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "image_Hpwd6E": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Australian-Wine-List-Of-The-Year-2024-ALL_StudioAHWA-99_ca7595c7-ffcf-4eb0-b487-8d37545e6370.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "text_gMNBfM": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Blending French Tradition with Australian Passion",
+            "heading": "At LeCavist, we believe in marrying the timeless elegance of French craftsmanship with the vibrant spirit of Australia. As a French expatriate living in this beautiful country, I was inspired to bring a touch of my homeland to Australian homes, particularly in the realm of wine appreciation.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "text_g4VdEE": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "A Fusion of Cultures and Traditions",
+            "heading": "Growing up in France, I was surrounded by the rich culture of winemaking and the art of cellar storage. The allure of savoring a perfectly aged wine, carefully preserved in an underground cellar, is a memory deeply ingrained in my soul. When I arrived in Australia, I noticed a growing appreciation for wine, yet I also recognised the challenges posed by the Australian climate.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "image_nrhyEb": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/wine12_b3e32198-0e5f-4724-8412-1fb1df5d9ea5.png",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "image_MKtXeM": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LEK168PV_display_shelf_95e27303-3c97-4bae-ade2-d85ce94dfdf8.png",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "text_GbFthc": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Meeting a Need with Passion",
+            "heading": "Driven by my love for wine and a desire to share the art of proper wine storage, I founded LeCavist with a mission to provide Australian wine enthusiasts with the perfect solution: wine fridges inspired by the underground cellars of traditional French homes.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "text_FHienM": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Protecting Your Investment, Preserving Your Passion",
+            "heading": "Wine is not just a beverage; it's a journey, an experience that evolves over time. Proper storage is essential to protect the integrity of each bottle and unlock its full potential. In Australia's warm climate, maintaining the ideal temperature and humidity levels is paramount to safeguarding your investment and ensuring every sip is as delightful as the first.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "image_kY8zgD": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LeCavist_x_Manu-13_60259c36-d6b5-4979-a894-36b5d4b17c86_1_1.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "image_a7gQXV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LCS300VN2Z1D_front_close_bottle_lifestyle_picture_1_8b02c4bf-3eaa-42d0-81d2-fa25d914696b.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "text_Jtka9w": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Expertise and Innovation",
+            "heading": "With over 35 years of experience specializing in wine cabinets, LeCavist brings unparalleled expertise and innovation to the Australian market. Our team of experts is dedicated to ensuring that each wine cabinet meets the highest standards of quality, performance, and reliability.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "text_M6BANa": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Crafted for Excellence, Designed for You",
+            "heading": "Our wine cabinets are meticulously crafted with the highest standards of quality and attention to detail. Each design is inspired by the rustic charm of French cellars, offering a blend of elegance and functionality that seamlessly integrates into any Australian home.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        },
+        "image_aJgAUX": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/LEK168PV_front_lifestyle2_93a18ade-0032-46de-b43f-914665eca898.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "image_kkUYEB": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2024-07-09_104028_01922b23-cdc0-4a50-bb8e-90dfe0f75f6a.jpg",
+            "image_link": "",
+            "content_width": "50%",
+            "vertical_align": "center"
+          }
+        },
+        "text_xekcYW": {
+          "type": "text",
+          "settings": {
+            "color_scheme": "default",
+            "content_width": "50%",
+            "vertical_align": "center",
+            "image_link": "",
+            "subheading": "Join Us on the Journey",
+            "heading": "Whether you're a seasoned wine connoisseur or just beginning to explore the world of wine, LeCavist invites you to join us on this journey. Discover the perfect wine cabinet for your needs and budget, and experience the joy of preserving and enjoying your favorite wines in style. Cheers to a shared passion for wine and the art of living well.",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "subheading_font_size": 28,
+            "subheading_font_weight": "heading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 17,
+            "heading_font_weight": "body_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 22,
+            "des_font_weight": "heading_weight",
+            "des_spacing_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "text_gmAQhH",
+        "image_TAmGdn",
+        "image_Hpwd6E",
+        "text_gMNBfM",
+        "text_g4VdEE",
+        "image_nrhyEb",
+        "image_MKtXeM",
+        "text_GbFthc",
+        "text_FHienM",
+        "image_kY8zgD",
+        "image_a7gQXV",
+        "text_Jtka9w",
+        "text_M6BANa",
+        "image_aJgAUX",
+        "image_kkUYEB",
+        "text_xekcYW"
+      ],
+      "custom_css": [
+        ".sec__multi-content {margin: 0;}"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 0,
+        "equal_height_adjustment": true,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "custom_liquid_acy9ba": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "custom_liquid": "<!-- Calendly inline widget begin -->\n<div class=\"calendly-inline-widget\" data-url=\"https://calendly.com/lecavist/15min\" style=\"min-width:320px;height:630px;\"></div>\n<script type=\"text/javascript\" src=\"https://assets.calendly.com/assets/external/widget.js\" async></script>\n<!-- Calendly inline widget end -->",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "video_width_text_ovlerlay_MWaAYe": {
+      "type": "video-width-text-ovlerlay",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "video_url": "https://www.youtube.com/watch?list=TLGG5p9X9Ue0YmExOTEyMjAyNA&v=fw-sXqfGmbw",
+        "title": "Watch Our Story",
+        "subheading": "Click play to watch the video",
+        "title_size": 36,
+        "content_alignment": "left",
+        "content_position": "top-left",
+        "content_width": "container",
+        "content_max_width": 100,
+        "content_padding_block": 50,
+        "content_padding_inline": 50,
+        "show_content_background": false,
+        "content_background": "#F5F0E8",
+        "content_box_opacity": 100,
+        "content_below_image": false,
+        "content_alignment_mobile": "left",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "blog_posts_MqnCdm": {
+      "type": "blog-posts",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Blog post",
+        "description": "",
+        "show_view_all": false,
+        "header_size": "medium",
+        "header_alignment": "center",
+        "blog": "news",
+        "image_ratio": "square",
+        "custom_ratio": "",
+        "show_category": false,
+        "show_author": false,
+        "show_date": false,
+        "show_comment_count": true,
+        "show_excerpt": true,
+        "content_alignment": "left",
+        "design": "default",
+        "items_to_show": 3,
+        "items_per_row": 3,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_fQ3hkj",
+    "counter_9jaXEq",
+    "multi_content_BNWppe",
+    "custom_liquid_acy9ba",
+    "video_width_text_ovlerlay_MWaAYe",
+    "blog_posts_MqnCdm"
+  ]
+}

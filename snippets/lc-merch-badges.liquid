@@ -1,0 +1,56 @@
+{%- comment -%}
+  LeCavist — merchandising badges.
+
+  Predefined badges : New, Best Seller, Cashback, Bonus Bottle.
+  Generic slots     : Extra 1 / 2 / 3 — fully defined in theme settings
+                      (give them a label + colours to use them).
+
+  Per-product toggles : boolean metafields custom.badge_new / badge_bestseller
+                        / badge_cashback / badge_bonus_bottle / badge_extra_1..3.
+  Best Seller also shows automatically for any product in the 'best-selling'
+  collection (the one the Best Selling carousel uses).
+
+  Labels + colours : Theme settings → Badges → "LeCavist badges".
+  A blank label hides that badge everywhere.
+
+  Params: product (required), class (optional) — e.g. 'lc-mbadges--overlay'
+{%- endcomment -%}
+{%- liquid
+  assign st = settings
+  assign m = product.metafields.custom
+
+  comment
+    Best Seller auto-on: product belongs to the 'best-selling' collection
+  endcomment
+  assign in_best = false
+  for c in product.collections
+    if c.handle == 'best-selling'
+      assign in_best = true
+      break
+    endif
+  endfor
+
+  assign show_new   = m.badge_new.value
+  assign show_best  = m.badge_bestseller.value
+  if in_best
+    assign show_best = true
+  endif
+  assign show_cash  = m.badge_cashback.value
+  assign show_bonus = m.badge_bonus_bottle.value
+  assign show_x1    = m.badge_extra_1.value
+  assign show_x2    = m.badge_extra_2.value
+  assign show_x3    = m.badge_extra_3.value
+-%}
+{%- capture _bdg -%}
+  {%- if show_new and st.lc_badge_new_label != blank -%}<span class="lc-mbadge lc-mbadge--new" style="--mb-bg:{{ st.lc_badge_new_bg }};--mb-fg:{{ st.lc_badge_new_color }};">{{ st.lc_badge_new_label }}</span>{%- endif -%}
+  {%- if show_best and st.lc_badge_best_label != blank -%}<span class="lc-mbadge lc-mbadge--best" style="--mb-bg:{{ st.lc_badge_best_bg }};--mb-fg:{{ st.lc_badge_best_color }};">{{ st.lc_badge_best_label }}</span>{%- endif -%}
+  {%- if show_cash and st.lc_badge_cash_label != blank -%}<span class="lc-mbadge lc-mbadge--cash" style="--mb-bg:{{ st.lc_badge_cash_bg }};--mb-fg:{{ st.lc_badge_cash_color }};">{{ st.lc_badge_cash_label }}</span>{%- endif -%}
+  {%- if show_bonus and st.lc_badge_bonus_label != blank -%}<span class="lc-mbadge lc-mbadge--bonus" style="--mb-bg:{{ st.lc_badge_bonus_bg }};--mb-fg:{{ st.lc_badge_bonus_color }};">{{ st.lc_badge_bonus_label }}</span>{%- endif -%}
+  {%- if show_x1 and st.lc_badge_x1_label != blank -%}<span class="lc-mbadge lc-mbadge--x1" style="--mb-bg:{{ st.lc_badge_x1_bg }};--mb-fg:{{ st.lc_badge_x1_color }};">{{ st.lc_badge_x1_label }}</span>{%- endif -%}
+  {%- if show_x2 and st.lc_badge_x2_label != blank -%}<span class="lc-mbadge lc-mbadge--x2" style="--mb-bg:{{ st.lc_badge_x2_bg }};--mb-fg:{{ st.lc_badge_x2_color }};">{{ st.lc_badge_x2_label }}</span>{%- endif -%}
+  {%- if show_x3 and st.lc_badge_x3_label != blank -%}<span class="lc-mbadge lc-mbadge--x3" style="--mb-bg:{{ st.lc_badge_x3_bg }};--mb-fg:{{ st.lc_badge_x3_color }};">{{ st.lc_badge_x3_label }}</span>{%- endif -%}
+{%- endcapture -%}
+{%- assign _bdg = _bdg | strip -%}
+{%- if _bdg != blank -%}
+  <div class="lc-mbadges {{ class }}">{{ _bdg }}</div>
+{%- endif -%}

@@ -1,0 +1,333 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter+Tight:wght@300;400;500;600&display=swap">
+
+{{ 'page-quiz.css' | asset_url | stylesheet_tag }}
+
+<div class="lc-quiz-wrap">
+  <div class="shell">
+
+    <button type="button" class="lc-close" aria-label="Close and return to the previous page" onclick="lcClose()">✕</button>
+
+    <div class="hdr">
+      <div class="brand">LeCavist</div>
+      <h1 class="title" id="lc-step-title">Tell us about your collection</h1>
+      <p class="subtitle">A short, guided conversation — we'll match you to the right cabinet.</p>
+    </div>
+
+    <div class="prog">
+      <div class="dot active" id="d0"></div>
+      <div class="dot" id="d1"></div>
+      <div class="dot" id="d2"></div>
+      <span class="ctr" id="ctr">Step 1 of 3</span>
+    </div>
+
+    <div class="card">
+
+      <!-- Step 0: Size -->
+      <div class="step on" id="s0">
+        <h2 class="q">How many bottles are you storing?</h2>
+        <p class="hint">Include your current collection plus room to grow.</p>
+        <p class="trust-line">Takes about 2 minutes. No email required.</p>
+        <div class="opts">
+          <div class="opt" data-s="0" data-v="small" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="20" width="20" height="24" rx="1"/><line x1="14" y1="28" x2="34" y2="28"/><line x1="14" y1="36" x2="34" y2="36"/></svg></div>
+            <div class="ob"><div class="ol">Up to 63 bottles</div><div class="od">A growing personal collection</div></div>
+          </div>
+          <div class="opt" data-s="0" data-v="medium" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="13" y="12" width="22" height="32" rx="1"/><line x1="13" y1="20" x2="35" y2="20"/><line x1="13" y1="28" x2="35" y2="28"/><line x1="13" y1="36" x2="35" y2="36"/></svg></div>
+            <div class="ob"><div class="ol">64 – 168 bottles</div><div class="od">Mid-range collector or entertaining</div></div>
+          </div>
+          <div class="opt" data-s="0" data-v="large" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="6" width="24" height="38" rx="1"/><line x1="12" y1="14" x2="36" y2="14"/><line x1="12" y1="22" x2="36" y2="22"/><line x1="12" y1="30" x2="36" y2="30"/><line x1="12" y1="38" x2="36" y2="38"/></svg></div>
+            <div class="ob"><div class="ol">169 – 260 bottles</div><div class="od">Serious collector or cellar replacement</div></div>
+          </div>
+          <div class="opt" data-s="0" data-v="xl" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="38" rx="1"/><line x1="6" y1="16" x2="22" y2="16"/><line x1="6" y1="26" x2="22" y2="26"/><line x1="6" y1="36" x2="22" y2="36"/><rect x="26" y="6" width="16" height="38" rx="1"/><line x1="26" y1="16" x2="42" y2="16"/><line x1="26" y1="26" x2="42" y2="26"/><line x1="26" y1="36" x2="42" y2="36"/></svg></div>
+            <div class="ob"><div class="ol">260+ bottles</div><div class="od">Connoisseur or commercial installation</div></div>
+          </div>
+        </div>
+
+        <details class="edu edu-acc">
+          <summary>How we count bottles</summary>
+          <div class="edu-acc-body">
+            <p>All LeCavist capacities are calculated using the international <strong>750 mL Bordeaux bottle</strong>, with shelves removed and bottles stacked end-to-end. In real-world use you’ll typically fit <strong>around 80%</strong> of the advertised maximum, depending on:</p>
+            <ul>
+              <li><strong>Bottle shape</strong> — Burgundy and Champagne bottles are wider than Bordeaux and take more space.</li>
+              <li><strong>How many shelves you keep in</strong> — more shelves means easier access but lower total capacity.</li>
+            </ul>
+            <div class="edu-diagram-wrap" style="margin-top:14px">
+              <img class="edu-diagram" src="{{ 'loading-comparison.png' | asset_url }}" alt="Three cabinets showing comfort, standard and max loading" loading="lazy" onerror="this.closest('.edu-diagram-wrap').style.display='none'">
+              <div class="edu-diagram-labels" aria-hidden="true">
+                <span class="lpill lc-cc-load--comf">Comfort</span>
+                <span class="lpill lc-cc-load--std">Standard</span>
+                <span class="lpill lc-cc-load--max">Max</span>
+              </div>
+            </div>
+            <p style="margin-top:12px">We assume <strong>Standard</strong> loading by default (≈ 85% of advertised capacity). You can switch to <strong>Comfort</strong> or <strong>Max</strong> on the results page if you want to refine.</p>
+          </div>
+        </details>
+
+        <div class="nav"><button class="bback" disabled>← Back</button><button class="bnext" id="n0" disabled onclick="lcGo(1)">Continue →</button></div>
+      </div>
+
+      <!-- Step 1: Install location + Finish (combined — both "where it lives + how it looks") -->
+      <div class="step" id="s1">
+        <h2 class="q">Where will it live, and how should it look?</h2>
+        <p class="hint">Two quick choices on one page — location and finish.</p>
+
+        <h3 class="sub-q"><span class="sub-q-num">1</span> Installation location</h3>
+        <div class="opts">
+          <div class="opt" data-s="1" data-v="free" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="8" width="16" height="34" rx="1"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="28" x2="32" y2="28"/><line x1="4" y1="44" x2="44" y2="44"/><circle cx="10" cy="22" r="1.2" fill="currentColor"/><circle cx="10" cy="26" r="1.2" fill="currentColor"/><circle cx="38" cy="22" r="1.2" fill="currentColor"/><circle cx="38" cy="26" r="1.2" fill="currentColor"/></svg></div>
+            <div class="ob"><div class="ol">Freestanding anywhere</div><div class="od">Living room, dining room, garage</div></div>
+          </div>
+          <div class="opt" data-s="1" data-v="built" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="14" width="14" height="30" rx="1"/><line x1="2" y1="22" x2="16" y2="22"/><rect x="16" y="8" width="16" height="36" rx="1" stroke-width="2.5"/><line x1="16" y1="18" x2="32" y2="18"/><line x1="16" y1="28" x2="32" y2="28"/><line x1="16" y1="38" x2="32" y2="38"/><rect x="32" y="14" width="14" height="30" rx="1"/><line x1="32" y1="22" x2="46" y2="22"/></svg></div>
+            <div class="ob"><div class="ol">Under-bench or built-in</div><div class="od">Kitchen cabinetry or integrated niche</div></div>
+          </div>
+        </div>
+
+        <details class="edu edu-acc">
+          <summary>Clearance you'll need</summary>
+          <div class="edu-acc-body">
+            <p><strong>Freestanding installation</strong> — allow at least <b>10 cm clearance</b> on each side, top and back so the unit can vent properly. Without it, cooling efficiency drops and the compressor works harder.</p>
+            <p><strong>Built-in installation</strong> — only requires a <b>3 cm clearance on all sides</b>. Ventilation is made through the vent at the bottom, so the cabinet sits flush in cabinetry or a niche.</p>
+          </div>
+        </details>
+
+        <h3 class="sub-q"><span class="sub-q-num">2</span> Finish</h3>
+        <p class="hint">Every LeCavist cabinet is available in black. Stainless steel is a premium upgrade available on select models.</p>
+        <div class="colour-grid">
+          <div class="copt" data-s="3" data-v="black" onclick="lcPickC(this)">
+            <div class="swatch sw-black"></div>
+            <div class="cl">Black</div>
+            <div class="cd">Sleek and versatile — suits any interior style</div>
+          </div>
+          <div class="copt" data-s="3" data-v="either" onclick="lcPickC(this)">
+            <div class="swatch sw-either"></div>
+            <div class="cl">Either is fine</div>
+            <div class="cd">No preference — show me the best match in either finish</div>
+          </div>
+          <div class="copt" data-s="3" data-v="steel" onclick="lcPickC(this)">
+            <div class="swatch sw-steel"></div>
+            <div class="cl">Only stainless steel</div>
+            <div class="cd">Premium metallic finish only — don't show me black models</div>
+          </div>
+        </div>
+        <div class="colour-note" id="cnote">
+          Stainless steel is currently available on our 168-bottle single zone and 140-bottle triple zone freestanding cabinets. If your selection doesn't have a stainless version we'll let you know.
+        </div>
+
+        <div class="nav"><button class="bback" onclick="lcGo(0)">← Back</button><button class="bnext" id="n1" disabled onclick="lcGo(2)">Continue →</button></div>
+      </div>
+
+      <!-- Step 2: Zones -->
+      <div class="step" id="s2">
+        <h2 class="q">What do you mainly store?</h2>
+        <p class="hint">Temperature zones determine how your collection is preserved.</p>
+        <div class="opts one">
+          <div class="opt" data-s="2" data-v="single" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <!-- Single red bottle: mostly reds for aging -->
+                <rect x="22" y="4" width="4" height="3" fill="#1f0a0e"/>
+                <path d="M21 7 L27 7 L27 12 Q27 14 30 17 L30 43 L18 43 L18 17 Q21 14 21 12 Z" fill="#a83042" stroke="#3a0d16" stroke-width="0.7"/>
+                <rect x="20" y="25" width="8" height="11" fill="#f1eae1" opacity="0.9"/>
+              </svg>
+            </div>
+            <div class="ob"><div class="ol">Mostly reds — one temperature for aging</div><div class="od">Single zone: consistent 12–16°C for long-term cellaring</div></div>
+          </div>
+          <div class="opt" data-s="2" data-v="dual" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <!-- Red bottle (left) -->
+                <rect x="11" y="5" width="3" height="2.5" fill="#1f0a0e"/>
+                <path d="M10.5 7.5 L14.5 7.5 L14.5 12 Q14.5 13.5 17 16 L17 43 L8 43 L8 16 Q10.5 13.5 10.5 12 Z" fill="#a83042" stroke="#3a0d16" stroke-width="0.55"/>
+                <rect x="9.5" y="24" width="6" height="10" fill="#f1eae1" opacity="0.9"/>
+                <!-- White bottle (right) -->
+                <rect x="34" y="5" width="3" height="2.5" fill="#2a2515"/>
+                <path d="M33.5 7.5 L37.5 7.5 L37.5 12 Q37.5 13.5 40 16 L40 43 L31 43 L31 16 Q33.5 13.5 33.5 12 Z" fill="#e8d8a0" stroke="#7a6520" stroke-width="0.55"/>
+                <rect x="32.5" y="24" width="6" height="10" fill="#3a3020" opacity="0.45"/>
+              </svg>
+            </div>
+            <div class="ob"><div class="ol">Reds and whites — both ready to serve</div><div class="od">Dual zone: two independent chambers, reds above, whites chilled below</div></div>
+          </div>
+          <div class="opt" data-s="2" data-v="triple" onclick="lcPick(this)">
+            <div class="ico" aria-hidden="true">
+              <svg viewBox="0 0 48 48">
+                <!-- Red bottle (left) -->
+                <rect x="5.5" y="5" width="2.5" height="2" fill="#1f0a0e"/>
+                <path d="M5 7 L8.5 7 L8.5 11.5 Q8.5 12.5 10.5 14.5 L10.5 43 L3 43 L3 14.5 Q5 12.5 5 11.5 Z" fill="#a83042" stroke="#3a0d16" stroke-width="0.45"/>
+                <rect x="4" y="22" width="5.5" height="9" fill="#f1eae1" opacity="0.9"/>
+                <!-- White bottle (centre) -->
+                <rect x="22.75" y="5" width="2.5" height="2" fill="#2a2515"/>
+                <path d="M22.25 7 L25.75 7 L25.75 11.5 Q25.75 12.5 27.75 14.5 L27.75 43 L20.25 43 L20.25 14.5 Q22.25 12.5 22.25 11.5 Z" fill="#e8d8a0" stroke="#7a6520" stroke-width="0.45"/>
+                <rect x="21.25" y="22" width="5.5" height="9" fill="#3a3020" opacity="0.45"/>
+                <!-- Sparkling bottle (right) — gold body, foil collar, rounded bottom (champagne punt) -->
+                <rect x="40" y="5" width="2.5" height="2" fill="#1a1408"/>
+                <path d="M39.5 7 L43 7 L43 11.5 Q43 12.5 45 14.5 L45 39 C 45 44 37.5 44 37.5 39 L37.5 14.5 Q39.5 12.5 39.5 11.5 Z" fill="#c9a958" stroke="#5a4515" stroke-width="0.45"/>
+                <rect x="38.5" y="8.5" width="5.5" height="6" fill="#a8862c"/>
+              </svg>
+            </div>
+            <div class="ob"><div class="ol">Mixed — reds, whites and sparkling separately</div><div class="od">Triple zone: three independent chambers for the serious collector</div></div>
+          </div>
+        </div>
+
+        <details class="edu edu-acc">
+          <summary>Help me understand temperature zones</summary>
+          <div class="edu-acc-body">
+            <p>Wine ages and serves best at a <strong>stable, well-chosen temperature</strong>. Fluctuations and dryness damage corks and accelerate ageing — a steady climate matters more than a "cold fridge". Different wines have different ideal serving temperatures (a few examples from our <a class="edu-link" href="/blogs/news/what-is-the-best-temperature-to-keep-my-wine-safe" target="_blank" rel="noopener">temperature guide</a>):</p>
+            <ul class="edu-temp-list">
+              <li><b>6 °C</b> — Champagne, Bordeaux Blanc, sweet sparkling, Passito di Pantelleria</li>
+              <li><b>8 °C</b> — Dry whites, Verdicchio, fruity dry whites, Passito Liqueur</li>
+              <li><b>10–11 °C</b> — White Burgundy, Trentino, Franciacorta, Friulano, Loire dry whites, aromatic whites</li>
+              <li><b>12–13 °C</b> — Provence rosé, New Wine, Beaujolais, Languedoc-Roussillon</li>
+              <li><b>14–15 °C</b> — Loire reds, light reds with malt tannins, Rodano white</li>
+              <li><b>16 °C</b> — Chianti Classico, structured reds with tannins</li>
+              <li><b>17–18 °C</b> — Bordeaux Red, Amarone, Barbaresco, Barolo, Brunello, Red Burgundy</li>
+            </ul>
+            <p style="margin-top:10px"><strong>What LeCavist cabinets offer:</strong> single-zone units run a constant <b>5–20 °C</b> (set anywhere in that range — ideal for long-term ageing). Dual-zone has two independent chambers, typically <b>5–12 °C</b> chilled + <b>12–18 °C</b> serving — reds and whites both ready to pour. Triple-zone splits further (e.g. <b>5–12 °C / 8–12 °C / 12–18 °C</b>) so reds, whites and sparkling each sit at their own ideal temperature. Background reading: <a class="edu-link" href="/blogs/news/why-is-wine-red-white-or-rose" target="_blank" rel="noopener">why wines come in different colours</a>.</p>
+          </div>
+        </details>
+
+        <div class="nav"><button class="bback" onclick="lcGo(1)">← Back</button><button class="bnext" id="n2" disabled onclick="lcShowR()">See my recommendations →</button></div>
+      </div>
+
+      <!-- Results -->
+      <div class="step" id="sR">
+        <div class="rhdr">
+          <div class="rlbl">Your recommendations</div>
+          <h2 class="rtitle">Your perfect match</h2>
+          <p class="rsub" id="rsub"></p>
+        </div>
+        <div class="refine" role="group" aria-label="Capacity & loading preference">
+          <div class="refine-row">
+            <label class="refine-label" for="lc-cap-input">How many bottles do you want to store?</label>
+            <input type="number" id="lc-cap-input" class="refine-input" min="1" max="9999" inputmode="numeric" placeholder="e.g. 120" oninput="lcCalcCapacity()">
+          </div>
+          <div class="refine-row">
+            <span class="refine-label">Loading preference</span>
+            <div class="refine-opts">
+              <button type="button" class="refine-pill lc-cc-load--comf" data-load="comfort"  onclick="lcRefineLoad('comfort')">Comfort</button>
+              <button type="button" class="refine-pill lc-cc-load--std is-active" data-load="standard" onclick="lcRefineLoad('standard')">Standard</button>
+              <button type="button" class="refine-pill lc-cc-load--max"  data-load="max"      onclick="lcRefineLoad('max')">Max</button>
+            </div>
+          </div>
+          <div class="refine-result" id="lc-cap-output" hidden></div>
+          <span class="refine-hint">Enter a bottle count to see the minimum cabinet capacity you need — and we'll re-rank the matches below.</span>
+        </div>
+
+        <div class="pcards" id="plist"></div>
+        <div class="fnote" id="fnote">Stainless steel isn't available for this configuration — showing the identical black finish version.</div>
+
+        <div class="cmp-wrap" id="cmpwrap" hidden>
+          <div class="cmp-head">
+            <h3 class="cmp-title">Compare side by side</h3>
+            <p class="cmp-sub">The closest cabinets to your answers, compared on capacity, zones, dimensions, energy use and price — no need to open each product.</p>
+          </div>
+
+          <!-- Desktop / tablet: full side-by-side table (hidden ≤ 760 px) -->
+          <div class="cmp-scroll">
+            <table class="cmp" id="cmptable">
+              <caption class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">Wine cabinet specification comparison</caption>
+            </table>
+          </div>
+          <p class="cmp-hint">Scroll horizontally to see every model · the best value in each row is marked ★</p>
+
+          <!-- Mobile (≤ 760 px): hero best-match + swipable alternatives + collapsed full table -->
+          <div class="cmp-mobile" id="cmpmobile" aria-label="Mobile comparison view"></div>
+        </div>
+
+        <div class="ract">
+          <a href="#" id="lc-adjust" class="badjust" onclick="lcAdjust(event)">↺ Adjust my answers</a>
+          <button class="bemail" id="lc-pdf" onclick="lcDownloadPDF()">↓ Download as PDF</button>
+          <button class="brst" onclick="lcRestart()">Start over</button>
+          <a href="/collections/all-cabinets" class="ball">Browse all cabinets →</a>
+        </div>
+      </div>
+
+    </div><!-- /.card -->
+  </div><!-- /.shell -->
+</div><!-- /.lc-quiz-wrap -->
+
+{%- comment -%}
+  Live catalog feed. Prices, titles, images, URLs and availability are read
+  from Shopify products at render time — nothing is hardcoded, so the quiz
+  stays in sync automatically as the catalogue is updated. To add/remove a
+  recommended product, edit the handle in the curation matrix (the P object
+  below) and add the handle here.
+{%- endcomment -%}
+{%- liquid
+  assign q_handles = "lecavist-63-bottle-wine-fridge-single-zone-lkcv63n,lecavist-56-bottle-wine-fridge-dual-zone-black-lks56vn2z,lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu,lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu,lecavist-168-bottle-wine-cabinet-single-zone-black-lek168pv,lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy,lecavist-140-bottle-wine-cabinet-triple-zone-stainless-steel-lek1403zpvx,lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro,lecavist-188-bottle-wine-fridge-dual-zone-side-by-side-black-lcs200vn2z,lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d,lecavist-268-bottle-dual-zone-lj268vn2z" | split: ","
+  assign duo_col = collections['duo']
+  assign cmp_cabs = collections['all-cabinets'].products
+-%}
+{%- capture lc_quiz_json -%}
+{"PROD":{
+  {%- assign first = true -%}
+  {%- for h in q_handles -%}
+    {%- assign qp = all_products[h] -%}
+    {%- if qp.id -%}
+      {%- assign qsp = qp.metafields.lecavist_specs -%}
+      {%- assign qcap = qsp.bottle_capacity.value | default: qp.metafields.custom.bottle_capacity.value -%}
+      {%- assign qzns = qsp.cooling_zone.value | default: qp.metafields.custom.zones.value -%}
+      {%- unless first %},{% endunless -%}
+      {{ h | json }}:{"n":{{ qp.title | json }},"p":{{ qp.price | money | strip_html | json }},"u":{{ qp.url | json }},"img":{{ qp.featured_image | image_url: width: 240 | json }},"av":{{ qp.available | json }},"cap":{{ qcap | json }},"z":{{ qzns | json }},"inst":{{ qsp.installation_type.value | json }}}
+      {%- assign first = false -%}
+    {%- endif -%}
+  {%- endfor -%}
+  },
+  "DUO":{"n":{{ duo_col.title | default: 'Signature Duo Range' | json }},"u":{{ duo_col.url | default: '/collections/duo' | json }},"img":{{ duo_col.image | image_url: width: 240 | json }}},
+  "CAB":[
+  {%- assign cfirst = true -%}
+  {%- for cp in cmp_cabs limit: 50 -%}
+    {%- assign sp = cp.metafields.lecavist_specs -%}
+    {%- assign cap = sp.bottle_capacity.value | default: cp.metafields.custom.bottle_capacity.value -%}
+    {%- assign zns = sp.cooling_zone.value | default: cp.metafields.custom.zones.value -%}
+
+    {%- comment %} PDP-style display title: "{capacity} {VENDOR} {type} {container}" — mirrors sections/main-product.liquid (lc_display_title). {%- endcomment -%}
+    {%- assign _ctoken = '' -%}
+    {%- assign _typew = '' -%}
+    {%- assign _container = '' -%}
+    {%- assign _prev = '' -%}
+    {%- assign _parts = cp.title | split: ' ' -%}
+    {%- for _tp in _parts -%}
+      {%- assign _lc = _tp | downcase -%}
+      {%- if _ctoken == '' and _prev != '' -%}
+        {%- if _lc == 'bottle' or _lc == 'bottles' or _lc == 'litre' or _lc == 'litres' -%}
+          {%- assign _ctoken = _prev | append: ' ' | append: _tp -%}
+        {%- endif -%}
+      {%- endif -%}
+      {%- if _lc == 'wine' or _lc == 'beverage' -%}{%- assign _typew = _tp -%}{%- endif -%}
+      {%- if _lc == 'cabinet' or _lc == 'fridge' -%}{%- assign _container = _tp -%}{%- endif -%}
+      {%- assign _prev = _tp -%}
+    {%- endfor -%}
+    {%- assign _vendor = cp.vendor | upcase -%}
+    {%- if _vendor == blank -%}{%- assign _vendor = 'LECAVIST' -%}{%- endif -%}
+    {%- if _ctoken != '' and _container != '' -%}
+      {%- assign _disp = _ctoken | append: ' ' | append: _vendor -%}
+      {%- if _typew != '' -%}{%- assign _disp = _disp | append: ' ' | append: _typew -%}{%- endif -%}
+      {%- assign _disp = _disp | append: ' ' | append: _container -%}
+    {%- else -%}
+      {%- assign _disp = cp.title | split: ' - ' | first -%}
+    {%- endif -%}
+    {%- capture _sku %}{%- render 'lc-product-sku', product: cp -%}{%- endcapture -%}
+    {%- assign _sku = _sku | strip -%}
+
+    {%- unless cfirst %},{% endunless -%}
+    {"h":{{ cp.handle | json }},"n":{{ cp.title | json }},"disp":{{ _disp | json }},"sku":{{ _sku | json }},"u":{{ cp.url | json }},"img":{{ cp.featured_image | image_url: width: 260 | json }},"p":{{ cp.price | money | strip_html | json }},"pc":{{ cp.price | json }},"av":{{ cp.available | json }},"cap":{{ cap | json }},"z":{{ zns | json }},"w":{{ sp.width_mm.value | json }},"ht":{{ sp.height_mm.value | json }},"d":{{ sp.depth_mm.value | json }},"kwh":{{ sp.energy_efficiency_kwh.value | json }},"db":{{ sp.noise_level_db.value | json }},"inst":{{ sp.installation_type.value | json }},"rng":{{ sp.range.value | json }},"rt":{{ cp.metafields.reviews.rating.value.rating | json }},"rc":{{ cp.metafields.reviews.rating_count.value | json }}}
+    {%- assign cfirst = false -%}
+  {%- endfor -%}
+  ]}
+{%- endcapture -%}
+<script type="application/json" id="lc-quiz-data">{{ lc_quiz_json | replace: '</', '<\/' }}</script>
+
+<script src="{{ 'page-quiz.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Quiz Page",
+  "settings": []
+}
+{% endschema %}
