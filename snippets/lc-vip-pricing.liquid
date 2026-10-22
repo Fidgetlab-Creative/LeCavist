@@ -39,12 +39,14 @@
   };
   // Full RRP per SKU: the struck-through price shown next to the VIP price
   var RRP = {
-    "LEK168PV":1699,"LKS56VN2Z":849,"LKCV63N":699,"LCS100VN":1099,"LEK1403ZPV":1899,"LEK168PVX":1749,
-    "LEK1052ZPV":1499,"LJ52VNBU":1649,"LJ294VN":3199,"LJ44VN2ZBU":1899,"LCS300VN2Z1D":3899,"LEK14PV":499,
-    "LKV168PNDX":1899,"LCS200VN2Z2D":3999,"LEK1403ZPVX":1999,"LJ268VN2Z":3349,"LJBC238MN":1649,"LCS300VX1ZPRO":4449,
-    "LCS155VN1ZPRO":3599,"LJ140BC":1469,"LJ40VN2Z2DBU":2149,"LCS140VN2Z2D":3099,"LCS210VN2ZBI":3559,"LCS600VX2DP":5299,
-    "LCS220VN1ZBI":3359,"LCS36VN2ZBI":1879,"LCSOD126VX2Z":1899,"LCSOD46VX":1549,"LCSOD33VX":1399,"LCFDOD152X":2199,
-    "LCS458VN2DP":3599,"LCIMOD80X":2199,"LCS230VN2Z1D":2899,"LJ17VN2ZBU":1349,"LJ20VNBU":1299
+    "LKCV63N":699,"LKS56VN2Z":849,"LCS155VN1ZPRO":3599,"LKV168PNDX":1899,"LCS200VN2Z2D":3999,"LCS300VX1ZPRO":4449,
+    "LCS140VN2Z2D":3099,"LCS230VN2Z1D":2899,"LCS100VN":1099,"LCS300VN2Z1D":3899,"LEK1403ZPVX":1999,"LEK1403ZPV":1899,
+    "LEK168PVX":1749,"LCS600VX2DP":5299,"LJ17VN2ZBU":1349,"LJ20VNBU":1299,"LJ40VN2Z2DBU":2149,"LJ44VN2ZBU":1899,
+    "LJ52VNBU":1649,"LJ268VN2Z":3349,"LJ294VN":3199,"LJBC238MN":1649,"LEK14PV":499,"LEK168PV":1699,
+    "LEK1052ZPV":1499,"LEK168PVX2":3398,"LJ52VNBUX2":2969,"LJ294VNX2":5759,"LKV168PNDXX2":3419,"LEK168PVXX2":3498,
+    "LEK1403ZPVX2":3419,"LEK1403ZPVXX2":3599,"LEK208PVX2":3498,"LEK208PVXX2":3308,"LCS36VN2ZBI":1879,"LCS220VN1ZBI":3359,
+    "LCS210VN2ZBI":3559,"LJ140BC":1469,"LCS200VN2Z2DFLTSH":4299,"LJ52140DUO":3119,"LCS458VN2DP":3599,"LCSOD46VX":1549,
+    "LCSOD33VX":1399,"LCSOD126VX2Z":1899,"LCFDOD152X":2199,"LCIMOD80X":2199
   };
   var PAGE_SKU = {{ lc_vip_sku | json }};
 
@@ -83,14 +85,16 @@
 
   function applyTo(el, sku, opts){
     if (!el || !sku) return;
-    var off = GRID[sku]; if (!off) return;
+    var off = GRID[sku] || 0;
+    if (!off && !RRP[sku]) return;
     if (el.querySelector('.lc-vip-price')) return;
     if (el.dataset.vipNew && el.textContent.trim() === el.dataset.vipNew) return;
     var p = parse(el.textContent); if (p == null) return;
     var v = p - off; if (v <= 0) return;
     var was = (RRP[sku] && RRP[sku] > v) ? RRP[sku] : p;
+    if (was <= v) return;
     var dec = /\.\d\d/.test(el.textContent) ? 2 : 0;
-    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(was, dec) + '</s>' + (opts && opts.tag ? '<span class="lc-vip-tag">VIP price</span>' : '');
+    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(was, dec) + '</s>' + (opts && opts.tag && off ? '<span class="lc-vip-tag">VIP price</span>' : '');
     if (opts && opts.simple) el.textContent = fmt(v, dec);
     el.dataset.vipOrig = fmt(p, dec);
     el.dataset.vipNew = fmt(v, dec);
@@ -101,15 +105,17 @@
     banner();
     hero();
     // Product page
-    if (PAGE_SKU && GRID[PAGE_SKU]) {
+    if (PAGE_SKU && (GRID[PAGE_SKU] || RRP[PAGE_SKU])) {
       ['lc-price', 'lc-d-price'].forEach(function(id){
         var el = document.getElementById(id); if (!el) return;
         applyTo(el, PAGE_SKU, { tag: true });
         // hide the theme's own compare-at line and savings banner, add a VIP note once
         var block = el.parentNode;
-        if (block && !block.querySelector('.lc-vip-note')) {
+        if (block) {
           block.querySelectorAll('.lc-price-was, .lc-d-savings-banner').forEach(function(x){ x.classList.add('lc-vip-hide'); });
           Array.prototype.forEach.call(block.children, function(ch){ if (ch !== el && /line-through/.test(ch.getAttribute('style') || '')) ch.classList.add('lc-vip-hide'); });
+        }
+        if (block && GRID[PAGE_SKU] && !block.querySelector('.lc-vip-note')) {
           var note = document.createElement('div');
           note.className = 'lc-vip-note';
           var sv = parseInt(el.dataset.vipSave || GRID[PAGE_SKU], 10);
@@ -131,7 +137,7 @@
       }
     }
     // Product cards (collections, related products, search): SKU read from the card text
-    var SKU_RE = new RegExp('\\b(' + Object.keys(GRID).sort(function(a,b){ return b.length - a.length; }).join('|') + ')\\b');
+    var SKU_RE = new RegExp('\\b(' + Object.keys(RRP).concat(Object.keys(GRID)).filter(function(k,i,a){ return a.indexOf(k) === i; }).sort(function(a,b){ return b.length - a.length; }).join('|') + ')\\b');
     function cardSku(el){
       var n = el, i = 0;
       while (n && i < 8) {
