@@ -36,7 +36,9 @@
     "LCS300VX1ZPRO":910,"LCS155VN1ZPRO":1276,"LJ140BC":180,"LJ40VN2Z2DBU":240,"LCS140VN2Z2D":860,
     "LCS210VN2ZBI":50,"LCS600VX2DP":1280,"LCS220VN1ZBI":50,"LCS36VN2ZBI":320,"LCSOD126VX2Z":100,
     "LCSOD46VX":170,"LCSOD33VX":80,"LCFDOD152X":80,"LCS458VN2DP":630,"LCIMOD80X":80,
-    "LCS230VN2Z1D":30,"LJ17VN2ZBU":30,"LJ20VNBU":30
+    "LCS230VN2Z1D":30,"LJ17VN2ZBU":280,"LJ20VNBU":230,
+    "LKV168PNDXX2":421,"LEK168PVXX2":681,"LEK1403ZPVX2":441,"LEK208PVX2":281,"LEK208PVXX2":311,"LCS200VN2Z2DFLTSH":830,
+    "LJ52VNBUX2":231,"LJ52140DUO":241,"LEK1403ZPVXX2":271,"LEK168PVX2":30,"LJ294VNX2":30
   };
   // Full RRP per SKU: the struck-through price shown next to the VIP price
   var RRP = {
@@ -66,19 +68,23 @@
     document.body.insertBefore(b, document.body.firstChild);
   }
 
-  // Black Friday VIP hero on the VIP collection page (full image, desktop + mobile versions)
+  // Black Friday VIP hero: replaces every slideshow banner on the site (home, collections) for VIP visitors
   var HERO_WEB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-web_banner_1920x701_869b7933-1511-403a-87b9-173c79accc27.jpg?v=1792666852';
   var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-mobile_banner_480x600_dfe2fd9d-694f-4938-b789-c07758029fc5.jpg?v=1792666856';
   function hero(){
-    if (location.pathname.indexOf('/collections/vip-access') !== 0) return;
-    if (document.getElementById('lc-vip-hero')) return;
-    var slide = document.querySelector('[id$="__slideshow_GxPDUG"]');
-    if (!slide) return;
-    slide.classList.add('lc-vip-hide');
-    var h = document.createElement('picture');
-    h.id = 'lc-vip-hero';
-    h.innerHTML = '<source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Black Friday Early Access - for LeCavist owners only - up to 50% off + $50 wine voucher">';
-    slide.parentNode.insertBefore(h, slide);
+    var slides = document.querySelectorAll('.shopify-section[id*="__slideshow_"]');
+    if (!slides.length) return;
+    slides.forEach(function(slide, i){
+      if (slide.classList.contains('lc-vip-hide')) return;
+      slide.classList.add('lc-vip-hide');
+      if (i > 0 || document.getElementById('lc-vip-hero')) return;
+      var a = document.createElement('a');
+      a.id = 'lc-vip-hero';
+      a.href = '/collections/vip-access';
+      a.setAttribute('aria-label', 'Black Friday Early Access - VIP collection');
+      a.innerHTML = '<picture><source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Black Friday Early Access - for LeCavist owners only - up to 50% off + $50 wine voucher"></picture>';
+      slide.parentNode.insertBefore(a, slide);
+    });
   }
 
   function fmt(n, dec){ return '$' + n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
