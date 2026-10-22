@@ -27,6 +27,7 @@
   mode: '{%- if admin_vi == true -%}admin{% else %}front{%- endif -%}',
   };
 </script>
+{%- render 'lc-vip-pricing' -%}
 {% comment %}
 
 This file has been rewritten to preserve the original behavior.
@@ -36,4 +37,5 @@ Changes:
 - from: "{%- when 'collection' and collection.handle -%}"
   to: "{%- when 'collection' -%}"
   position: 385..410
+- added: {%- render 'lc-vip-pricing' -%} (VIP price display, Oct 2026)
 {% endcomment %}

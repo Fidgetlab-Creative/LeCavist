@@ -1,0 +1,146 @@
+{%- comment -%}
+  lc-vip-pricing — VIP price display.
+  When the visitor arrived through https://lecavist.com/discount/VIPACCESS, Shopify stores the
+  code in the `discount_code` cookie. This snippet reads that cookie and, for SKUs in the grid,
+  rewrites the displayed price to the VIP price (current price minus the fixed amount of the
+  VIPACCESS discount) with the public price struck through. Visitors without the cookie see
+  the page exactly as before. The actual discount is applied by Shopify at checkout.
+  Edit GRID / CODE / END below when the campaign changes. Amounts are in dollars.
+{%- endcomment -%}
+{%- assign lc_vip_sku = '' -%}
+{%- if request.page_type == 'product' and product -%}
+  {%- assign lc_vip_sku = product.selected_or_first_available_variant.sku | upcase -%}
+{%- endif -%}
+<style>
+  .lc-vip-price{color:#7a2437}
+  .lc-vip-was{opacity:.55;font-size:.55em;margin-left:8px;font-weight:400;text-decoration:line-through}
+  .lc-vip-tag{display:inline-block;font-family:'Inter Tight',Arial,sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;background:#7a2437;color:#fff;padding:3px 7px;border-radius:3px;margin-left:10px;vertical-align:middle;line-height:1.2}
+  .lc-vip-note{margin-top:8px;font-size:13px;color:#7a2437;font-family:'Inter Tight',Arial,sans-serif}
+  .lc-vip-hide{display:none !important}
+  #lc-vip-hero{display:block;width:100%;margin:0 0 24px;line-height:0}
+  #lc-vip-hero img{width:100%;height:auto;display:block}
+  #lc-vip-banner{background:#7a2437;color:#fbfaf7;text-align:center;font-family:'Inter Tight',Arial,sans-serif;font-size:13px;letter-spacing:.3px;padding:9px 16px;line-height:1.4;position:relative;z-index:1000}
+  .lc-vip-banner__tag{display:inline-block;background:#fbfaf7;color:#7a2437;font-weight:600;font-size:10px;letter-spacing:1.5px;padding:2px 7px;border-radius:3px;margin-right:10px;vertical-align:middle}
+  .lc-rp-card__price .lc-vip-was,.card-product-price .lc-vip-was{font-size:.8em;margin-left:6px}
+  .card-product-price .lc-vip-tag,.lc-rp-card__price .lc-vip-tag{font-size:9px;padding:2px 5px;margin-left:6px}
+</style>
+<script>
+(function(){
+  var CODE = 'VIPACCESS';
+  var END = Date.parse('2026-11-01T23:59:00+11:00');
+  var GRID = {
+    "LEK168PV":110,"LKS56VN2Z":100,"LKCV63N":30,"LCS100VN":130,"LEK1403ZPV":260,"LEK168PVX":170,
+    "LEK1052ZPV":330,"LJ52VNBU":170,"LJ294VN":330,"LJ44VN2ZBU":500,"LCS300VN2Z1D":450,"LEK14PV":30,
+    "LKV168PNDX":450,"LCS200VN2Z2D":830,"LEK1403ZPVX":30,"LJ268VN2Z":150,"LJBC238MN":80,
+    "LCS300VX1ZPRO":910,"LCS155VN1ZPRO":1276,"LJ140BC":180,"LJ40VN2Z2DBU":240,"LCS140VN2Z2D":860,
+    "LCS210VN2ZBI":50,"LCS600VX2DP":1280,"LCS220VN1ZBI":50,"LCS36VN2ZBI":320,"LCSOD126VX2Z":100,
+    "LCSOD46VX":170,"LCSOD33VX":80,"LCFDOD152X":80,"LCS458VN2DP":630,"LCIMOD80X":80,
+    "LCS230VN2Z1D":30,"LJ17VN2ZBU":30,"LJ20VNBU":30
+  };
+  var PAGE_SKU = {{ lc_vip_sku | json }};
+
+  function cookie(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
+  var c = cookie('discount_code');
+  if (!c || c.toUpperCase() !== CODE || Date.now() > END) return;
+  document.documentElement.classList.add('lc-vip-active');
+
+  // VIP banner at the very top of the page (public visitors never see it)
+  var BANNER = 'VIP ACCESS — Your private prices are active until 1st November, 11.59pm. Applied automatically at checkout.';
+  function banner(){
+    if (document.getElementById('lc-vip-banner') || !document.body) return;
+    var b = document.createElement('div');
+    b.id = 'lc-vip-banner';
+    b.innerHTML = '<span class="lc-vip-banner__tag">VIP</span>' + BANNER.replace('VIP ACCESS — ', '');
+    document.body.insertBefore(b, document.body.firstChild);
+  }
+
+  // Black Friday VIP hero on the VIP collection page (full image, desktop + mobile versions)
+  var HERO_WEB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/50_Banner_Black_Friday_VIP-web_banner_8168542f-f084-4f70-bc24-fd8ef9c1a91a.jpg?v=1762128930';
+  var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/50_Banner_Black_Friday_VIP-mobile_banner_ba9ad8cb-00a5-467c-a401-59f45ae761c8.jpg?v=1762128935';
+  function hero(){
+    if (location.pathname.indexOf('/collections/vip-access') !== 0) return;
+    if (document.getElementById('lc-vip-hero')) return;
+    var slide = document.querySelector('[id$="__slideshow_GxPDUG"]');
+    if (!slide) return;
+    slide.classList.add('lc-vip-hide');
+    var h = document.createElement('picture');
+    h.id = 'lc-vip-hero';
+    h.innerHTML = '<source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Early Black Friday VIP Access - up to 50% off selected items">';
+    slide.parentNode.insertBefore(h, slide);
+  }
+
+  function fmt(n, dec){ return '$' + n.toFixed(dec).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+  function parse(t){ var m = (t || '').replace(/,/g, '').match(/\$\s*(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; }
+
+  function applyTo(el, sku, opts){
+    if (!el || !sku) return;
+    var off = GRID[sku]; if (!off) return;
+    if (el.querySelector('.lc-vip-price')) return;
+    if (el.dataset.vipNew && el.textContent.trim() === el.dataset.vipNew) return;
+    var p = parse(el.textContent); if (p == null) return;
+    var v = p - off; if (v <= 0) return;
+    var dec = /\.\d\d/.test(el.textContent) ? 2 : 0;
+    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(p, dec) + '</s>' + (opts && opts.tag ? '<span class="lc-vip-tag">VIP price</span>' : '');
+    if (opts && opts.simple) el.textContent = fmt(v, dec);
+    el.dataset.vipOrig = fmt(p, dec);
+    el.dataset.vipNew = fmt(v, dec);
+  }
+
+  function run(){
+    banner();
+    hero();
+    // Product page
+    if (PAGE_SKU && GRID[PAGE_SKU]) {
+      ['lc-price', 'lc-d-price'].forEach(function(id){
+        var el = document.getElementById(id); if (!el) return;
+        applyTo(el, PAGE_SKU, { tag: true });
+        // hide the theme's own compare-at line and savings banner, add a VIP note once
+        var block = el.parentNode;
+        if (block && !block.querySelector('.lc-vip-note')) {
+          block.querySelectorAll('.lc-price-was, .lc-d-savings-banner').forEach(function(x){ x.classList.add('lc-vip-hide'); });
+          Array.prototype.forEach.call(block.children, function(ch){ if (ch !== el && /line-through/.test(ch.getAttribute('style') || '')) ch.classList.add('lc-vip-hide'); });
+          var note = document.createElement('div');
+          note.className = 'lc-vip-note';
+          note.textContent = 'VIP price: you save $' + GRID[PAGE_SKU].toLocaleString('en-AU') + ' — applied automatically at checkout.';
+          el.insertAdjacentElement('afterend', note);
+        }
+      });
+      ['lc-sticky-price', 'lc-d-sticky-price'].forEach(function(id){
+        var el = document.getElementById(id); if (el) applyTo(el, PAGE_SKU, { simple: true });
+      });
+      // Add-to-cart buttons that show the price
+      var main = document.getElementById('lc-price') || document.getElementById('lc-d-price');
+      if (main && main.dataset.vipOrig) {
+        document.querySelectorAll('button, a.btn, .lc-atc, .lc-d-atc').forEach(function(b){
+          if (b.children.length === 0 && b.textContent.indexOf(main.dataset.vipOrig) !== -1) {
+            b.textContent = b.textContent.replace(main.dataset.vipOrig, main.dataset.vipNew);
+          }
+        });
+      }
+    }
+    // Product cards (collections, related products, search): SKU read from the card text
+    var SKU_RE = new RegExp('\\b(' + Object.keys(GRID).sort(function(a,b){ return b.length - a.length; }).join('|') + ')\\b');
+    function cardSku(el){
+      var n = el, i = 0;
+      while (n && i < 8) {
+        var m = (n.textContent || '').toUpperCase().match(SKU_RE);
+        if (m) return n.querySelectorAll('.lc-rp-card__price, .card-product-price').length > 1 ? null : m[1];
+        n = n.parentElement; i++;
+      }
+      return null;
+    }
+    document.querySelectorAll('.lc-rp-card__price, .card-product-price').forEach(function(w){
+      var el = w.classList.contains('lc-rp-card__price') ? w : (w.querySelector('.price') || w);
+      if (el.querySelector('.lc-vip-price')) return;
+      var sku = cardSku(w); if (!sku) return;
+      applyTo(el, sku, { tag: true });
+      w.querySelectorAll('s.compare-price').forEach(function(x){ x.classList.add('lc-vip-hide'); });
+    });
+  }
+
+  var t;
+  function schedule(){ clearTimeout(t); t = setTimeout(run, 150); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
+  new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+})();
+</script>
