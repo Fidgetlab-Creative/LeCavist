@@ -1,1 +1,1942 @@
-{"sections":{"scrolling_text_Dz4DiL":{"type":"scrolling-text","blocks":{"scrolling_text_hzAcGk":{"type":"scrolling_text","settings":{"content":"<a href=\"\/pages\/signature-service\" target=\"_blank\" title=\"Signature Service\">Free delivery&nbsp;<\/a>"}},"scrolling_text_3BU3P9":{"type":"scrolling_text","settings":{"content":"<a href=\"https:\/\/lecavist.myshopify.com\/pages\/products-registration?\" target=\"_blank\" title=\"https:\/\/lecavist.myshopify.com\/pages\/products-registration?\">Free 12 month warranty extension<\/a>"}},"scrolling_text_ghnUBA":{"type":"scrolling_text","settings":{"content":"5-Year Compressor Warranty"}},"scrolling_text_FacFzn":{"type":"scrolling_text","settings":{"content":"<a href=\"\/pages\/contact\" target=\"_blank\" title=\"Contact us\">Call us 02 9398 9933<\/a>"}},"scrolling_text_TDrxmD":{"type":"scrolling_text","disabled":true,"settings":{"content":"Free Removal"}}},"block_order":["scrolling_text_hzAcGk","scrolling_text_3BU3P9","scrolling_text_ghnUBA","scrolling_text_FacFzn","scrolling_text_TDrxmD"],"settings":{"section_width":"full_width","color_scheme":"scheme-66b25261-47c6-47d6-82b3-b246d1030f52","direction":"left","icon_between_item":"dot","speed":17,"space_between_text":60,"font_size":15,"font_weight":"body_weight","uppercase":false,"use_heading_font":true,"padding_top":2,"padding_bottom":2,"reset_spacing":true}},"1743659083397359ce":{"type":"apps","blocks":{"judge_me_reviews_all_reviews_text_8GjVKF":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/all_reviews_text\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{}}},"block_order":["judge_me_reviews_all_reviews_text_8GjVKF"],"settings":{}},"slideshow_8KKtNU":{"type":"slideshow","blocks":{"slider_item_qfM3WF":{"type":"slider_item","settings":{"image":"shopify:\/\/shop_images\/Outdoor_Range_-_web_banner.jpg","image_mobile":"shopify:\/\/shop_images\/Outdoor_Range_-_mobile_banner.jpg","slide_link":"shopify:\/\/collections\/outdoor-range","overlay_opacity":0,"slider_effect":"effect_fadeindown","subheading":"","heading":"","description":"","first_button_label":"","first_button_link":"","first_button_style":false,"second_button_label":"","second_button_link":"","second_button_style":false,"content_alignment":"left","content_position":"bottom-left","content_width":"container","content_max_width":100,"content_padding_block":60,"content_padding_inline":30,"show_content_background":false,"content_background":"#ffffff","content_box_opacity":100,"content_alignment_mobile":"left"}},"slider_item_live":{"type":"slider_item","disabled":true,"settings":{"image":"shopify:\/\/shop_images\/2_151514b6-9fe1-4979-8d78-8e90d9f44088.jpg","image_mobile":"shopify:\/\/shop_images\/PLUMM_Fathers_Day_x3_-_3.jpg","slide_link":"shopify:\/\/collections\/fathers-day-offer","overlay_opacity":0,"slider_effect":"effect_fadein","subheading":"","heading":"","description":"","first_button_label":"","first_button_link":"","first_button_style":false,"second_button_label":"","second_button_link":"","second_button_style":false,"content_alignment":"right","content_position":"bottom-right","content_width":"full_width","content_max_width":40,"content_padding_block":40,"content_padding_inline":0,"show_content_background":false,"content_background":"#f5f0e8","content_box_opacity":10,"content_alignment_mobile":"center"}},"slider_item_2":{"type":"slider_item","disabled":true,"settings":{"image":"shopify:\/\/shop_images\/Our_New_Wine_Cabinets_-_1920x701_-_web_banner-final-v2.jpg","image_mobile":"shopify:\/\/shop_images\/Our_New_Wine_Cabinets_-_480x600_-_mobile_banner-v2.jpg","slide_link":"shopify:\/\/collections\/new-built-in-wine-cabinets","overlay_opacity":0,"slider_effect":"effect_fadein","subheading":"","heading":"","description":"","first_button_label":"","first_button_link":"","first_button_style":false,"second_button_label":"","second_button_link":"https:\/\/lecavist.com\/collections\/built-in-wine-fridge?filter.p.m.custom.bottle_capacity=209&view=list","second_button_style":false,"content_alignment":"right","content_position":"bottom-right","content_width":"full_width","content_max_width":40,"content_padding_block":40,"content_padding_inline":0,"show_content_background":false,"content_background":"#f5f0e8","content_box_opacity":10,"content_alignment_mobile":"center"}}},"block_order":["slider_item_qfM3WF","slider_item_live","slider_item_2"],"settings":{"section_width":"full_width","slide_height":"adapt","desktop_height":640,"mobile_height":380,"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","subheading_font_size":17,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":0,"heading_font_size":30,"heading_font_weight":"subheading_weight","heading_uppercase":false,"heading_spacing_bottom":6,"des_font_size":12,"des_font_weight":"heading_weight","des_spacing_bottom":60,"show_arrow":true,"carousel_pagination":"show_dots","pagination_position":"center","autoplay":true,"autorotate_speed":4,"content_below_image":false,"padding_top":0,"padding_bottom":0,"reset_spacing":true}},"multi_content_j4c4YG":{"type":"multi-content","blocks":{"image_with_text_overlay_MXWJfn":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"25%","vertical_align":"end","image":"shopify:\/\/shop_images\/small_wine_cabinets.jpg","image_link":"shopify:\/\/collections\/petite-series","image_overlay_opacity":20,"custom_svg":"<h3>Small Wine Cabinets\n<\/h3>","subheading":"","heading":"","description":"<p><strong>14 - 63 Bottles<\/strong><\/p>","first_button_label":"View Collection","first_button_link":"shopify:\/\/collections\/petite-series","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-center","content_padding_block":30,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":0,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":0,"heading_font_size":36,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":0,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}},"image_with_text_overlay_xHVXqY":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"25%","vertical_align":"end","image":"shopify:\/\/shop_images\/Medium_wine_cabinets.jpg","image_link":"shopify:\/\/collections\/service-series","image_overlay_opacity":25,"custom_svg":"<h3>Medium Wine Cabinets<\/h3>","subheading":"","heading":"","description":"<h6>68 - 168 Bottles<\/h6>","first_button_label":"View Collection","first_button_link":"shopify:\/\/collections\/service-series","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-center","content_padding_block":30,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":0,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":0,"heading_font_size":36,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":0,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}},"image_with_text_overlay_Da3gy4":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"25%","vertical_align":"end","image":"shopify:\/\/shop_images\/Large_wine_cabinets_1.jpg","image_link":"shopify:\/\/collections\/professional-range","image_overlay_opacity":20,"custom_svg":"<h3>Large Wine Cabinets<\/h3>","subheading":"","heading":"","description":"<h6>188 - 588 Bottles<\/h6>","first_button_label":"View Collection","first_button_link":"shopify:\/\/collections\/professional-range","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-center","content_padding_block":30,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":0,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":0,"heading_font_size":36,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":0,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}},"image_with_text_overlay_taJDy9":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"25%","vertical_align":"end","image":"shopify:\/\/shop_images\/Beverage_wine_cabinets.jpg","image_link":"shopify:\/\/collections\/beverage","image_overlay_opacity":20,"custom_svg":"<h3>Beverage Cabinets<\/h3>","subheading":"","heading":"","description":"<h6>36 - 600l<\/h6>","first_button_label":"View Collection","first_button_link":"shopify:\/\/collections\/beverage","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-center","content_padding_block":30,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":0,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":0,"heading_font_size":36,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":0,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}}},"block_order":["image_with_text_overlay_MXWJfn","image_with_text_overlay_xHVXqY","image_with_text_overlay_Da3gy4","image_with_text_overlay_taJDy9"],"settings":{"section_width":"full_width","heading":"Will you protect your wine ?","description":"<p><em>EXPLORE OUR RANGE<\/em><\/p>","header_size":"small","header_alignment":"center","column_gap":10,"equal_height_adjustment":true,"carousel_on_mobile":true,"items_per_row_mobile":1.5,"padding_top":50,"padding_bottom":0,"reset_spacing":true}},"image_with_text_TAQK7p":{"type":"image-with-text","disabled":true,"name":"Image with text","settings":{"layout":"right","title":"Designed to protect, present, and perfect every bottle you own.","text":"","button_text":"Shop","button_link":"","text_alignment":"center","color_bg":"#eeeeee","color_text":"#454f5b","color_head":"#212b36","skip_container":false}},"multi_content_8ejfQz":{"type":"multi-content","blocks":{"image_with_text_overlay_mrhW3D":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"33.3333%","vertical_align":"end","image":"shopify:\/\/shop_images\/Single_dual_triple-V4-1_ae44974d-df03-440d-9a59-11663c8be744.webp","image_link":"shopify:\/\/collections\/single-zone-cabinets","image_overlay_opacity":40,"custom_svg":"","subheading":"","heading":"Single Zone Wine Cabinets","description":"","first_button_label":"View Range","first_button_link":"shopify:\/\/collections\/single-zone-cabinets","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-right","content_padding_block":60,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":10,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":10,"heading_font_size":33,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":10,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}},"image_with_text_overlay_jxVi3T":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"33.3333%","vertical_align":"end","image":"shopify:\/\/shop_images\/Single_dual_triple-V4-2.webp","image_link":"shopify:\/\/collections\/dual-zone-cabinets","image_overlay_opacity":40,"custom_svg":"","subheading":"","heading":"Dual Zone Wine Cabinets","description":"","first_button_label":"View Range","first_button_link":"shopify:\/\/collections\/dual-zone-cabinets","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-right","content_padding_block":60,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":10,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":10,"heading_font_size":33,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":10,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}},"image_with_text_overlay_3pzAQX":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"33.3333%","vertical_align":"end","image":"shopify:\/\/shop_images\/Single_dual_triple-V4-3.webp","image_link":"shopify:\/\/collections\/triple-zone-cabinets","image_overlay_opacity":40,"custom_svg":"","subheading":"","heading":"Triple Zone Wine Cabinets","description":"","first_button_label":"View Range","first_button_link":"shopify:\/\/collections\/triple-zone-cabinets","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"primary","content_alignment":"center","content_position":"bottom-right","content_padding_block":60,"content_padding_inline":30,"content_below_image":false,"custom_svg_spacing_bottom":10,"subheading_font_size":12,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":10,"heading_font_size":33,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":10,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}}},"block_order":["image_with_text_overlay_mrhW3D","image_with_text_overlay_jxVi3T","image_with_text_overlay_3pzAQX"],"settings":{"section_width":"full_width","heading":"","description":"","header_size":"medium","header_alignment":"center","column_gap":10,"equal_height_adjustment":false,"carousel_on_mobile":true,"items_per_row_mobile":1.5,"padding_top":10,"padding_bottom":0,"reset_spacing":true}},"custom_liquid_yR746H":{"type":"custom-liquid","disabled":true,"custom_css":[".lecavist-icon-list {display: flex; flex-direction: column; gap: 18px;}",".lecavist-icon-item {display: flex; align-items: flex-start; gap: 14px;}",".lecavist-icon {width: 40px; height: auto; flex-shrink: 0; margin-top: 4px;}",".lecavist-text strong {display: block; font-weight: 600;}",".lecavist-icons-wrapper {margin-bottom: 40px;}",".lecavist-icons-title {font-size: 1.8rem; font-weight: 600; line-height: 1.3; margin-bottom: 24px;}",".lecavist-link {display: flex; align-items: flex-start; gap: 14px; text-decoration: none; color: inherit;}"],"name":"t:sections.custom_liquid.name","settings":{"section_width":"container","color_scheme":"","custom_liquid":"<div class=\"lecavist-icons-wrapper\">\n\n  <!-- Section headline -->\n  <h2 class=\"lecavist-icons-title\" >\n     Every detail matters. Four conditions, One perfect environment. \n  <\/h2>\n\n  <!-- Icon list -->\n  <div class=\"lecavist-icon-list\">\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"\/pages\/cellaring_rules#temperature\" class=\"lecavist-link\">\n        <img \n          src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/icon-temperature.png?v=1769989705\" \n          alt=\"Precise temperature control\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Precise Temperature Control<\/strong><\/div>\n          <div class=\"lecavist-desc\">\n            Stable control to prevent premature ageing.\n          <\/div>\n        <\/div>\n      <\/a>\n    <\/div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"\/pages\/cellaring_rules#humidity\" class=\"lecavist-link\">\n        <img \n          src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/icon-humidity.png?v=1769989705\"\n          alt=\"Balanced humidity\"\n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Balanced Humidity<\/strong><\/div>\n          <div class=\"lecavist-desc\">\n            Keeps corks healthy and airtight.\n          <\/div>\n        <\/div>\n      <\/a>\n    <\/div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"\/pages\/cellaring_rules#uvandvibrations\n\" class=\"lecavist-link\">\n        <img \n          src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/icon-UV.png?v=1769989705\" \n          alt=\"UV light protection\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>UV Light Protection<\/strong><\/div>\n          <div class=\"lecavist-desc\">\n            UV protection against flavour damage.\n          <\/div>\n        <\/div>\n      <\/a>\n    <\/div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"\/pages\/cellaring_rules#uvandvibrations\" class=\"lecavist-link\">\n        <img \n          src=\"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/icon-vibrations.png?v=1769989705\" \n          alt=\"Low vibration design\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Low-vibration Design<\/strong><\/div>\n          <div class=\"lecavist-desc\">\n            Undisturbed ageing and sediment stability.\n          <\/div>\n        <\/div>\n      <\/a>\n    <\/div>\n\n  <\/div>\n<\/div>","padding_top":7,"padding_bottom":0,"reset_spacing":false}},"homepage_custo_VMrcYE":{"type":"homepage-custo","blocks":{"condition_DPw3xr":{"type":"condition","settings":{"icon":"shopify:\/\/shop_images\/icon-temperature.png","title":"Precise Temperature Control","text":"Stable control to prevent premature ageing.","link":"\/pages\/cellaring_rules#temperature"}},"condition_fMdUYA":{"type":"condition","settings":{"icon":"shopify:\/\/shop_images\/icon-humidity.png","title":"Balanced Humidity","text":"Keeps corks healthy and airtight.","link":"\/pages\/cellaring_rules#humidity\/pages\/cellaring_rules#humidity"}},"condition_q3f3cV":{"type":"condition","settings":{"icon":"shopify:\/\/shop_images\/icon-UV.png","title":"UV Light Protection","text":"UV protection against flavour damage.","link":"\/pages\/cellaring_rules#uvandvibrations"}},"condition_9iPwiQ":{"type":"condition","settings":{"icon":"shopify:\/\/shop_images\/icon-vibrations.png","title":"Low-vibration Design","text":"Undisturbed ageing and sediment stability.","link":"\/pages\/cellaring_rules#uvandvibrations"}},"button_BaNMUB":{"type":"button","settings":{"text":"Download our brochure","link":"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/LeCavist_Brochure_March_2025.pdf?v=1744173806","bg_color":"#f5f0e8","text_color":"#111111"}},"button_GyHVJU":{"type":"button","settings":{"text":"Explore our range","link":"shopify:\/\/collections\/all-cabinets","bg_color":"#f5f0e8","text_color":"#111111"}},"button_BG6hzY":{"type":"button","settings":{"text":"Wine Fridge Finder","link":"https:\/\/lecavist.com\/pages\/wine-fridge-finder-recommandation","bg_color":"#f5f0e8","text_color":"#111111"}}},"block_order":["condition_DPw3xr","condition_fMdUYA","condition_q3f3cV","condition_9iPwiQ","button_BaNMUB","button_GyHVJU","button_BG6hzY"],"disabled":true,"name":"Conditions + Buttons","settings":{"heading":"Every detail matters. Four conditions, one perfect environment."}},"products_carousel_AdKeFt":{"type":"products-carousel","settings":{"section_width":"stretch_width","color_scheme":"","heading":"Best Selling","description":"","show_view_all_button":false,"header_size":"medium","header_alignment":"center","collection":"best-selling","items_to_show":10,"items_per_row":5,"column_gap":25,"show_banner":false,"sticky_banner":false,"banner_width":30,"position":"left","banner_link":"","banner_type":"image","video_url":"","video_autoplay":true,"show_arrow":true,"carousel_pagination":"show_dots_on_mobile","infinite":true,"autoplay":true,"autorotate_speed":5,"reveal":false,"items_per_row_mobile":2,"padding_top":50,"padding_bottom":0,"reset_spacing":true}},"pods_sections_Fx6DpK":{"type":"pods-sections","blocks":{"pod_cUrMwf":{"type":"pod","settings":{"pod_link":"\/pages\/cellaring_rules","pod_opens_capacity":false,"icon":"shopify:\/\/shop_images\/icon_3_temperature.png","icon_bg_color":"#7c3030","pod_heading":"Cellar-perfect temperature","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Whether you're ageing, serving, or storing a diverse collection, our Single, Dual, and Triple Zone cabinets are designed to meet your needs.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}},"pod_mK7tgN":{"type":"pod","settings":{"pod_link":"\/pages\/signature-service","pod_opens_capacity":false,"icon":"shopify:\/\/shop_images\/icon_2_delivery.png","icon_bg_color":"#7c3030","pod_heading":"White-glove delivery","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Free delivery, expert installation and removal of your old appliance, included across most of Australia.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}},"pod_jEw3tw":{"type":"pod","settings":{"pod_link":"","pod_opens_capacity":true,"icon":"shopify:\/\/shop_images\/icon_1_size.png","icon_bg_color":"#7c3030","pod_heading":"Right size, first time","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Tell us your collection size and space, we'll recommend the perfect cabinet before you commit.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}},"pod_RKtFKC":{"type":"pod","settings":{"pod_link":"\/pages\/cellaring_rules","pod_opens_capacity":false,"icon":"shopify:\/\/shop_images\/icon_4_shield.png","icon_bg_color":"#7c3030","pod_heading":"Built to age with you","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Premium compressors, UV-protective glass and anti-vibration shelving keep every bottle perfect for decades.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}},"pod_m8DTmf":{"type":"pod","settings":{"pod_link":"\/pages\/contact","pod_opens_capacity":false,"icon":"shopify:\/\/shop_images\/icon_6_expert.png","icon_bg_color":"#7c3030","pod_heading":"Experts on call","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Our wine storage specialists are one call away: before purchase, on delivery day, and for years after.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}},"pod_hTYAKg":{"type":"pod","settings":{"pod_link":"\/pages\/find-my-cabinet","pod_opens_capacity":false,"icon":"shopify:\/\/shop_images\/icon_5_quiz.png","icon_bg_color":"#7c3030","pod_heading":"Find your cabinet","pod_heading_font":"assistant_n7","pod_heading_size":19,"pod_heading_color":"#7c3030","pod_body":"Not sure which model is right for you? Answer 4 simple questions and we'll match you to the perfect cabinet for your collection and space.","pod_body_font":"assistant_n4","pod_body_size":16,"pod_body_color":"#333333"}}},"block_order":["pod_cUrMwf","pod_mK7tgN","pod_jEw3tw","pod_RKtFKC","pod_m8DTmf","pod_hTYAKg"],"name":"POD Radial Section","settings":{"background_color":"#f5ede4","padding_top":80,"padding_bottom":12,"column_gap":32,"section_heading":"Every great collection deserves the perfect cellar","heading_font":"assistant_n4","heading_size":38,"heading_color":"#1a1a1a","section_subheading":"CHOOSE WITH CONFIDENCE","subheading_font":"assistant_n4","subheading_size":16,"subheading_color":"#7c3030","hero_type":"image","hero_image":"shopify:\/\/shop_images\/quizimg.png","hero_video_url":"","hero_width":400,"hero_link":"\/pages\/find-my-cabinet","hero_link_label":"Find your perfect cabinet","hero_link_new_tab":false,"dot_color":"#7c3030"}},"1748570245e4ecd716":{"type":"apps","blocks":{"judge_me_reviews_featured_carousel_DCNFXG":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/featured_carousel\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{"maxwidth":1080}}},"block_order":["judge_me_reviews_featured_carousel_DCNFXG"],"settings":{}},"shopable_video_7BMMfq":{"type":"shopable-video","blocks":{"video_xh7zEC":{"type":"video","settings":{"product":"lecavist-140-bottle-wine-cabinet-triple-zone-stainless-steel-lek1403zpvx","video_url":"","local_video":"shopify:\/\/files\/videos\/WhatsApp Video 2025-09-02 at 09.13.27 (1).mp4"}},"video_GTLibY":{"type":"video","settings":{"product":"lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy","video_url":"","local_video":"shopify:\/\/files\/videos\/WhatsApp Video 2025-09-02 at 09.13.28 (1).mp4"}},"video_Rqdgfp":{"type":"video","settings":{"product":"lecavist-56-bottle-wine-fridge-dual-zone-black-lks56vn2z","video_url":"","local_video":"shopify:\/\/files\/videos\/LKS56VN2Z - reel.mp4"}},"video_fCWwGM":{"type":"video","settings":{"product":"lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d","video_url":"","local_video":"shopify:\/\/files\/videos\/WhatsApp Video 2025-09-02 at 09.13.27.mp4"}},"video_t9CBnJ":{"type":"video","settings":{"product":"lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy","video_url":"","local_video":"shopify:\/\/files\/videos\/Generic Cabinets-Office.mp4"}},"video_mTtKf9":{"type":"video","settings":{"product":"lecavist-188-bottle-wine-fridge-dual-zone-side-by-side-black-lcs200vn2z","video_url":"","local_video":"shopify:\/\/files\/videos\/lcs200vn2z2d.mp4"}},"video_cNgyJz":{"type":"video","settings":{"product":"lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d","video_url":"","local_video":"shopify:\/\/files\/videos\/LCS230VN2Z1D - full video.mp4"}},"video_fJdc6j":{"type":"video","settings":{"product":"lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu","video_url":"","local_video":"shopify:\/\/files\/videos\/Generic Cabinets-Explore.mp4"}},"video_CXLGmG":{"type":"video","settings":{"product":"lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro","video_url":"","local_video":"shopify:\/\/files\/videos\/VID_20241018_164959.mp4"}},"video_fhi8zH":{"type":"video","settings":{"product":"lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d","video_url":"","local_video":"shopify:\/\/files\/videos\/LCS240VN1Z1D - reel-.mp4"}}},"block_order":["video_xh7zEC","video_GTLibY","video_Rqdgfp","video_fCWwGM","video_t9CBnJ","video_mTtKf9","video_cNgyJz","video_fJdc6j","video_CXLGmG","video_fhi8zH"],"settings":{"eyebrow":"","eyebrow_size":11,"section_width":"stretch_width","color_scheme":"","heading":"","description":"","header_size":"medium","header_alignment":"center","image_ratio":"custom","custom_ratio":"9:16","video_autoplay":true,"items_per_row":5,"column_gap":20,"show_arrow":true,"carousel_pagination":"show_dots","infinite":true,"autoplay":false,"autorotate_speed":5,"reveal":true,"items_per_row_mobile":1.5,"padding_top":0,"padding_bottom":40,"reset_spacing":true}},"lookbook_prod4_EtYJie":{"type":"lookbook-prod4","blocks":{"lookbook_item_gJ4AGa":{"type":"lookbook_item","settings":{"lookbook_image":"shopify:\/\/shop_images\/WhatsApp_Image_2025-04-09_at_13.53.10_2.29.51_pm.jpg","hide_on_mobile":false,"product__1":"","content__1":"<h5>3 Layer Tempered Glass Door<\/h5><p>Specially designed for your wine. LOW-E coated glass protects wine from heat and light by creating a barrier from UV radiation and temperature changes.<\/p>","link__1":"","link_label__1":"Learn more","offset_top__1":23,"offset_left__1":44,"popup_max_width__1":0,"popup_direction__1":"auto","product__2":"lecavist-303-bottle-wine-fridge-dual-zone-lcs300vn2z1d","content__2":"","link__2":"","link_label__2":"Learn more","offset_top__2":23,"offset_left__2":55,"popup_max_width__2":0,"popup_direction__2":"auto","product__3":"","content__3":"<h5>Built-in Installation<\/h5><p><br\/>As part of our Professional Range, this LeCavist wine cabinet features front ventilation instead of rear ventilation, allowing it to be seamlessly built into cabinetry without side or rear clearance.<\/p>","link__3":"","link_label__3":"Learn more","offset_top__3":23,"offset_left__3":67,"popup_max_width__3":0,"popup_direction__3":"auto","product__4":"","content__4":"","link__4":"","link_label__4":"Learn more","offset_top__4":60,"offset_left__4":70,"popup_max_width__4":0,"popup_direction__4":"auto","product__5":"","content__5":"","link__5":"","link_label__5":"Learn more","offset_top__5":1,"offset_left__5":4,"popup_max_width__5":0,"popup_direction__5":"auto"}},"lookbook_item_KXBpXG":{"type":"lookbook_item","settings":{"lookbook_image":"shopify:\/\/shop_images\/1920x701-_product_showcase_banner.jpg","hide_on_mobile":true,"product__1":"","content__1":"<h5>Multi-layer UV protected glass<\/h5><p>Multi-layer UV-protected glass keeps your wines safe while showcasing your collection in style.<\/p>","link__1":"","link_label__1":"Learn more","offset_top__1":21,"offset_left__1":59,"popup_max_width__1":0,"popup_direction__1":"auto","product__2":"","content__2":"<h5>Anti-vibration system<\/h5><p>Silent and steady: the anti-vibration system reduces noise and protects bottles from micro-movements that could affect aging<\/p>","link__2":"","link_label__2":"Learn more","offset_top__2":74,"offset_left__2":63,"popup_max_width__2":0,"popup_direction__2":"auto","product__3":"","content__3":"<h5>Humidity control<\/h5><p>Our humidity control system keeps the air inside at the ideal balance, preventing corks from drying out and ensuring your wines age in perfect conditions<\/p>","link__3":"","link_label__3":"Learn more","offset_top__3":55,"offset_left__3":55,"popup_max_width__3":0,"popup_direction__3":"auto","product__4":"","content__4":"<h5><strong>Charcoal filter<\/strong><\/h5><p>The active charcoal filter keeps the air pure and fresh, protecting your wines from odors and ensuring a healthy environment inside the cabinet<\/p>","link__4":"","link_label__4":"Learn more","offset_top__4":67,"offset_left__4":34,"popup_max_width__4":0,"popup_direction__4":"auto","product__5":"","content__5":"<h5>Lock<\/h5><p>Built-in lock protects your wine collection<\/p>","link__5":"","link_label__5":"Learn more","offset_top__5":80,"offset_left__5":37,"popup_max_width__5":0,"popup_direction__5":"auto"}}},"block_order":["lookbook_item_gJ4AGa","lookbook_item_KXBpXG"],"name":"Lookbook mix5","settings":{"section_width":"full_width","color_scheme":"","heading":"SHOP THE LOOK","description":"","header_size":"medium","header_alignment":"center","image_ratio":"adapt","custom_ratio":"","hotspot_style":"plus","action_when_click_on_hotspot":"open","items_per_row":1,"column_gap":30,"show_arrow":true,"carousel_pagination":"disable","infinite":true,"autoplay":true,"autorotate_speed":6,"reveal":false,"popup_radius":8,"image_radius":8,"popup_max_width":420,"show_link_when_product":false,"items_per_row_mobile":1,"padding_top":51,"padding_bottom":0,"reset_spacing":true}},"brand_logo_WwkpKM":{"type":"brand-logo","blocks":{"brand_items_hDgYg7":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.18-nobg.png","link":""}},"brand_items_7JXkp6":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.26-nobg.png","link":""}},"brand_items_TBAH7p":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.27-nobg.png","link":""}},"brand_items_GkPybX":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.07-nobg.png","link":""}},"brand_items_Dj9eWe":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.41-nobg.png","link":""}},"brand_items_aLtTrU":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.35-nobg.png","link":""}},"brand_items_67LE8M":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.04-nobg.png","link":""}},"brand_items_nJkmKU":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.54-nobg.png","link":""}},"brand_items_Lz3Va9":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.34-nobg.png","link":""}},"brand_items_dKmETd":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.15-nobg.png","link":""}},"brand_items_LiXzxY":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.59-nobg.png","link":""}},"brand_items_zjzHbc":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.45-nobg.png","link":""}},"brand_items_nWpqbc":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.48-nobg.png","link":""}},"brand_items_JLPGDe":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.02.40-nobg.png","link":""}},"brand_items_YCVar4":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.29-nobg.png","link":""}},"brand_items_7aXbgm":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.07.16-nobg.png","link":""}},"brand_items_QgCWib":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.03.46-nobg.png","link":""}},"brand_items_JiKzBV":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.40.17-nobg.png","link":""}},"brand_items_6fAzNB":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.38.28-nobg.png","link":""}},"brand_items_LPa6Mg":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.38.16-nobg.png","link":""}},"brand_items_peEACn":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.37.55-nobg.png","link":""}},"brand_items_PGdrqE":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.51-nobg.png","link":""}},"brand_items_Yci4EW":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.06.53-nobg.png","link":""}},"brand_items_qnTAJ7":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.07.06-nobg.png","link":""}},"brand_items_d4MaVA":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.44-nobg.png","link":""}},"brand_items_wVnGjG":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.07.54-nobg.png","link":""}},"brand_items_jWYNJU":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.38-nobg.png","link":""}},"brand_items_Y9Pkfi":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.41-nobg.png","link":""}},"brand_items_DHwWrm":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.38.03-nobg.png","link":""}},"brand_items_NdgFTF":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-05_at_10.35.23-nobg.png","link":""}},"brand_items_Cybara":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.00-nobg.png","link":""}},"brand_items_pnRJbj":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.24-nobg.png","link":""}},"brand_items_xJnh9C":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.47-nobg.png","link":""}},"brand_items_efTEGm":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.06-nobg.png","link":""}},"brand_items_FGGjeL":{"type":"brand_items","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-11-04_at_17.08.34-nobg.png","link":""}}},"block_order":["brand_items_hDgYg7","brand_items_7JXkp6","brand_items_TBAH7p","brand_items_GkPybX","brand_items_Dj9eWe","brand_items_aLtTrU","brand_items_67LE8M","brand_items_nJkmKU","brand_items_Lz3Va9","brand_items_dKmETd","brand_items_LiXzxY","brand_items_zjzHbc","brand_items_nWpqbc","brand_items_JLPGDe","brand_items_YCVar4","brand_items_7aXbgm","brand_items_QgCWib","brand_items_JiKzBV","brand_items_6fAzNB","brand_items_LPa6Mg","brand_items_peEACn","brand_items_PGdrqE","brand_items_Yci4EW","brand_items_qnTAJ7","brand_items_d4MaVA","brand_items_wVnGjG","brand_items_jWYNJU","brand_items_Y9Pkfi","brand_items_DHwWrm","brand_items_NdgFTF","brand_items_Cybara","brand_items_pnRJbj","brand_items_xJnh9C","brand_items_efTEGm","brand_items_FGGjeL"],"disabled":true,"name":"Credibility builder","settings":{"eyebrow":"","eyebrow_size":11,"section_width":"fluid_container","color_scheme":"scheme-accf3b11-ba40-4a3e-bafb-243ece6683ec","heading":"THEY TRUST US","description":"","header_size":"medium","header_alignment":"center","image_ratio":"adapt","custom_ratio":"","img_width":300,"logo_opacity":100,"open_link_newtab":true,"framed":true,"items_per_row":6,"column_gap":30,"show_arrow":true,"carousel_pagination":"disable","infinite":true,"autoplay":true,"autorotate_speed":2,"reveal":true,"items_per_row_mobile":1,"padding_top":60,"padding_bottom":0,"reset_spacing":false}},"lookbook_prod4_ct8JRp":{"type":"lookbook-prod4","blocks":{"lookbook_item_QaL78D":{"type":"lookbook_item","settings":{"lookbook_image":"shopify:\/\/shop_images\/1920x701-_product_showcase_banner.jpg","hide_on_mobile":false,"product__1":"","content__1":"<h5>Multi-layer UV protected glass<\/h5><p>Multi-layer UV-protected glass keeps your wines safe while showcasing your collection in style.<\/p>","link__1":"","link_label__1":"Learn more","offset_top__1":21,"offset_left__1":59,"popup_max_width__1":0,"popup_direction__1":"right","product__2":"","content__2":"<h5>Anti-vibration system<\/h5><p>Silent and steady: the anti-vibration system reduces noise and protects bottles from micro-movements that could affect aging<\/p>","link__2":"","link_label__2":"Learn more","offset_top__2":74,"offset_left__2":63,"popup_max_width__2":0,"popup_direction__2":"top","product__3":"","content__3":"<h5>Humidity control<\/h5><p>Our humidity control system keeps the air inside at the ideal balance, preventing corks from drying out and ensuring your wines age in perfect conditions<\/p>","link__3":"","link_label__3":"Learn more","offset_top__3":55,"offset_left__3":55,"popup_max_width__3":0,"popup_direction__3":"right","product__4":"","content__4":"<h5><strong>Charcoal filter<\/strong><\/h5><p>The active charcoal filter keeps the air pure and fresh, protecting your wines from odors and ensuring a healthy environment inside the cabinet<\/p><p><\/p>","link__4":"","link_label__4":"Learn more","offset_top__4":67,"offset_left__4":34,"popup_max_width__4":0,"popup_direction__4":"top","product__5":"","content__5":"<h5> Lock<\/h5><p>Built-in lock protects your wine collection<\/p>","link__5":"","link_label__5":"Learn more","offset_top__5":80,"offset_left__5":37,"popup_max_width__5":0,"popup_direction__5":"top"}},"lookbook_item_Xge3wP":{"type":"lookbook_item","settings":{"lookbook_image":"shopify:\/\/shop_images\/Shop_the_look_Banner_1920_x_701-V3.jpg","hide_on_mobile":false,"product__1":"lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu","content__1":"","link__1":"","link_label__1":"Learn more","offset_top__1":66,"offset_left__1":34,"popup_max_width__1":0,"popup_direction__1":"auto","product__2":"lecavist-40-bottles-wine-cabinet-dual-zone-lj40vn2z2dbu","content__2":"","link__2":"","link_label__2":"Learn more","offset_top__2":66,"offset_left__2":43,"popup_max_width__2":0,"popup_direction__2":"auto","product__3":"lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu","content__3":"","link__3":"","link_label__3":"Learn more","offset_top__3":66,"offset_left__3":53,"popup_max_width__3":0,"popup_direction__3":"auto","product__4":"lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro","content__4":"","link__4":"","link_label__4":"Learn more","offset_top__4":50,"offset_left__4":82,"popup_max_width__4":0,"popup_direction__4":"auto","product__5":"","content__5":"","link__5":"","link_label__5":"Learn more","offset_top__5":1,"offset_left__5":4,"popup_max_width__5":0,"popup_direction__5":"auto"}}},"block_order":["lookbook_item_QaL78D","lookbook_item_Xge3wP"],"disabled":true,"name":"Lookbook mix5","settings":{"section_width":"full_width","color_scheme":"","heading":"SHOP THE LOOK","description":"","header_size":"medium","header_alignment":"center","image_ratio":"adapt","custom_ratio":"","hotspot_style":"plus","action_when_click_on_hotspot":"open","items_per_row":1,"column_gap":30,"show_arrow":true,"carousel_pagination":"disable","infinite":true,"autoplay":true,"autorotate_speed":6,"reveal":false,"popup_radius":8,"image_radius":8,"popup_max_width":420,"show_link_when_product":false,"items_per_row_mobile":1,"padding_top":51,"padding_bottom":0,"reset_spacing":true}},"lookbook_image_KUyVEr":{"type":"lookbook-image","blocks":{"lookbook_item_QYNayi":{"type":"lookbook_item","settings":{"lookbook_image":"shopify:\/\/shop_images\/Shop_the_look_Banner_1920_x_701-V5.jpg","product__1":"lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu","offset_top__1":66,"offset_left__1":28,"product__2":"lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu","offset_top__2":66,"offset_left__2":58,"product__3":"lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro","offset_top__3":52,"offset_left__3":85,"product__4":"","offset_top__4":22,"offset_left__4":49,"product__5":"","offset_top__5":1,"offset_left__5":4}}},"block_order":["lookbook_item_QYNayi"],"disabled":true,"settings":{"section_width":"full_width","color_scheme":"","heading":"SHOP THE LOOK","description":"","header_size":"medium","header_alignment":"center","image_ratio":"adapt","custom_ratio":"","hotspot_style":"plus","action_when_click_on_hotspot":"open","items_per_row":1,"column_gap":30,"show_arrow":false,"carousel_pagination":"disable","infinite":false,"autoplay":false,"autorotate_speed":5,"reveal":false,"items_per_row_mobile":1,"padding_top":50,"padding_bottom":0,"reset_spacing":true}},"178209289563de90c7":{"type":"_blocks","blocks":{"ai_gen_block_cd7155f_N7njkL":{"type":"ai_gen_block_cd7155f","settings":{"title":"Visit our 3D showroom","subtitle":"Explore our space in immersive 3D","iframe_url":"https:\/\/my.matterport.com\/show\/?m=mh4RUXMb2su&cloudEdit=1&play=0&ss=1&sr=-1.76,1.33","desktop_width_percent":100,"iframe_height":600,"container_padding":40,"header_spacing":24,"background_color":"#fdfaf5","title_color":"#1a1512","subtitle_color":"#666666","title_size":18,"subtitle_size":16,"container_border_radius":0,"iframe_border_radius":8,"shadow_intensity":"0 4px 16px rgba(0, 0, 0, 0.15)"},"blocks":{}}},"block_order":["ai_gen_block_cd7155f_N7njkL"],"settings":{}},"image_with_text_overlay_EQRiKA":{"type":"image-with-text-overlay","blocks":{"heading_XqdUAD":{"type":"heading","settings":{"heading":"Register your product","font_size":36,"font_weight":"heading_weight","uppercase":false,"spacing_bottom":24}},"description_TpaHgM":{"type":"description","settings":{"description":"<p>Every LeCavist wine cabinet includes a <strong>24-month manufacturer's parts and labour warranty<\/strong> for complete peace of mind. Extend your coverage by an additional <strong>12 months<\/strong> (for a total of <strong>36 months<\/strong>) by simply registering your product or leaving a review. Plus, enjoy a <strong>5-year warranty on the compressor<\/strong><\/p>","font_size":14,"font_weight":"body_weight","spacing_bottom":25}},"button_mLtbLK":{"type":"button","settings":{"first_button_label":"Register your LeCavist","first_button_link":"shopify:\/\/pages\/products-registration","first_button_type":"outline","second_button_label":"","second_button_link":"","second_button_type":"primary","spacing_bottom":24}}},"block_order":["heading_XqdUAD","description_TpaHgM","button_mLtbLK"],"settings":{"section_width":"full_width","color_scheme":"scheme-3d10de96-a479-49bd-819c-e044746b4f3e","image":"shopify:\/\/shop_images\/newsletter_base_588aa00d-a928-4d77-bf4b-afd6fac9a0cd.jpg","image_mobile":"shopify:\/\/shop_images\/newsletter_base_588aa00d-a928-4d77-bf4b-afd6fac9a0cd.jpg","overlay_opacity":0,"image_height":"adapt","desktop_height":600,"mobile_height":300,"content_alignment":"center","content_position":"top-center","content_width":"container","content_max_width":90,"content_padding_block":50,"content_padding_inline":50,"show_content_background":false,"content_background":"#f5f0e8","content_box_opacity":100,"content_below_image":false,"content_alignment_mobile":"center","padding_top":0,"padding_bottom":0,"reset_spacing":true}},"multi_content_zirzb9":{"type":"multi-content","blocks":{"image_with_text_overlay_AXPtM6":{"type":"image_with_text_overlay","settings":{"color_scheme":"scheme-ba2a771b-6b67-418b-afae-6709abc233f5","content_width":"100%","vertical_align":"start","image":"shopify:\/\/shop_images\/Banner_for_website_including_brochure_and_showroom-Centred.jpg","image_link":"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/LeCavist_Brochure_2025-V16-LR.pdf?v=1756951175","image_overlay_opacity":0,"custom_svg":"","subheading":"","heading":"","description":"","first_button_label":"Click to download our brochure","first_button_link":"https:\/\/cdn.shopify.com\/s\/files\/1\/0616\/6554\/2401\/files\/LeCavist_Brochure_March_2025.pdf?v=1744173806","first_button_type":"primary","second_button_label":"","second_button_link":"","second_button_type":"outline","content_alignment":"center","content_position":"middle-center","content_padding_block":50,"content_padding_inline":48,"content_below_image":false,"custom_svg_spacing_bottom":10,"subheading_font_size":20,"subheading_font_weight":"subheading_weight","subheading_spacing_bottom":10,"heading_font_size":36,"heading_font_weight":"heading_weight","heading_uppercase":false,"heading_spacing_bottom":10,"des_font_size":14,"des_font_weight":"body_weight","des_spacing_bottom":10}}},"block_order":["image_with_text_overlay_AXPtM6"],"settings":{"section_width":"full_width","heading":"","description":"","header_size":"medium","header_alignment":"center","column_gap":0,"equal_height_adjustment":false,"carousel_on_mobile":false,"items_per_row_mobile":1,"padding_top":10,"padding_bottom":10,"reset_spacing":true}},"faq_8bfUfe":{"type":"faq","blocks":{"faq_items_PKEdMj":{"type":"faq-items","settings":{"faq_title":"What is the difference between a wine fridge and a regular refrigerator?","faq_content":"<strong>A wine fridge is specifically designed for storing wine, unlike a regular refrigerator.<\/strong> It maintains <strong>precise temperature control, stable humidity, low vibration, and UV protection<\/strong>, all of which are essential for <strong>long-term wine storage and cellaring<\/strong>. Standard refrigerators are too cold, dry, and often vibrate, which can damage corks, disrupt sediment, and alter the flavour and aroma of wine. Choosing a <strong>premium wine fridge<\/strong> like LeCavist ensures your wines are preserved under <strong>optimal wine storage conditions<\/strong>."}},"faq_items_HaQzJ8":{"type":"faq-items","settings":{"faq_title":"What is the ideal temperature for storing wine?","faq_content":"<strong>The ideal wine cellar temperature for long-term storage is between 12°C and 14°C, with minimal fluctuations.<\/strong> Temperature stability is essential to preserve aromas, structure and ageing potential. Serving temperatures can differ depending on the wine style: white wines and Champagne are typically served cooler (around 7–12°C), while red wines are enjoyed slightly warmer (around 14–18°C). The ideal wine fridge temperature therefore depends on your goal — long-term ageing, short-term storage, or serving. That is why LeCavist offers a wide range of multi-zone wine fridges, allowing each bottle in your collection to be stored at its optimal temperature.  <a href=\"\/blogs\/news\/how-the-5-pillars-of-wine-storage-protect-your-drinks\" target=\"_blank\" title=\"How the 5 Pillars of Wine Storage Protect Your Drinks\">Learn more<\/a>"}},"faq_items_dAkKTQ":{"type":"faq-items","settings":{"faq_title":"How many bottles should a wine collector store?","faq_content":"<strong>There is no single ideal number of bottles — it depends on your collection and drinking habits. <\/strong>Casual wine drinkers typically store <strong>20–50 bottles<\/strong>, while serious collectors often require <strong>100 bottles or more<\/strong> for proper ageing and variety. When choosing a <strong>wine fridge capacity<\/strong>, it’s best to allow room for growth, as most collections expand over time. <a href=\"\/collections\/all-cabinets\" target=\"_blank\" title=\"All Cabinets\">Explore our range<\/a>"}},"faq_items_DqnnDg":{"type":"faq-items","settings":{"faq_title":"Are LeCavist wine fridges suitable for long-term cellaring?","faq_content":"Yes. <strong>LeCavist wine fridges are specifically designed for long-term wine cellaring.<\/strong>They provide <strong>precise temperature control, stable humidity, UV protection and low-vibration storage<\/strong>, creating the ideal environment for ageing wine over many years. Whether for <strong>red wine, white wine or Champagne<\/strong>, LeCavist offers <strong>single-zone and multi-zone wine fridges<\/strong> that replicate the conditions of a traditional wine cellar, ensuring optimal <strong>wine preservation and maturation<\/strong>."}}},"block_order":["faq_items_PKEdMj","faq_items_HaQzJ8","faq_items_dAkKTQ","faq_items_DqnnDg"],"disabled":true,"name":"SEO Block","settings":{"section_width":"container","color_scheme":"","heading":"Wine Fridges & Wine Storage – FAQ","description":"","header_size":"medium","header_alignment":"center","padding_top":0,"padding_bottom":0,"reset_spacing":false}},"glozin_partner_logo_banner_EUtkHD":{"type":"glozin-partner-logo-banner","blocks":{"logo_EqGVxz":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/good_food_wine_show_b57e58ec-06df-4ebc-b683-67154960e716.png"}},"logo_AiwQ39":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/qantas_magazine.png"}},"logo_D6nziT":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/dan_murphy_s.png"}},"logo_VyCDWK":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/langtons.jpg"}},"logo_wTaHpg":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/plumm.jpg"}}},"block_order":["logo_EqGVxz","logo_AiwQ39","logo_D6nziT","logo_VyCDWK","logo_wTaHpg"],"disabled":true,"settings":{"bg_color":"#f5f0e8","logo_height":60,"scroll_speed":15}},"glozin_partner_logo_banner_n7GjHA":{"type":"glozin-partner-logo-banner","blocks":{"logo_Mg6BAF":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/taylors_wine.png"}},"logo_HtRjNP":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/the_daily_telegraph.png"}},"logo_d3tKcp":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/yahoo_news.png"}},"logo_hCRCVn":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/wine_list_of_the_year.jpg"}},"logo_wL4znc":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/drinks_Digest.png"}},"logo_eEpN9D":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/appliance_retailer_dc15c190-f497-4f75-9ab5-b3d6a90ada56.webp"}},"logo_4LUFwn":{"type":"logo","settings":{"logo":"shopify:\/\/shop_images\/the_wine_collective_da552baa-58ee-4889-a08d-914e3c50a6be.png"}}},"block_order":["logo_Mg6BAF","logo_HtRjNP","logo_d3tKcp","logo_hCRCVn","logo_wL4znc","logo_eEpN9D","logo_4LUFwn"],"disabled":true,"settings":{"bg_color":"#f5f0e8","logo_height":40,"scroll_speed":15}},"custom_liquid_NxDgxH":{"type":"custom-liquid","settings":{"section_width":"container","color_scheme":"","custom_liquid":"","padding_top":0,"padding_bottom":0,"reset_spacing":false}},"service_red_banner_nUNmK7":{"type":"service-red-banner","settings":{"banner_height":95}}},"order":["scrolling_text_Dz4DiL","1743659083397359ce","slideshow_8KKtNU","multi_content_j4c4YG","image_with_text_TAQK7p","multi_content_8ejfQz","custom_liquid_yR746H","homepage_custo_VMrcYE","products_carousel_AdKeFt","pods_sections_Fx6DpK","1748570245e4ecd716","shopable_video_7BMMfq","lookbook_prod4_EtYJie","brand_logo_WwkpKM","lookbook_prod4_ct8JRp","lookbook_image_KUyVEr","178209289563de90c7","image_with_text_overlay_EQRiKA","multi_content_zirzb9","faq_8bfUfe","glozin_partner_logo_banner_EUtkHD","glozin_partner_logo_banner_n7GjHA","custom_liquid_NxDgxH","service_red_banner_nUNmK7"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "scrolling_text_Dz4DiL": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_text_hzAcGk": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "<a href=\"/pages/signature-service\" target=\"_blank\" title=\"Signature Service\">Free delivery&nbsp;</a>"
+          }
+        },
+        "scrolling_text_3BU3P9": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "<a href=\"https://lecavist.myshopify.com/pages/products-registration?\" target=\"_blank\" title=\"https://lecavist.myshopify.com/pages/products-registration?\">Free 12 month warranty extension</a>"
+          }
+        },
+        "scrolling_text_ghnUBA": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "5-Year Compressor Warranty"
+          }
+        },
+        "scrolling_text_FacFzn": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "<a href=\"/pages/contact\" target=\"_blank\" title=\"Contact us\">Call us 02 9398 9933</a>"
+          }
+        },
+        "scrolling_text_TDrxmD": {
+          "type": "scrolling_text",
+          "disabled": true,
+          "settings": {
+            "content": "Free Removal"
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_hzAcGk",
+        "scrolling_text_3BU3P9",
+        "scrolling_text_ghnUBA",
+        "scrolling_text_FacFzn",
+        "scrolling_text_TDrxmD"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "scheme-66b25261-47c6-47d6-82b3-b246d1030f52",
+        "direction": "left",
+        "icon_between_item": "dot",
+        "speed": 17,
+        "space_between_text": 60,
+        "font_size": 15,
+        "font_weight": "body_weight",
+        "uppercase": false,
+        "use_heading_font": true,
+        "padding_top": 2,
+        "padding_bottom": 2,
+        "reset_spacing": true
+      }
+    },
+    "1743659083397359ce": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_8GjVKF": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_8GjVKF"
+      ],
+      "settings": {}
+    },
+    "slideshow_8KKtNU": {
+      "type": "slideshow",
+      "blocks": {
+        "slider_item_qfM3WF": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/6a1ebf21-702f-4444-8cf7-5412d42a2c1c.jpg",
+            "image_mobile": "shopify://shop_images/69abf365-7a8f-4234-9e92-9bd0f8b8cfef.jpg",
+            "slide_link": "shopify://collections/outdoor-range",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadeindown",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#ffffff",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_live": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/2_151514b6-9fe1-4979-8d78-8e90d9f44088.jpg",
+            "image_mobile": "shopify://shop_images/PLUMM_Fathers_Day_x3_-_3.jpg",
+            "slide_link": "shopify://collections/fathers-day-offer",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadein",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "right",
+            "content_position": "bottom-right",
+            "content_width": "full_width",
+            "content_max_width": 40,
+            "content_padding_block": 40,
+            "content_padding_inline": 0,
+            "show_content_background": false,
+            "content_background": "#f5f0e8",
+            "content_box_opacity": 10,
+            "content_alignment_mobile": "center"
+          }
+        },
+        "slider_item_2": {
+          "type": "slider_item",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Our_New_Wine_Cabinets_-_1920x701_-_web_banner-final-v2.jpg",
+            "image_mobile": "shopify://shop_images/Our_New_Wine_Cabinets_-_480x600_-_mobile_banner-v2.jpg",
+            "slide_link": "shopify://collections/new-built-in-wine-cabinets",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadein",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "https://lecavist.com/collections/built-in-wine-fridge?filter.p.m.custom.bottle_capacity=209&view=list",
+            "second_button_style": false,
+            "content_alignment": "right",
+            "content_position": "bottom-right",
+            "content_width": "full_width",
+            "content_max_width": 40,
+            "content_padding_block": 40,
+            "content_padding_inline": 0,
+            "show_content_background": false,
+            "content_background": "#f5f0e8",
+            "content_box_opacity": 10,
+            "content_alignment_mobile": "center"
+          }
+        }
+      },
+      "block_order": [
+        "slider_item_qfM3WF",
+        "slider_item_live",
+        "slider_item_2"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "slide_height": "adapt",
+        "desktop_height": 640,
+        "mobile_height": 380,
+        "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+        "subheading_font_size": 17,
+        "subheading_font_weight": "subheading_weight",
+        "subheading_spacing_bottom": 0,
+        "heading_font_size": 30,
+        "heading_font_weight": "subheading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 6,
+        "des_font_size": 12,
+        "des_font_weight": "heading_weight",
+        "des_spacing_bottom": 60,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots",
+        "pagination_position": "center",
+        "autoplay": true,
+        "autorotate_speed": 4,
+        "content_below_image": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "multi_content_j4c4YG": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_overlay_MXWJfn": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "25%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/small_wine_cabinets.jpg",
+            "image_link": "shopify://collections/petite-series",
+            "image_overlay_opacity": 20,
+            "custom_svg": "<h3>Small Wine Cabinets\n</h3>",
+            "subheading": "",
+            "heading": "",
+            "description": "<p><strong>14 - 63 Bottles</strong></p>",
+            "first_button_label": "View Collection",
+            "first_button_link": "shopify://collections/petite-series",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 0,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 0,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_xHVXqY": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "25%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Medium_wine_cabinets.jpg",
+            "image_link": "shopify://collections/service-series",
+            "image_overlay_opacity": 25,
+            "custom_svg": "<h3>Medium Wine Cabinets</h3>",
+            "subheading": "",
+            "heading": "",
+            "description": "<h6>68 - 168 Bottles</h6>",
+            "first_button_label": "View Collection",
+            "first_button_link": "shopify://collections/service-series",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 0,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 0,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_Da3gy4": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "25%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Large_wine_cabinets_1.jpg",
+            "image_link": "shopify://collections/professional-range",
+            "image_overlay_opacity": 20,
+            "custom_svg": "<h3>Large Wine Cabinets</h3>",
+            "subheading": "",
+            "heading": "",
+            "description": "<h6>188 - 588 Bottles</h6>",
+            "first_button_label": "View Collection",
+            "first_button_link": "shopify://collections/professional-range",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 0,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 0,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_taJDy9": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "25%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Beverage_wine_cabinets.jpg",
+            "image_link": "shopify://collections/beverage",
+            "image_overlay_opacity": 20,
+            "custom_svg": "<h3>Beverage Cabinets</h3>",
+            "subheading": "",
+            "heading": "",
+            "description": "<h6>36 - 600l</h6>",
+            "first_button_label": "View Collection",
+            "first_button_link": "shopify://collections/beverage",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-center",
+            "content_padding_block": 30,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 0,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 0,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_overlay_MXWJfn",
+        "image_with_text_overlay_xHVXqY",
+        "image_with_text_overlay_Da3gy4",
+        "image_with_text_overlay_taJDy9"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "heading": "Will you protect your wine ?",
+        "description": "<p><em>EXPLORE OUR RANGE</em></p>",
+        "header_size": "small",
+        "header_alignment": "center",
+        "column_gap": 10,
+        "equal_height_adjustment": true,
+        "carousel_on_mobile": true,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 50,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "image_with_text_TAQK7p": {
+      "type": "image-with-text",
+      "disabled": true,
+      "name": "Image with text",
+      "settings": {
+        "layout": "right",
+        "title": "Designed to protect, present, and perfect every bottle you own.",
+        "text": "",
+        "button_text": "Shop",
+        "button_link": "",
+        "text_alignment": "center",
+        "color_bg": "#eeeeee",
+        "color_text": "#454f5b",
+        "color_head": "#212b36",
+        "skip_container": false
+      }
+    },
+    "multi_content_8ejfQz": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_overlay_mrhW3D": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "33.3333%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Single_dual_triple-V4-1_ae44974d-df03-440d-9a59-11663c8be744.webp",
+            "image_link": "shopify://collections/single-zone-cabinets",
+            "image_overlay_opacity": 40,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "Single Zone Wine Cabinets",
+            "description": "",
+            "first_button_label": "View Range",
+            "first_button_link": "shopify://collections/single-zone-cabinets",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-right",
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 33,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_jxVi3T": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "33.3333%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Single_dual_triple-V4-2.webp",
+            "image_link": "shopify://collections/dual-zone-cabinets",
+            "image_overlay_opacity": 40,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "Dual Zone Wine Cabinets",
+            "description": "",
+            "first_button_label": "View Range",
+            "first_button_link": "shopify://collections/dual-zone-cabinets",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-right",
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 33,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        },
+        "image_with_text_overlay_3pzAQX": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "33.3333%",
+            "vertical_align": "end",
+            "image": "shopify://shop_images/Single_dual_triple-V4-3.webp",
+            "image_link": "shopify://collections/triple-zone-cabinets",
+            "image_overlay_opacity": 40,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "Triple Zone Wine Cabinets",
+            "description": "",
+            "first_button_label": "View Range",
+            "first_button_link": "shopify://collections/triple-zone-cabinets",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "center",
+            "content_position": "bottom-right",
+            "content_padding_block": 60,
+            "content_padding_inline": 30,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 33,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_overlay_mrhW3D",
+        "image_with_text_overlay_jxVi3T",
+        "image_with_text_overlay_3pzAQX"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 10,
+        "equal_height_adjustment": false,
+        "carousel_on_mobile": true,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 10,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "custom_liquid_yR746H": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "custom_css": [
+        ".lecavist-icon-list {display: flex; flex-direction: column; gap: 18px;}",
+        ".lecavist-icon-item {display: flex; align-items: flex-start; gap: 14px;}",
+        ".lecavist-icon {width: 40px; height: auto; flex-shrink: 0; margin-top: 4px;}",
+        ".lecavist-text strong {display: block; font-weight: 600;}",
+        ".lecavist-icons-wrapper {margin-bottom: 40px;}",
+        ".lecavist-icons-title {font-size: 1.8rem; font-weight: 600; line-height: 1.3; margin-bottom: 24px;}",
+        ".lecavist-link {display: flex; align-items: flex-start; gap: 14px; text-decoration: none; color: inherit;}"
+      ],
+      "name": "t:sections.custom_liquid.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "custom_liquid": "<div class=\"lecavist-icons-wrapper\">\n\n  <!-- Section headline -->\n  <h2 class=\"lecavist-icons-title\" >\n     Every detail matters. Four conditions, One perfect environment. \n  </h2>\n\n  <!-- Icon list -->\n  <div class=\"lecavist-icon-list\">\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"/pages/cellaring_rules#temperature\" class=\"lecavist-link\">\n        <img \n          src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/icon-temperature.png?v=1769989705\" \n          alt=\"Precise temperature control\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Precise Temperature Control</strong></div>\n          <div class=\"lecavist-desc\">\n            Stable control to prevent premature ageing.\n          </div>\n        </div>\n      </a>\n    </div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"/pages/cellaring_rules#humidity\" class=\"lecavist-link\">\n        <img \n          src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/icon-humidity.png?v=1769989705\"\n          alt=\"Balanced humidity\"\n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Balanced Humidity</strong></div>\n          <div class=\"lecavist-desc\">\n            Keeps corks healthy and airtight.\n          </div>\n        </div>\n      </a>\n    </div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"/pages/cellaring_rules#uvandvibrations\n\" class=\"lecavist-link\">\n        <img \n          src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/icon-UV.png?v=1769989705\" \n          alt=\"UV light protection\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>UV Light Protection</strong></div>\n          <div class=\"lecavist-desc\">\n            UV protection against flavour damage.\n          </div>\n        </div>\n      </a>\n    </div>\n\n    <div class=\"lecavist-icon-item\">\n      <a href=\"/pages/cellaring_rules#uvandvibrations\" class=\"lecavist-link\">\n        <img \n          src=\"https://cdn.shopify.com/s/files/1/0616/6554/2401/files/icon-vibrations.png?v=1769989705\" \n          alt=\"Low vibration design\" \n          class=\"lecavist-icon\">\n        <div class=\"lecavist-text\">\n          <div class=\"lecavist-title\"><strong>Low-vibration Design</strong></div>\n          <div class=\"lecavist-desc\">\n            Undisturbed ageing and sediment stability.\n          </div>\n        </div>\n      </a>\n    </div>\n\n  </div>\n</div>",
+        "padding_top": 7,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "homepage_custo_VMrcYE": {
+      "type": "homepage-custo",
+      "blocks": {
+        "condition_DPw3xr": {
+          "type": "condition",
+          "settings": {
+            "icon": "shopify://shop_images/icon-temperature.png",
+            "title": "Precise Temperature Control",
+            "text": "Stable control to prevent premature ageing.",
+            "link": "/pages/cellaring_rules#temperature"
+          }
+        },
+        "condition_fMdUYA": {
+          "type": "condition",
+          "settings": {
+            "icon": "shopify://shop_images/icon-humidity.png",
+            "title": "Balanced Humidity",
+            "text": "Keeps corks healthy and airtight.",
+            "link": "/pages/cellaring_rules#humidity/pages/cellaring_rules#humidity"
+          }
+        },
+        "condition_q3f3cV": {
+          "type": "condition",
+          "settings": {
+            "icon": "shopify://shop_images/icon-UV.png",
+            "title": "UV Light Protection",
+            "text": "UV protection against flavour damage.",
+            "link": "/pages/cellaring_rules#uvandvibrations"
+          }
+        },
+        "condition_9iPwiQ": {
+          "type": "condition",
+          "settings": {
+            "icon": "shopify://shop_images/icon-vibrations.png",
+            "title": "Low-vibration Design",
+            "text": "Undisturbed ageing and sediment stability.",
+            "link": "/pages/cellaring_rules#uvandvibrations"
+          }
+        },
+        "button_BaNMUB": {
+          "type": "button",
+          "settings": {
+            "text": "Download our brochure",
+            "link": "https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LeCavist_Brochure_March_2025.pdf?v=1744173806",
+            "bg_color": "#f5f0e8",
+            "text_color": "#111111"
+          }
+        },
+        "button_GyHVJU": {
+          "type": "button",
+          "settings": {
+            "text": "Explore our range",
+            "link": "shopify://collections/all-cabinets",
+            "bg_color": "#f5f0e8",
+            "text_color": "#111111"
+          }
+        },
+        "button_BG6hzY": {
+          "type": "button",
+          "settings": {
+            "text": "Wine Fridge Finder",
+            "link": "https://lecavist.com/pages/wine-fridge-finder-recommandation",
+            "bg_color": "#f5f0e8",
+            "text_color": "#111111"
+          }
+        }
+      },
+      "block_order": [
+        "condition_DPw3xr",
+        "condition_fMdUYA",
+        "condition_q3f3cV",
+        "condition_9iPwiQ",
+        "button_BaNMUB",
+        "button_GyHVJU",
+        "button_BG6hzY"
+      ],
+      "disabled": true,
+      "name": "Conditions + Buttons",
+      "settings": {
+        "heading": "Every detail matters. Four conditions, one perfect environment."
+      }
+    },
+    "products_carousel_AdKeFt": {
+      "type": "products-carousel",
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "heading": "Best Selling",
+        "description": "",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "center",
+        "collection": "best-selling",
+        "items_to_show": 10,
+        "items_per_row": 5,
+        "column_gap": 25,
+        "show_banner": false,
+        "sticky_banner": false,
+        "banner_width": 30,
+        "position": "left",
+        "banner_link": "",
+        "banner_type": "image",
+        "video_url": "",
+        "video_autoplay": true,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 50,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "pods_sections_Fx6DpK": {
+      "type": "pods-sections",
+      "blocks": {
+        "pod_cUrMwf": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "/pages/cellaring_rules",
+            "pod_opens_capacity": false,
+            "icon": "shopify://shop_images/icon_3_temperature.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "Cellar-perfect temperature",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Whether you're ageing, serving, or storing a diverse collection, our Single, Dual, and Triple Zone cabinets are designed to meet your needs.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        },
+        "pod_mK7tgN": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "/pages/signature-service",
+            "pod_opens_capacity": false,
+            "icon": "shopify://shop_images/icon_2_delivery.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "White-glove delivery",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Free delivery, expert installation and removal of your old appliance, included across most of Australia.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        },
+        "pod_jEw3tw": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "",
+            "pod_opens_capacity": true,
+            "icon": "shopify://shop_images/icon_1_size.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "Right size, first time",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Tell us your collection size and space, we'll recommend the perfect cabinet before you commit.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        },
+        "pod_RKtFKC": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "/pages/cellaring_rules",
+            "pod_opens_capacity": false,
+            "icon": "shopify://shop_images/icon_4_shield.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "Built to age with you",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Premium compressors, UV-protective glass and anti-vibration shelving keep every bottle perfect for decades.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        },
+        "pod_m8DTmf": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "/pages/contact",
+            "pod_opens_capacity": false,
+            "icon": "shopify://shop_images/icon_6_expert.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "Experts on call",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Our wine storage specialists are one call away: before purchase, on delivery day, and for years after.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        },
+        "pod_hTYAKg": {
+          "type": "pod",
+          "settings": {
+            "pod_link": "/pages/find-my-cabinet",
+            "pod_opens_capacity": false,
+            "icon": "shopify://shop_images/icon_5_quiz.png",
+            "icon_bg_color": "#7c3030",
+            "pod_heading": "Find your cabinet",
+            "pod_heading_font": "assistant_n7",
+            "pod_heading_size": 19,
+            "pod_heading_color": "#7c3030",
+            "pod_body": "Not sure which model is right for you? Answer 4 simple questions and we'll match you to the perfect cabinet for your collection and space.",
+            "pod_body_font": "assistant_n4",
+            "pod_body_size": 16,
+            "pod_body_color": "#333333"
+          }
+        }
+      },
+      "block_order": [
+        "pod_cUrMwf",
+        "pod_mK7tgN",
+        "pod_jEw3tw",
+        "pod_RKtFKC",
+        "pod_m8DTmf",
+        "pod_hTYAKg"
+      ],
+      "name": "POD Radial Section",
+      "settings": {
+        "background_color": "#f5ede4",
+        "padding_top": 80,
+        "padding_bottom": 12,
+        "column_gap": 32,
+        "section_heading": "Every great collection deserves the perfect cellar",
+        "heading_font": "assistant_n4",
+        "heading_size": 38,
+        "heading_color": "#1a1a1a",
+        "section_subheading": "CHOOSE WITH CONFIDENCE",
+        "subheading_font": "assistant_n4",
+        "subheading_size": 16,
+        "subheading_color": "#7c3030",
+        "hero_type": "image",
+        "hero_image": "shopify://shop_images/quizimg.png",
+        "hero_video_url": "",
+        "hero_width": 400,
+        "hero_link": "/pages/find-my-cabinet",
+        "hero_link_label": "Find your perfect cabinet",
+        "hero_link_new_tab": false,
+        "dot_color": "#7c3030"
+      }
+    },
+    "1748570245e4ecd716": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_DCNFXG": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_DCNFXG"
+      ],
+      "settings": {}
+    },
+    "shopable_video_7BMMfq": {
+      "type": "shopable-video",
+      "blocks": {
+        "video_xh7zEC": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-140-bottle-wine-cabinet-triple-zone-stainless-steel-lek1403zpvx",
+            "video_url": "",
+            "local_video": "shopify://files/videos/WhatsApp Video 2025-09-02 at 09.13.27 (1).mp4"
+          }
+        },
+        "video_GTLibY": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy",
+            "video_url": "",
+            "local_video": "shopify://files/videos/WhatsApp Video 2025-09-02 at 09.13.28 (1).mp4"
+          }
+        },
+        "video_Rqdgfp": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-56-bottle-wine-fridge-dual-zone-black-lks56vn2z",
+            "video_url": "",
+            "local_video": "shopify://files/videos/LKS56VN2Z - reel.mp4"
+          }
+        },
+        "video_fCWwGM": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d",
+            "video_url": "",
+            "local_video": "shopify://files/videos/WhatsApp Video 2025-09-02 at 09.13.27.mp4"
+          }
+        },
+        "video_t9CBnJ": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-168-bottle-wine-cabinet-single-zone-stainless-steet-lek168pvx-copy",
+            "video_url": "",
+            "local_video": "shopify://files/videos/Generic Cabinets-Office.mp4"
+          }
+        },
+        "video_mTtKf9": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-188-bottle-wine-fridge-dual-zone-side-by-side-black-lcs200vn2z",
+            "video_url": "",
+            "local_video": "shopify://files/videos/lcs200vn2z2d.mp4"
+          }
+        },
+        "video_cNgyJz": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-226-bottle-wine-fridge-single-zone-lcs230vn2z1d",
+            "video_url": "",
+            "local_video": "shopify://files/videos/LCS230VN2Z1D - full video.mp4"
+          }
+        },
+        "video_fJdc6j": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu",
+            "video_url": "",
+            "local_video": "shopify://files/videos/Generic Cabinets-Explore.mp4"
+          }
+        },
+        "video_CXLGmG": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "video_url": "",
+            "local_video": "shopify://files/videos/VID_20241018_164959.mp4"
+          }
+        },
+        "video_fhi8zH": {
+          "type": "video",
+          "settings": {
+            "product": "lecavist-248-bottle-wine-fridge-single-zone-lcs240vn1z1d",
+            "video_url": "",
+            "local_video": "shopify://files/videos/LCS240VN1Z1D - reel-.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "video_xh7zEC",
+        "video_GTLibY",
+        "video_Rqdgfp",
+        "video_fCWwGM",
+        "video_t9CBnJ",
+        "video_mTtKf9",
+        "video_cNgyJz",
+        "video_fJdc6j",
+        "video_CXLGmG",
+        "video_fhi8zH"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "eyebrow_size": 11,
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "custom",
+        "custom_ratio": "9:16",
+        "video_autoplay": true,
+        "items_per_row": 5,
+        "column_gap": 20,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots",
+        "infinite": true,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": true,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 0,
+        "padding_bottom": 40,
+        "reset_spacing": true
+      }
+    },
+    "lookbook_prod4_EtYJie": {
+      "type": "lookbook-prod4",
+      "blocks": {
+        "lookbook_item_gJ4AGa": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/WhatsApp_Image_2025-04-09_at_13.53.10_2.29.51_pm.jpg",
+            "hide_on_mobile": false,
+            "product__1": "",
+            "content__1": "<h5>3 Layer Tempered Glass Door</h5><p>Specially designed for your wine. LOW-E coated glass protects wine from heat and light by creating a barrier from UV radiation and temperature changes.</p>",
+            "link__1": "",
+            "link_label__1": "Learn more",
+            "offset_top__1": 23,
+            "offset_left__1": 44,
+            "popup_max_width__1": 0,
+            "popup_direction__1": "auto",
+            "product__2": "lecavist-303-bottle-wine-fridge-dual-zone-lcs300vn2z1d",
+            "content__2": "",
+            "link__2": "",
+            "link_label__2": "Learn more",
+            "offset_top__2": 23,
+            "offset_left__2": 55,
+            "popup_max_width__2": 0,
+            "popup_direction__2": "auto",
+            "product__3": "",
+            "content__3": "<h5>Built-in Installation</h5><p><br/>As part of our Professional Range, this LeCavist wine cabinet features front ventilation instead of rear ventilation, allowing it to be seamlessly built into cabinetry without side or rear clearance.</p>",
+            "link__3": "",
+            "link_label__3": "Learn more",
+            "offset_top__3": 23,
+            "offset_left__3": 67,
+            "popup_max_width__3": 0,
+            "popup_direction__3": "auto",
+            "product__4": "",
+            "content__4": "",
+            "link__4": "",
+            "link_label__4": "Learn more",
+            "offset_top__4": 60,
+            "offset_left__4": 70,
+            "popup_max_width__4": 0,
+            "popup_direction__4": "auto",
+            "product__5": "",
+            "content__5": "",
+            "link__5": "",
+            "link_label__5": "Learn more",
+            "offset_top__5": 1,
+            "offset_left__5": 4,
+            "popup_max_width__5": 0,
+            "popup_direction__5": "auto"
+          }
+        },
+        "lookbook_item_KXBpXG": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/1920x701-_product_showcase_banner.jpg",
+            "hide_on_mobile": true,
+            "product__1": "",
+            "content__1": "<h5>Multi-layer UV protected glass</h5><p>Multi-layer UV-protected glass keeps your wines safe while showcasing your collection in style.</p>",
+            "link__1": "",
+            "link_label__1": "Learn more",
+            "offset_top__1": 21,
+            "offset_left__1": 59,
+            "popup_max_width__1": 0,
+            "popup_direction__1": "auto",
+            "product__2": "",
+            "content__2": "<h5>Anti-vibration system</h5><p>Silent and steady: the anti-vibration system reduces noise and protects bottles from micro-movements that could affect aging</p>",
+            "link__2": "",
+            "link_label__2": "Learn more",
+            "offset_top__2": 74,
+            "offset_left__2": 63,
+            "popup_max_width__2": 0,
+            "popup_direction__2": "auto",
+            "product__3": "",
+            "content__3": "<h5>Humidity control</h5><p>Our humidity control system keeps the air inside at the ideal balance, preventing corks from drying out and ensuring your wines age in perfect conditions</p>",
+            "link__3": "",
+            "link_label__3": "Learn more",
+            "offset_top__3": 55,
+            "offset_left__3": 55,
+            "popup_max_width__3": 0,
+            "popup_direction__3": "auto",
+            "product__4": "",
+            "content__4": "<h5><strong>Charcoal filter</strong></h5><p>The active charcoal filter keeps the air pure and fresh, protecting your wines from odors and ensuring a healthy environment inside the cabinet</p>",
+            "link__4": "",
+            "link_label__4": "Learn more",
+            "offset_top__4": 67,
+            "offset_left__4": 34,
+            "popup_max_width__4": 0,
+            "popup_direction__4": "auto",
+            "product__5": "",
+            "content__5": "<h5>Lock</h5><p>Built-in lock protects your wine collection</p>",
+            "link__5": "",
+            "link_label__5": "Learn more",
+            "offset_top__5": 80,
+            "offset_left__5": 37,
+            "popup_max_width__5": 0,
+            "popup_direction__5": "auto"
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_item_gJ4AGa",
+        "lookbook_item_KXBpXG"
+      ],
+      "name": "Lookbook mix5",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "SHOP THE LOOK",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "hotspot_style": "plus",
+        "action_when_click_on_hotspot": "open",
+        "items_per_row": 1,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 6,
+        "reveal": false,
+        "popup_radius": 8,
+        "image_radius": 8,
+        "popup_max_width": 420,
+        "show_link_when_product": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 51,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "brand_logo_WwkpKM": {
+      "type": "brand-logo",
+      "blocks": {
+        "brand_items_hDgYg7": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.18-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_7JXkp6": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.26-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_TBAH7p": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.27-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_GkPybX": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.07-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Dj9eWe": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_aLtTrU": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.35-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_67LE8M": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.04-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_nJkmKU": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Lz3Va9": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.34-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_dKmETd": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.15-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_LiXzxY": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.59-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_zjzHbc": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.45-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_nWpqbc": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.48-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JLPGDe": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.02.40-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_YCVar4": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.29-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_7aXbgm": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.16-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_QgCWib": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.03.46-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_JiKzBV": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.40.17-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_6fAzNB": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.28-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_LPa6Mg": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.16-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_peEACn": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.37.55-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_PGdrqE": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.51-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Yci4EW": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.06.53-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_qnTAJ7": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.06-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_d4MaVA": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.44-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_wVnGjG": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.07.54-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_jWYNJU": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.38-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Y9Pkfi": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.41-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_DHwWrm": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.38.03-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_NdgFTF": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-05_at_10.35.23-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_Cybara": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.00-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_pnRJbj": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.24-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_xJnh9C": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.47-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_efTEGm": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.06-nobg.png",
+            "link": ""
+          }
+        },
+        "brand_items_FGGjeL": {
+          "type": "brand_items",
+          "settings": {
+            "image": "shopify://shop_images/Screenshot_2025-11-04_at_17.08.34-nobg.png",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_items_hDgYg7",
+        "brand_items_7JXkp6",
+        "brand_items_TBAH7p",
+        "brand_items_GkPybX",
+        "brand_items_Dj9eWe",
+        "brand_items_aLtTrU",
+        "brand_items_67LE8M",
+        "brand_items_nJkmKU",
+        "brand_items_Lz3Va9",
+        "brand_items_dKmETd",
+        "brand_items_LiXzxY",
+        "brand_items_zjzHbc",
+        "brand_items_nWpqbc",
+        "brand_items_JLPGDe",
+        "brand_items_YCVar4",
+        "brand_items_7aXbgm",
+        "brand_items_QgCWib",
+        "brand_items_JiKzBV",
+        "brand_items_6fAzNB",
+        "brand_items_LPa6Mg",
+        "brand_items_peEACn",
+        "brand_items_PGdrqE",
+        "brand_items_Yci4EW",
+        "brand_items_qnTAJ7",
+        "brand_items_d4MaVA",
+        "brand_items_wVnGjG",
+        "brand_items_jWYNJU",
+        "brand_items_Y9Pkfi",
+        "brand_items_DHwWrm",
+        "brand_items_NdgFTF",
+        "brand_items_Cybara",
+        "brand_items_pnRJbj",
+        "brand_items_xJnh9C",
+        "brand_items_efTEGm",
+        "brand_items_FGGjeL"
+      ],
+      "disabled": true,
+      "name": "Credibility builder",
+      "settings": {
+        "eyebrow": "",
+        "eyebrow_size": 11,
+        "section_width": "fluid_container",
+        "color_scheme": "scheme-accf3b11-ba40-4a3e-bafb-243ece6683ec",
+        "heading": "THEY TRUST US",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "img_width": 300,
+        "logo_opacity": 100,
+        "open_link_newtab": true,
+        "framed": true,
+        "items_per_row": 6,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 2,
+        "reveal": true,
+        "items_per_row_mobile": 1,
+        "padding_top": 60,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "lookbook_prod4_ct8JRp": {
+      "type": "lookbook-prod4",
+      "blocks": {
+        "lookbook_item_QaL78D": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/1920x701-_product_showcase_banner.jpg",
+            "hide_on_mobile": false,
+            "product__1": "",
+            "content__1": "<h5>Multi-layer UV protected glass</h5><p>Multi-layer UV-protected glass keeps your wines safe while showcasing your collection in style.</p>",
+            "link__1": "",
+            "link_label__1": "Learn more",
+            "offset_top__1": 21,
+            "offset_left__1": 59,
+            "popup_max_width__1": 0,
+            "popup_direction__1": "right",
+            "product__2": "",
+            "content__2": "<h5>Anti-vibration system</h5><p>Silent and steady: the anti-vibration system reduces noise and protects bottles from micro-movements that could affect aging</p>",
+            "link__2": "",
+            "link_label__2": "Learn more",
+            "offset_top__2": 74,
+            "offset_left__2": 63,
+            "popup_max_width__2": 0,
+            "popup_direction__2": "top",
+            "product__3": "",
+            "content__3": "<h5>Humidity control</h5><p>Our humidity control system keeps the air inside at the ideal balance, preventing corks from drying out and ensuring your wines age in perfect conditions</p>",
+            "link__3": "",
+            "link_label__3": "Learn more",
+            "offset_top__3": 55,
+            "offset_left__3": 55,
+            "popup_max_width__3": 0,
+            "popup_direction__3": "right",
+            "product__4": "",
+            "content__4": "<h5><strong>Charcoal filter</strong></h5><p>The active charcoal filter keeps the air pure and fresh, protecting your wines from odors and ensuring a healthy environment inside the cabinet</p><p></p>",
+            "link__4": "",
+            "link_label__4": "Learn more",
+            "offset_top__4": 67,
+            "offset_left__4": 34,
+            "popup_max_width__4": 0,
+            "popup_direction__4": "top",
+            "product__5": "",
+            "content__5": "<h5> Lock</h5><p>Built-in lock protects your wine collection</p>",
+            "link__5": "",
+            "link_label__5": "Learn more",
+            "offset_top__5": 80,
+            "offset_left__5": 37,
+            "popup_max_width__5": 0,
+            "popup_direction__5": "top"
+          }
+        },
+        "lookbook_item_Xge3wP": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/Shop_the_look_Banner_1920_x_701-V3.jpg",
+            "hide_on_mobile": false,
+            "product__1": "lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu",
+            "content__1": "",
+            "link__1": "",
+            "link_label__1": "Learn more",
+            "offset_top__1": 66,
+            "offset_left__1": 34,
+            "popup_max_width__1": 0,
+            "popup_direction__1": "auto",
+            "product__2": "lecavist-40-bottles-wine-cabinet-dual-zone-lj40vn2z2dbu",
+            "content__2": "",
+            "link__2": "",
+            "link_label__2": "Learn more",
+            "offset_top__2": 66,
+            "offset_left__2": 43,
+            "popup_max_width__2": 0,
+            "popup_direction__2": "auto",
+            "product__3": "lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu",
+            "content__3": "",
+            "link__3": "",
+            "link_label__3": "Learn more",
+            "offset_top__3": 66,
+            "offset_left__3": 53,
+            "popup_max_width__3": 0,
+            "popup_direction__3": "auto",
+            "product__4": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "content__4": "",
+            "link__4": "",
+            "link_label__4": "Learn more",
+            "offset_top__4": 50,
+            "offset_left__4": 82,
+            "popup_max_width__4": 0,
+            "popup_direction__4": "auto",
+            "product__5": "",
+            "content__5": "",
+            "link__5": "",
+            "link_label__5": "Learn more",
+            "offset_top__5": 1,
+            "offset_left__5": 4,
+            "popup_max_width__5": 0,
+            "popup_direction__5": "auto"
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_item_QaL78D",
+        "lookbook_item_Xge3wP"
+      ],
+      "disabled": true,
+      "name": "Lookbook mix5",
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "SHOP THE LOOK",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "hotspot_style": "plus",
+        "action_when_click_on_hotspot": "open",
+        "items_per_row": 1,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 6,
+        "reveal": false,
+        "popup_radius": 8,
+        "image_radius": 8,
+        "popup_max_width": 420,
+        "show_link_when_product": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 51,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "lookbook_image_KUyVEr": {
+      "type": "lookbook-image",
+      "blocks": {
+        "lookbook_item_QYNayi": {
+          "type": "lookbook_item",
+          "settings": {
+            "lookbook_image": "shopify://shop_images/Shop_the_look_Banner_1920_x_701-V5.jpg",
+            "product__1": "lecavist-44-bottle-wine-cabinet-dual-zone-lj44vn2zbu",
+            "offset_top__1": 66,
+            "offset_left__1": 28,
+            "product__2": "lecavist-52-bottle-wine-cabinet-single-zone-lj52vnbu",
+            "offset_top__2": 66,
+            "offset_left__2": 58,
+            "product__3": "lecavist-195-bottle-professional-wine-fridge-lcs300vx1zpro",
+            "offset_top__3": 52,
+            "offset_left__3": 85,
+            "product__4": "",
+            "offset_top__4": 22,
+            "offset_left__4": 49,
+            "product__5": "",
+            "offset_top__5": 1,
+            "offset_left__5": 4
+          }
+        }
+      },
+      "block_order": [
+        "lookbook_item_QYNayi"
+      ],
+      "disabled": true,
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "",
+        "heading": "SHOP THE LOOK",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "hotspot_style": "plus",
+        "action_when_click_on_hotspot": "open",
+        "items_per_row": 1,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 50,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "178209289563de90c7": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_cd7155f_N7njkL": {
+          "type": "ai_gen_block_cd7155f",
+          "settings": {
+            "title": "Visit our 3D showroom",
+            "subtitle": "Explore our space in immersive 3D",
+            "iframe_url": "https://my.matterport.com/show/?m=mh4RUXMb2su&cloudEdit=1&play=0&ss=1&sr=-1.76,1.33",
+            "desktop_width_percent": 100,
+            "iframe_height": 600,
+            "container_padding": 40,
+            "header_spacing": 24,
+            "background_color": "#fdfaf5",
+            "title_color": "#1a1512",
+            "subtitle_color": "#666666",
+            "title_size": 18,
+            "subtitle_size": 16,
+            "container_border_radius": 0,
+            "iframe_border_radius": 8,
+            "shadow_intensity": "0 4px 16px rgba(0, 0, 0, 0.15)"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_cd7155f_N7njkL"
+      ],
+      "settings": {}
+    },
+    "image_with_text_overlay_EQRiKA": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_XqdUAD": {
+          "type": "heading",
+          "settings": {
+            "heading": "Register your product",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 24
+          }
+        },
+        "description_TpaHgM": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Every LeCavist wine cabinet includes a <strong>24-month manufacturer's parts and labour warranty</strong> for complete peace of mind. Extend your coverage by an additional <strong>12 months</strong> (for a total of <strong>36 months</strong>) by simply registering your product or leaving a review. Plus, enjoy a <strong>5-year warranty on the compressor</strong></p>",
+            "font_size": 14,
+            "font_weight": "body_weight",
+            "spacing_bottom": 25
+          }
+        },
+        "button_mLtbLK": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "Register your LeCavist",
+            "first_button_link": "shopify://pages/products-registration",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "spacing_bottom": 24
+          }
+        }
+      },
+      "block_order": [
+        "heading_XqdUAD",
+        "description_TpaHgM",
+        "button_mLtbLK"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "scheme-3d10de96-a479-49bd-819c-e044746b4f3e",
+        "image": "shopify://shop_images/newsletter_base_588aa00d-a928-4d77-bf4b-afd6fac9a0cd.jpg",
+        "image_mobile": "shopify://shop_images/newsletter_base_588aa00d-a928-4d77-bf4b-afd6fac9a0cd.jpg",
+        "overlay_opacity": 0,
+        "image_height": "adapt",
+        "desktop_height": 600,
+        "mobile_height": 300,
+        "content_alignment": "center",
+        "content_position": "top-center",
+        "content_width": "container",
+        "content_max_width": 90,
+        "content_padding_block": 50,
+        "content_padding_inline": 50,
+        "show_content_background": false,
+        "content_background": "#f5f0e8",
+        "content_box_opacity": 100,
+        "content_below_image": false,
+        "content_alignment_mobile": "center",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
+    "multi_content_zirzb9": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_overlay_AXPtM6": {
+          "type": "image_with_text_overlay",
+          "settings": {
+            "color_scheme": "scheme-ba2a771b-6b67-418b-afae-6709abc233f5",
+            "content_width": "100%",
+            "vertical_align": "start",
+            "image": "shopify://shop_images/Banner_for_website_including_brochure_and_showroom-Centred.jpg",
+            "image_link": "https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LeCavist_Brochure_2025-V16-LR.pdf?v=1756951175",
+            "image_overlay_opacity": 0,
+            "custom_svg": "",
+            "subheading": "",
+            "heading": "",
+            "description": "",
+            "first_button_label": "Click to download our brochure",
+            "first_button_link": "https://cdn.shopify.com/s/files/1/0616/6554/2401/files/LeCavist_Brochure_March_2025.pdf?v=1744173806",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "outline",
+            "content_alignment": "center",
+            "content_position": "middle-center",
+            "content_padding_block": 50,
+            "content_padding_inline": 48,
+            "content_below_image": false,
+            "custom_svg_spacing_bottom": 10,
+            "subheading_font_size": 20,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 10,
+            "heading_font_size": 36,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 10,
+            "des_font_size": 14,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_overlay_AXPtM6"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 0,
+        "equal_height_adjustment": false,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 10,
+        "padding_bottom": 10,
+        "reset_spacing": true
+      }
+    },
+    "faq_8bfUfe": {
+      "type": "faq",
+      "blocks": {
+        "faq_items_PKEdMj": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What is the difference between a wine fridge and a regular refrigerator?",
+            "faq_content": "<strong>A wine fridge is specifically designed for storing wine, unlike a regular refrigerator.</strong> It maintains <strong>precise temperature control, stable humidity, low vibration, and UV protection</strong>, all of which are essential for <strong>long-term wine storage and cellaring</strong>. Standard refrigerators are too cold, dry, and often vibrate, which can damage corks, disrupt sediment, and alter the flavour and aroma of wine. Choosing a <strong>premium wine fridge</strong> like LeCavist ensures your wines are preserved under <strong>optimal wine storage conditions</strong>."
+          }
+        },
+        "faq_items_HaQzJ8": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "What is the ideal temperature for storing wine?",
+            "faq_content": "<strong>The ideal wine cellar temperature for long-term storage is between 12°C and 14°C, with minimal fluctuations.</strong> Temperature stability is essential to preserve aromas, structure and ageing potential. Serving temperatures can differ depending on the wine style: white wines and Champagne are typically served cooler (around 7–12°C), while red wines are enjoyed slightly warmer (around 14–18°C). The ideal wine fridge temperature therefore depends on your goal — long-term ageing, short-term storage, or serving. That is why LeCavist offers a wide range of multi-zone wine fridges, allowing each bottle in your collection to be stored at its optimal temperature.  <a href=\"/blogs/news/how-the-5-pillars-of-wine-storage-protect-your-drinks\" target=\"_blank\" title=\"How the 5 Pillars of Wine Storage Protect Your Drinks\">Learn more</a>"
+          }
+        },
+        "faq_items_dAkKTQ": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "How many bottles should a wine collector store?",
+            "faq_content": "<strong>There is no single ideal number of bottles — it depends on your collection and drinking habits. </strong>Casual wine drinkers typically store <strong>20–50 bottles</strong>, while serious collectors often require <strong>100 bottles or more</strong> for proper ageing and variety. When choosing a <strong>wine fridge capacity</strong>, it’s best to allow room for growth, as most collections expand over time. <a href=\"/collections/all-cabinets\" target=\"_blank\" title=\"All Cabinets\">Explore our range</a>"
+          }
+        },
+        "faq_items_DqnnDg": {
+          "type": "faq-items",
+          "settings": {
+            "faq_title": "Are LeCavist wine fridges suitable for long-term cellaring?",
+            "faq_content": "Yes. <strong>LeCavist wine fridges are specifically designed for long-term wine cellaring.</strong>They provide <strong>precise temperature control, stable humidity, UV protection and low-vibration storage</strong>, creating the ideal environment for ageing wine over many years. Whether for <strong>red wine, white wine or Champagne</strong>, LeCavist offers <strong>single-zone and multi-zone wine fridges</strong> that replicate the conditions of a traditional wine cellar, ensuring optimal <strong>wine preservation and maturation</strong>."
+          }
+        }
+      },
+      "block_order": [
+        "faq_items_PKEdMj",
+        "faq_items_HaQzJ8",
+        "faq_items_dAkKTQ",
+        "faq_items_DqnnDg"
+      ],
+      "disabled": true,
+      "name": "SEO Block",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Wine Fridges & Wine Storage – FAQ",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "glozin_partner_logo_banner_EUtkHD": {
+      "type": "glozin-partner-logo-banner",
+      "blocks": {
+        "logo_EqGVxz": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/good_food_wine_show_b57e58ec-06df-4ebc-b683-67154960e716.png"
+          }
+        },
+        "logo_AiwQ39": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/qantas_magazine.png"
+          }
+        },
+        "logo_D6nziT": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/dan_murphy_s.png"
+          }
+        },
+        "logo_VyCDWK": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/langtons.jpg"
+          }
+        },
+        "logo_wTaHpg": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/plumm.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "logo_EqGVxz",
+        "logo_AiwQ39",
+        "logo_D6nziT",
+        "logo_VyCDWK",
+        "logo_wTaHpg"
+      ],
+      "disabled": true,
+      "settings": {
+        "bg_color": "#f5f0e8",
+        "logo_height": 60,
+        "scroll_speed": 15
+      }
+    },
+    "glozin_partner_logo_banner_n7GjHA": {
+      "type": "glozin-partner-logo-banner",
+      "blocks": {
+        "logo_Mg6BAF": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/taylors_wine.png"
+          }
+        },
+        "logo_HtRjNP": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/the_daily_telegraph.png"
+          }
+        },
+        "logo_d3tKcp": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/yahoo_news.png"
+          }
+        },
+        "logo_hCRCVn": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/wine_list_of_the_year.jpg"
+          }
+        },
+        "logo_wL4znc": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/drinks_Digest.png"
+          }
+        },
+        "logo_eEpN9D": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/appliance_retailer_dc15c190-f497-4f75-9ab5-b3d6a90ada56.webp"
+          }
+        },
+        "logo_4LUFwn": {
+          "type": "logo",
+          "settings": {
+            "logo": "shopify://shop_images/the_wine_collective_da552baa-58ee-4889-a08d-914e3c50a6be.png"
+          }
+        }
+      },
+      "block_order": [
+        "logo_Mg6BAF",
+        "logo_HtRjNP",
+        "logo_d3tKcp",
+        "logo_hCRCVn",
+        "logo_wL4znc",
+        "logo_eEpN9D",
+        "logo_4LUFwn"
+      ],
+      "disabled": true,
+      "settings": {
+        "bg_color": "#f5f0e8",
+        "logo_height": 40,
+        "scroll_speed": 15
+      }
+    },
+    "custom_liquid_NxDgxH": {
+      "type": "custom-liquid",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "custom_liquid": "",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "service_red_banner_nUNmK7": {
+      "type": "service-red-banner",
+      "settings": {
+        "banner_height": 95
+      }
+    }
+  },
+  "order": [
+    "scrolling_text_Dz4DiL",
+    "1743659083397359ce",
+    "slideshow_8KKtNU",
+    "multi_content_j4c4YG",
+    "image_with_text_TAQK7p",
+    "multi_content_8ejfQz",
+    "custom_liquid_yR746H",
+    "homepage_custo_VMrcYE",
+    "products_carousel_AdKeFt",
+    "pods_sections_Fx6DpK",
+    "1748570245e4ecd716",
+    "shopable_video_7BMMfq",
+    "lookbook_prod4_EtYJie",
+    "brand_logo_WwkpKM",
+    "lookbook_prod4_ct8JRp",
+    "lookbook_image_KUyVEr",
+    "178209289563de90c7",
+    "image_with_text_overlay_EQRiKA",
+    "multi_content_zirzb9",
+    "faq_8bfUfe",
+    "glozin_partner_logo_banner_EUtkHD",
+    "glozin_partner_logo_banner_n7GjHA",
+    "custom_liquid_NxDgxH",
+    "service_red_banner_nUNmK7"
+  ]
+}
