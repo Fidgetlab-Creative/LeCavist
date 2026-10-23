@@ -55,7 +55,14 @@
 
   function cookie(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
   var c = cookie('discount_code');
-  if (!c || c.toUpperCase() !== CODE || Date.now() > END) return;
+  var isVip = c && c.toUpperCase() === CODE;
+  // Safety net: the VIP collection URL itself activates the code (newsletter links without /discount/)
+  if (!isVip && Date.now() <= END && location.pathname.indexOf('/collections/vip-access') === 0 && !/[?&]vipr=1/.test(location.search)) {
+    var back = location.pathname + (location.search ? location.search + '&' : '?') + 'vipr=1';
+    location.replace('/discount/' + CODE + '?redirect=' + encodeURIComponent(back));
+    return;
+  }
+  if (!isVip || Date.now() > END) return;
   document.documentElement.classList.add('lc-vip-active');
 
   // VIP banner at the very top of the page (public visitors never see it)
@@ -70,7 +77,7 @@
 
   // Black Friday VIP hero: replaces every slideshow banner on the site (home, collections) for VIP visitors
   var HERO_WEB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-web_banner_1920x701_869b7933-1511-403a-87b9-173c79accc27.jpg?v=1792666852';
-  var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-mobile_banner_480x600_dfe2fd9d-694f-4938-b789-c07758029fc5.jpg?v=1792666856';
+  var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-mobile_banner_480x600_v2.jpg?v=1792715996';
   function hero(){
     var slides = document.querySelectorAll('.shopify-section[id*="__slideshow_"]');
     if (!slides.length) return;
