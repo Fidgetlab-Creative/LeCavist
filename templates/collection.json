@@ -138,6 +138,14 @@
         "reset_spacing": false
       }
     },
+    "lc_guidance": {
+      "type": "lc-collection-guidance",
+      "settings": {
+        "section_width": "container",
+        "padding_top": 30,
+        "padding_bottom": 10
+      }
+    },
     "main": {
       "type": "main-collection-product",
       "blocks": {
@@ -169,6 +177,38 @@
         "items_per_row_mobile": "2",
         "padding_top": 0,
         "padding_bottom": 0
+      }
+    },
+    "lc_table": {
+      "type": "lc-collection-table",
+      "settings": {
+        "heading": "Compare wine cabinets",
+        "auto_generate": true,
+        "show_cavity": false,
+        "footnote": "*Bottle capacity is based on standard 750 ml Bordeaux bottles. Wider bottles, such as Burgundy, Champagne and Pinot, take more space and reduce capacity.",
+        "section_width": "container",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "lc_size_table": {
+      "type": "lc-collection-size-table",
+      "settings": {
+        "heading": "Size guide",
+        "section_width": "container",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "lc_faq": {
+      "type": "lc-collection-faq",
+      "settings": {
+        "default_heading": "Frequently asked questions",
+        "section_width": "container",
+        "color_scheme": "",
+        "open_first": true,
+        "padding_top": 30,
+        "padding_bottom": 50
       }
     },
     "subcollection": {
@@ -204,50 +244,15 @@
         "padding_top": 30,
         "padding_bottom": 0
       }
-    },
-    "lc_guidance": {
-      "type": "lc-collection-guidance",
-      "settings": {
-        "section_width": "container",
-        "padding_top": 30,
-        "padding_bottom": 10
-      }
-    },
-    "lc_faq": {
-      "type": "lc-collection-faq",
-      "settings": {
-        "section_width": "container",
-        "padding_top": 30,
-        "padding_bottom": 50
-      }
-    },
-    "lc_table": {
-      "type": "lc-collection-table",
-      "settings": {
-        "section_width": "container",
-        "padding_top": 30,
-        "padding_bottom": 30,
-        "heading": "Compare wine cabinets",
-        "auto_generate": true
-      }
-    },
-    "lc_size_table": {
-      "type": "lc-collection-size-table",
-      "settings": {
-        "section_width": "container",
-        "heading": "Size guide",
-        "padding_top": 30,
-        "padding_bottom": 30
-      }
     }
   },
   "order": [
     "banner",
     "slideshow_GxPDUG",
+    "lc_guidance",
     "main",
     "lc_table",
     "lc_size_table",
-    "lc_guidance",
     "lc_faq",
     "subcollection"
   ]
