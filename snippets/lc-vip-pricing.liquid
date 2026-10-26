@@ -1,5 +1,5 @@
 {%- comment -%}
-  lc-vip-pricing — VIP price display.
+  lc-vip-pricing — campaign price display (VIPACCESS, EARLYACCESS).
   When the visitor arrived through https://lecavist.com/discount/VIPACCESS, Shopify stores the
   code in the `discount_code` cookie. This snippet reads that cookie and, for SKUs in the grid,
   rewrites the displayed price to the VIP price (current price minus the fixed amount of the
@@ -27,9 +27,15 @@
 </style>
 <script>
 (function(){
-  var CODE = 'VIPACCESS';
   var END = Date.parse('2026-11-01T23:59:00+11:00');
-  var GRID = {
+  // Campaigns: discount code -> grid (fixed amount off current price per SKU), collection, wording
+  var CAMPAIGNS = {
+    VIPACCESS: {
+      path: '/collections/vip-access',
+      tag: 'VIP',
+      label: 'VIP price',
+      banner: 'Your private prices are active until 1st November, 11.59pm. Applied automatically at checkout.',
+      grid: {
     "LEK168PV":110,"LKS56VN2Z":100,"LKCV63N":30,"LCS100VN":130,"LEK1403ZPV":260,"LEK168PVX":170,
     "LEK1052ZPV":330,"LJ52VNBU":170,"LJ294VN":330,"LJ44VN2ZBU":500,"LCS300VN2Z1D":450,"LEK14PV":30,
     "LKV168PNDX":450,"LCS200VN2Z2D":830,"LEK1403ZPVX":30,"LJ268VN2Z":150,"LJBC238MN":80,
@@ -39,8 +45,25 @@
     "LCS230VN2Z1D":30,"LJ17VN2ZBU":280,"LJ20VNBU":230,
     "LKV168PNDXX2":421,"LEK168PVXX2":681,"LEK1403ZPVX2":441,"LEK208PVX2":281,"LEK208PVXX2":311,"LCS200VN2Z2DFLTSH":830,
     "LJ52VNBUX2":231,"LJ52140DUO":241,"LEK1403ZPVXX2":271,"LEK168PVX2":30,"LJ294VNX2":30
+      }
+    },
+    EARLYACCESS: {
+      path: '/collections/early-access',
+      tag: 'EARLY ACCESS',
+      label: 'Early access price',
+      banner: 'Your Black Friday early-access prices are active until 1st November, 11.59pm. Applied automatically at checkout.',
+      grid: {
+    "LEK168PV":80,"LKS56VN2Z":70,"LCS100VN":100,"LEK1403ZPV":230,"LEK168PVX":150,"LEK1052ZPV":300,
+    "LJ52VNBU":140,"LJ294VN":300,"LJ44VN2ZBU":470,"LCS300VN2Z1D":420,"LKV168PNDX":420,"LCS200VN2Z2D":800,
+    "LJ268VN2Z":120,"LJBC238MN":50,"LCS300VX1ZPRO":880,"LCS155VN1ZPRO":1246,"LJ140BC":150,"LJ40VN2Z2DBU":210,
+    "LJ17VN2ZBU":250,"LCS140VN2Z2D":830,"LJ20VNBU":200,"LCS210VN2ZBI":20,"LCS600VX2DP":1250,"LCS220VN1ZBI":20,
+    "LCS36VN2ZBI":290,"LCSOD126VX2Z":70,"LCSOD46VX":140,"LCSOD33VX":50,"LCFDOD152X":50,"LCS458VN2DP":600,
+    "LCIMOD80X":50,"LKCV63N":30,"LEK168PVXX2":651,"LJ52VNBUX2":201,"LKV168PNDXX2":391,"LEK1403ZPVX2":411,"LEK208PVX2":251,
+    "LJ52140DUO":211,"LEK208PVXX2":281,"LCS200VN2Z2DFLTSH":800
+      }
+    }
   };
-  // Full RRP per SKU: the struck-through price shown next to the VIP price
+  // Full RRP per SKU: the struck-through price shown next to the campaign price
   var RRP = {
     "LKCV63N":699,"LKS56VN2Z":849,"LCS155VN1ZPRO":3599,"LKV168PNDX":1899,"LCS200VN2Z2D":3999,"LCS300VX1ZPRO":4449,
     "LCS140VN2Z2D":3099,"LCS230VN2Z1D":2899,"LCS100VN":1099,"LCS300VN2Z1D":3899,"LEK1403ZPVX":1999,"LEK1403ZPV":1899,
@@ -54,24 +77,28 @@
   var PAGE_SKU = {{ lc_vip_sku | json }};
 
   function cookie(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
-  var c = cookie('discount_code');
-  var isVip = c && c.toUpperCase() === CODE;
-  // Safety net: the VIP collection URL itself activates the code (newsletter links without /discount/)
-  if (!isVip && Date.now() <= END && location.pathname.indexOf('/collections/vip-access') === 0 && !/[?&]vipr=1/.test(location.search)) {
-    var back = location.pathname + (location.search ? location.search + '&' : '?') + 'vipr=1';
-    location.replace('/discount/' + CODE + '?redirect=' + encodeURIComponent(back));
-    return;
+  var c = (cookie('discount_code') || '').toUpperCase();
+  var CAMP = CAMPAIGNS[c] || null;
+  // Safety net: a campaign collection URL activates its own code (newsletter links without /discount/)
+  if (Date.now() <= END && !/[?&]vipr=1/.test(location.search)) {
+    for (var code in CAMPAIGNS) {
+      if (location.pathname.indexOf(CAMPAIGNS[code].path) === 0 && c !== code) {
+        var back = location.pathname + (location.search ? location.search + '&' : '?') + 'vipr=1';
+        location.replace('/discount/' + code + '?redirect=' + encodeURIComponent(back));
+        return;
+      }
+    }
   }
-  if (!isVip || Date.now() > END) return;
+  if (!CAMP || Date.now() > END) return;
+  var CODE = c, GRID = CAMP.grid;
   document.documentElement.classList.add('lc-vip-active');
 
-  // VIP banner at the very top of the page (public visitors never see it)
-  var BANNER = 'VIP ACCESS — Your private prices are active until 1st November, 11.59pm. Applied automatically at checkout.';
+  // Campaign banner at the very top of the page (public visitors never see it)
   function banner(){
     if (document.getElementById('lc-vip-banner') || !document.body) return;
     var b = document.createElement('div');
     b.id = 'lc-vip-banner';
-    b.innerHTML = '<span class="lc-vip-banner__tag">VIP</span>' + BANNER.replace('VIP ACCESS — ', '');
+    b.innerHTML = '<span class="lc-vip-banner__tag">' + CAMP.tag + '</span>' + CAMP.banner;
     document.body.insertBefore(b, document.body.firstChild);
   }
 
@@ -87,7 +114,7 @@
       if (i > 0 || document.getElementById('lc-vip-hero')) return;
       var a = document.createElement('a');
       a.id = 'lc-vip-hero';
-      a.href = '/collections/vip-access';
+      a.href = CAMP.path;
       a.setAttribute('aria-label', 'Black Friday Early Access - VIP collection');
       a.innerHTML = '<picture><source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Black Friday Early Access - for LeCavist owners only - up to 50% off + $50 wine voucher"></picture>';
       slide.parentNode.insertBefore(a, slide);
@@ -108,7 +135,7 @@
     var was = (RRP[sku] && RRP[sku] > v) ? RRP[sku] : p;
     if (was <= v) return;
     var dec = /\.\d\d/.test(el.textContent) ? 2 : 0;
-    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(was, dec) + '</s>' + (opts && opts.tag && off ? '<span class="lc-vip-tag">VIP price</span>' : '');
+    el.innerHTML = '<span class="lc-vip-price">' + fmt(v, dec) + '</span><s class="lc-vip-was">' + fmt(was, dec) + '</s>' + (opts && opts.tag && off ? '<span class="lc-vip-tag">' + CAMP.label + '</span>' : '');
     if (opts && opts.simple) el.textContent = fmt(v, dec);
     el.dataset.vipOrig = fmt(p, dec);
     el.dataset.vipNew = fmt(v, dec);
@@ -133,7 +160,7 @@
           var note = document.createElement('div');
           note.className = 'lc-vip-note';
           var sv = parseInt(el.dataset.vipSave || GRID[PAGE_SKU], 10);
-          note.textContent = 'VIP price: you save $' + sv.toLocaleString('en-AU') + ' off RRP — applied automatically at checkout.';
+          note.textContent = CAMP.label + ': you save $' + sv.toLocaleString('en-AU') + ' off RRP — applied automatically at checkout.';
           el.insertAdjacentElement('afterend', note);
         }
       });
