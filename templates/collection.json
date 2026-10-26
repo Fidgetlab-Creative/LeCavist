@@ -183,7 +183,7 @@
       "type": "lc-collection-table",
       "settings": {
         "heading": "Compare wine cabinets",
-        "auto_generate": true,
+        "auto_generate": false,
         "show_cavity": false,
         "footnote": "",
         "section_width": "container",
