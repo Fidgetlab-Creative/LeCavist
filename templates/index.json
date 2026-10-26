@@ -205,6 +205,65 @@
         "reset_spacing": true
       }
     },
+    "rich_text_Nxj7dj": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_qTgJii": {
+          "type": "heading",
+          "settings": {
+            "heading": "Wine Cabinets and Wine Fridges for Australian Homes",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 24
+          }
+        },
+        "description_9bH3d7": {
+          "type": "description",
+          "settings": {
+            "description": "<p>LeCavist is a French-Australian wine cabinet brand based in Alexandria, Sydney. It was founded in 2019 by French expat Alexandre Clerch to bring the conditions of a traditional French cellar into Australian homes. The range runs from 17-bottle <a href=\"/collections/built-in-wine-fridge\" title=\"/collections/built-in-wine-fridge\">under-bench</a> cabinets to 588-bottle cellar pairs, in <a href=\"/collections/single-zone-cabinets\" title=\"/collections/single-zone-cabinets\">single</a>, <a href=\"/collections/dual-zone-cabinets\" title=\"/collections/dual-zone-cabinets\">dual</a> and <a href=\"/collections/triple-zone-cabinets\" title=\"/collections/triple-zone-cabinets\">triple zone</a>, <a href=\"/collections/free-standing-cabinets\" title=\"/collections/free-standing-cabinets\">freestanding</a> and built-in. Every cabinet is compressor-cooled [confirm], runs at 38 to 45 dB and comes with a 2-year parts and labour warranty, extended free to 3 years when you register. Delivery, installation and removal of your old appliance are free in NSW, ACT, QLD, VIC, SA and WA. Visit the <a href=\"/pages/contact\" title=\"/pages/contact\">Alexandria showroom</a> Monday to Friday, 9am to 5pm. Customers rate LeCavist 4.8 out of 5 across <a href=\"https://f0c8g10d9ru.slack-mcps.com/mcp-sandbox-proxy?csp=%7B%22resourceDomains%22%3A%5B%22https%3A%2F%2Funpkg.com%22%2C%22https%3A%2F%2Fcdn.jsdelivr.net%22%2C%22https%3A%2F%2Fcdnjs.cloudflare.com%22%2C%22https%3A%2F%2Fcdn.tailwindcss.com%22%2C%22https%3A%2F%2Ffonts.googleapis.com%22%2C%22https%3A%2F%2Ffonts.gstatic.com%22%5D%7D&allow_surface_comments=1&mode=raw#\">1,471 reviews</a>.</p>",
+            "font_size": 14,
+            "font_weight": "body_weight",
+            "spacing_bottom": 10
+          }
+        },
+        "divider_7d3NRx": {
+          "type": "divider",
+          "settings": {
+            "color": "#dcd4c8",
+            "padding_top": 20,
+            "padding_bottom": 20
+          }
+        },
+        "description_ANdKfh": {
+          "type": "description",
+          "settings": {
+            "description": "<p>As featured in Gourmet Traveller's <a href=\"https://f0c8g10d9ru.slack-mcps.com/mcp-sandbox-proxy?csp=%7B%22resourceDomains%22%3A%5B%22https%3A%2F%2Funpkg.com%22%2C%22https%3A%2F%2Fcdn.jsdelivr.net%22%2C%22https%3A%2F%2Fcdnjs.cloudflare.com%22%2C%22https%3A%2F%2Fcdn.tailwindcss.com%22%2C%22https%3A%2F%2Ffonts.googleapis.com%22%2C%22https%3A%2F%2Ffonts.gstatic.com%22%5D%7D&allow_surface_comments=1&mode=raw#\">8 Best Wine Fridges and Cabinets for 2026</a> and Better Homes and Gardens' <a href=\"https://f0c8g10d9ru.slack-mcps.com/mcp-sandbox-proxy?csp=%7B%22resourceDomains%22%3A%5B%22https%3A%2F%2Funpkg.com%22%2C%22https%3A%2F%2Fcdn.jsdelivr.net%22%2C%22https%3A%2F%2Fcdnjs.cloudflare.com%22%2C%22https%3A%2F%2Fcdn.tailwindcss.com%22%2C%22https%3A%2F%2Ffonts.googleapis.com%22%2C%22https%3A%2F%2Ffonts.gstatic.com%22%5D%7D&allow_surface_comments=1&mode=raw#\">The best wine fridges in Australia</a>.</p>",
+            "font_size": 13,
+            "font_weight": "body_weight",
+            "spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "heading_qTgJii",
+        "description_9bH3d7",
+        "divider_7d3NRx",
+        "description_ANdKfh"
+      ],
+      "name": "t:sections.rich_text.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "content_alignment": "left",
+        "content_max_width": 100,
+        "enable_expand_content": false,
+        "expand_content_button": "See all Information",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
     "multi_content_j4c4YG": {
       "type": "multi-content",
       "blocks": {
@@ -1917,6 +1976,7 @@
     "scrolling_text_Dz4DiL",
     "1743659083397359ce",
     "slideshow_8KKtNU",
+    "rich_text_Nxj7dj",
     "multi_content_j4c4YG",
     "image_with_text_TAQK7p",
     "multi_content_8ejfQz",
