@@ -185,7 +185,7 @@
         "heading": "Compare wine cabinets",
         "auto_generate": true,
         "show_cavity": false,
-        "footnote": "*Bottle capacity is based on standard 750 ml Bordeaux bottles. Wider bottles, such as Burgundy, Champagne and Pinot, take more space and reduce capacity.",
+        "footnote": "",
         "section_width": "container",
         "padding_top": 30,
         "padding_bottom": 30
