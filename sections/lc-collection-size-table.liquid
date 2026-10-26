@@ -6,6 +6,8 @@
     custom.size_table_note    single line text, shown in small grey text below the table
     custom.size_table         list of collection_size_table
       (model, bottles, zones, cabinet_w_x_h_x_d_mm)
+  Each row is matched to a product in the collection by the SKU in its Model text,
+  e.g. "17 Bottle (LJ17VN2ZBU)", and links to it. An unmatched row shows its text unlinked.
 {%- endcomment -%}
 {%- liquid
   assign section_st = section.settings
@@ -13,6 +15,24 @@
   assign table_title = collection.metafields.custom.size_table_title.value | default: section_st.heading
   assign table_items = collection.metafields.custom.size_table.value
   assign table_note = collection.metafields.custom.size_table_note.value
+
+  comment
+    Build one SKU -> url lookup for the collection's products.
+  endcomment
+  assign sku_lookup = ''
+  if table_items.size > 0
+    for product in collection.products
+      capture product_sku
+        render 'lc-product-sku', product: product
+      endcapture
+      assign product_sku = product_sku | strip | upcase
+      if product_sku != blank
+        assign lookup_entry = product_sku | append: '^^' | append: product.url
+        assign sku_lookup = sku_lookup | append: lookup_entry | append: '||'
+      endif
+    endfor
+  endif
+  assign sku_entries = sku_lookup | split: '||'
 -%}
 {%- capture style -%}
   --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
@@ -62,6 +82,9 @@
     .lc-compare__table tbody th {
       font-weight: 600;
     }
+    .lc-compare__table tbody th a {
+      font-weight: 500;
+    }
     .lc-compare__note {
       margin: 10px 0 0;
       font-size: 12px;
@@ -95,7 +118,25 @@
             <tbody>
               {%- for item in table_items -%}
                 <tr>
-                  <th scope="row">{{ item.model }}</th>
+                  {%- liquid
+                    assign model_text = item.model | strip
+                    assign model_sku = model_text | upcase | split: '(' | last | split: ')' | first | strip
+                    assign row_url = ''
+                    for entry in sku_entries
+                      assign entry_parts = entry | split: '^^'
+                      if entry_parts[0] == model_sku
+                        assign row_url = entry_parts[1]
+                        break
+                      endif
+                    endfor
+                  -%}
+                  <th scope="row">
+                    {%- if row_url != blank -%}
+                      <a href="{{ row_url }}">{{ model_text }}</a>
+                    {%- else -%}
+                      {{ model_text }}
+                    {%- endif -%}
+                  </th>
                   <td>{{ item.bottles }}</td>
                   <td>{{ item.zones }}</td>
                   <td>{{ item.cabinet_w_x_h_x_d_mm }}</td>

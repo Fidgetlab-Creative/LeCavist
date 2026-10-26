@@ -6,7 +6,10 @@
     lecavist_specs.bottle_capacity, cooling_zone, installation_type, width_mm, height_mm, depth_mm
     lecavist_specs.min_cavity_mm (optional, single line text, shown when "Show minimum cavity column" is on)
   If the collection has rows in custom.comparison_table (list of comparison_table_item),
-  those rows are used instead, as a manual override.
+  those rows are used instead, as a manual override. Each manual row is matched to a product
+  in the collection by the SKU in its Model text, e.g. "17 Bottle (LJ17VN2ZBU)". A matched row
+  links to the product and shows the product's current price; an unmatched row shows its own
+  text, unlinked, with the Price typed in the entry.
 {%- endcomment -%}
 {%- liquid
   assign section_st = section.settings
@@ -23,6 +26,25 @@
   elsif section_st.auto_generate and collection.products_count > 0
     assign show_table = true
   endif
+
+  comment
+    Manual rows: build one SKU -> url -> price lookup for the collection's products.
+  endcomment
+  assign sku_lookup = ''
+  if manual
+    for product in collection.products
+      capture product_sku
+        render 'lc-product-sku', product: product
+      endcapture
+      assign product_sku = product_sku | strip | upcase
+      if product_sku != blank
+        assign price_text = product.price | money_without_trailing_zeros
+        assign lookup_entry = product_sku | append: '^^' | append: product.url | append: '^^' | append: price_text
+        assign sku_lookup = sku_lookup | append: lookup_entry | append: '||'
+      endif
+    endfor
+  endif
+  assign sku_entries = sku_lookup | split: '||'
 -%}
 {%- capture style -%}
   --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
@@ -118,8 +140,28 @@
             <tbody>
               {%- if manual -%}
                 {%- for item in table_items -%}
+                  {%- liquid
+                    assign model_text = item.model | strip
+                    assign model_sku = model_text | upcase | split: '(' | last | split: ')' | first | strip
+                    assign row_url = ''
+                    assign row_price = item.price
+                    for entry in sku_entries
+                      assign entry_parts = entry | split: '^^'
+                      if entry_parts[0] == model_sku
+                        assign row_url = entry_parts[1]
+                        assign row_price = entry_parts[2]
+                        break
+                      endif
+                    endfor
+                  -%}
                   <tr>
-                    <th scope="row">{{ item.model }}</th>
+                    <th scope="row">
+                      {%- if row_url != blank -%}
+                        <a href="{{ row_url }}">{{ model_text }}</a>
+                      {%- else -%}
+                        {{ model_text }}
+                      {%- endif -%}
+                    </th>
                     <td>{{ item.bottles }}</td>
                     <td>{{ item.zones }}</td>
                     <td>{{ item.installation }}</td>
@@ -127,7 +169,7 @@
                     {%- if show_cavity -%}
                       <td>{{ item.minimum_cavity | default: 'TBC' }}</td>
                     {%- endif -%}
-                    <td>{{ item.price }}</td>
+                    <td>{{ row_price }}</td>
                   </tr>
                 {%- endfor -%}
               {%- else -%}
