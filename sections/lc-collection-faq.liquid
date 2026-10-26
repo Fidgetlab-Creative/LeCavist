@@ -1,0 +1,267 @@
+{%- comment -%}
+  LeCavist: collection page FAQ, shown below the product grid.
+  Native <details> cards (question on top, answer revealed below) and FAQPage JSON-LD
+  built from the same entries, so the page and the schema always match.
+  Driven by collection metafields, so collections without them render nothing:
+    custom.collection_faq_title   single line text
+    custom.collection_faq_items   list of collection_faq_item (question, answer)
+{%- endcomment -%}
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  assign faq_title = collection.metafields.custom.collection_faq_title | default: section_st.default_heading
+  assign faq_items = collection.metafields.custom.collection_faq_items.value
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+{%- comment %} TEMP DEBUG: remove once the FAQ renders. View page source and search for "lc-faq-debug". {%- endcomment %}
+<!--
+  lc-faq-debug collection={{ collection.handle }} template={{ template }} title_size={{ faq_title | size }} raw_size={{ faq_items.size }} first_question="{{ faq_items[0].question }}" single_question="{{ faq_items.question }}"
+-->
+{%- if faq_items.size > 0 -%}
+  {%- style -%}
+    .lc-faq__inner {
+      max-width: 1100px;
+    }
+    .lc-faq__title {
+      margin: 0 0 15px;
+    }
+    .lc-faq__item {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+    .lc-faq__item + .lc-faq__item {
+      margin-top: 8px;
+    }
+    .lc-faq__question {
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-heading);
+    }
+    .lc-faq__answer {
+      margin-top: 8px;
+      max-width: 74ch;
+    }
+    .lc-faq__item summary {
+      cursor: pointer;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .lc-faq__item {
+        transition: none;
+      }
+    }
+  {%- endstyle -%}
+  <div
+    class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__lc-collection-faq color-{{ color_scheme }} gradient"
+    style="{{ style | strip | strip_newlines }}"
+  >
+    <div class="{{ section_width }}">
+      <div class="lc-faq__inner" data-lc-faq>
+        {%- if faq_title != blank -%}
+          <h2 class="lc-faq__title heading-letter-spacing h4">{{ faq_title }}</h2>
+        {%- endif -%}
+        {%- for item in faq_items -%}
+          {%- if item.question != blank and item.answer != blank -%}
+            <details
+              class="lc-faq__item"
+              {% if section_st.open_first and forloop.first %}
+                open
+              {% endif %}
+            >
+              <summary class="lc-faq__question">{{ item.question }}</summary>
+              <div class="lc-faq__answer rte rich__text-m0">{{ item.answer | metafield_tag }}</div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.currentScript.previousElementSibling.querySelector('[data-lc-faq]');
+      if (!root || root.dataset.lcFaqReady) return;
+      root.dataset.lcFaqReady = 'true';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var DURATION = 300;
+
+      // Height of the item with its answer hidden (summary + padding + border).
+      function closedHeight(item) {
+        var wasOpen = item.open;
+        item.open = false;
+        var height = item.offsetHeight;
+        item.open = wasOpen;
+        return height;
+      }
+
+      function animate(item, opening) {
+        var start = item.offsetHeight;
+        if (item.__anim) item.__anim.cancel();
+        var closed = closedHeight(item);
+        if (opening) {
+          item.open = true;
+        }
+        var end = opening ? item.offsetHeight : closed;
+        if (reduce) {
+          item.open = opening;
+          return;
+        }
+        item.style.overflow = 'hidden';
+        item.__anim = item.animate(
+          { height: [start + 'px', end + 'px'] },
+          { duration: DURATION, easing: 'ease', fill: 'forwards' }
+        );
+        var anim = item.__anim;
+        anim.onfinish = function () {
+          // The animation holds its final height (fill: forwards) until the
+          // open state is set, so the closed item never flashes at full height.
+          item.open = opening;
+          item.style.overflow = '';
+          if (item.__anim === anim) item.__anim = null;
+          anim.cancel();
+        };
+      }
+
+      root.addEventListener('click', function (event) {
+        var summary = event.target.closest('summary');
+        if (!summary || !root.contains(summary)) return;
+        event.preventDefault();
+        var item = summary.parentElement;
+        var opening = !item.open || (item.__anim && !item.__opening);
+        item.__opening = opening;
+        if (opening) {
+          root.querySelectorAll('details[open]').forEach(function (other) {
+            if (other !== item) {
+              other.__opening = false;
+              animate(other, false);
+            }
+          });
+        }
+        animate(item, opening);
+      });
+    })();
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign faq_first = true -%}
+        {%- for item in faq_items -%}
+          {%- if item.question != blank and item.answer != blank -%}
+            {%- unless faq_first %},{% endunless -%}
+            {%- assign faq_first = false -%}
+            {
+              "@type": "Question",
+              "name": {{ item.question | strip_html | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ item.answer | metafield_tag | strip_html | strip_newlines | json }}
+              }
+            }
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- elsif request.design_mode -%}
+  <div class="section sec__lc-collection-faq" style="{{ style | strip | strip_newlines }}">
+    <div class="{{ section_width }}">
+      <p class="text-center my-0">
+        Collection FAQ: no FAQ items found for this collection. Add entries to the "Collection FAQ Items" metafield (a
+        list) and make sure they are Active.
+      </p>
+    </div>
+  </div>
+{%- endif -%}
+{% schema %}
+{
+  "name": "Collection FAQ",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["custom.overlay", "header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Content comes from the collection's metafields: Collection FAQ Title and Collection FAQ Items."
+    },
+    {
+      "type": "text",
+      "id": "default_heading",
+      "label": "Heading if the collection has no FAQ title",
+      "default": "Frequently asked questions"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first",
+      "label": "Open the first question by default",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 30,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 50,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection FAQ"
+    }
+  ]
+}
+{% endschema %}

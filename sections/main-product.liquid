@@ -1542,11 +1542,11 @@ endif
     {%- assign lc_m_is_bev = false -%}
     {%- for lc_m_bcol in product.collections -%}{%- if lc_m_bcol.handle == 'beverage' -%}{%- assign lc_m_is_bev = true -%}{%- break -%}{%- endif -%}{%- endfor -%}
     {%- if lc_m_is_bev -%}<a href="/collections/beverage" class="lc-cat-pill">Beverage Centre</a>{%- endif -%}
-    <h1 class="lc-title">
+    <p class="lc-title">
       {{ lc_display_title }}
       {%- if lc_is_preorder %} <span class="lc-d-preorder-badge">Pre-order</span>{%- endif -%}
       {%- if lc_is_fs %} <span class="lc-fs-badge">Full Shelves Version</span>{%- endif -%}
-    </h1>
+    </p>
     {%- if lc_sku != blank -%}<div class="lc-sku">(Ref. {{ lc_sku }})</div>{%- endif -%}
     {% render 'lc-duo-badge', product: product, st: section.settings, pos: 'under_title' %}
 
@@ -3486,10 +3486,11 @@ endif
       {% if seo_media -%}
         "image": [{{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}],
       {%- endif %}
-      "description": {{ product.description | strip_html | json }},
+      "description": {{ page_description | default: product.description | strip_html | strip_newlines | truncate: 300 | json }},
       {% if lc_seo_sku != blank -%}
         "sku": {{ lc_seo_sku | json }},
       {%- endif %}
+      {%- render 'lc-product-schema-props', product: product -%}
       "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
       "offers": [
         {%- for variant in product.variants -%}

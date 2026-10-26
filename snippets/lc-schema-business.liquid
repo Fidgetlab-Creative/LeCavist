@@ -1,0 +1,72 @@
+{%- comment -%}
+  LeCavist: Organization + LocalBusiness JSON-LD (sitewide, rendered in <head>).
+  Server-rendered so AI crawlers that do not run JavaScript can read it.
+  Replaces the old script-injected business details.
+
+  TO CONFIRM WITH LECAVIST before publishing: street address (footer says 18/30,
+  the old code said 19/20-28 Maddox St), ABN, phone, showroom hours.
+{%- endcomment -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://lecavist.com/#organization",
+        "name": "LeCavist",
+        "alternateName": "LeCavist Wine Cabinets",
+        "legalName": "Osass Australia Pty Ltd",
+        "taxID": "ABN 28 644 539 668",
+        "url": "https://lecavist.com/",
+        "logo": "https://lecavist.com/cdn/shop/files/LeCavist-Wine-Cabinets---Logo-JPEG_d759e42f-08a8-44ee-a2f0-2e90c03161c9.jpg",
+        "foundingDate": "2019",
+        "founder": {
+          "@type": "Person",
+          "name": "Alexandre Clerch",
+          "jobTitle": "Co-Founder",
+          "url": "https://lecavist.com/pages/our-story"
+        },
+        "email": "hello@lecavist.com",
+        "telephone": "+61 2 9398 9933",
+        "sameAs": [
+          "https://www.facebook.com/p/LeCavist-100083480043452/",
+          "https://www.instagram.com/lecavist/",
+          "https://www.youtube.com/channel/UC4gxNe0rYit5Gv-j3hRJ1Zw/videos",
+          "https://www.linkedin.com/company/lecavistwinecabinets",
+          "https://au.pinterest.com/lecavist932/",
+          "https://www.trustpilot.com/review/lecavist.com",
+          "https://www.productreview.com.au/listings/lecavist"
+        ]
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://lecavist.com/#showroom",
+        "name": "LeCavist Showroom and Office",
+        "parentOrganization": { "@id": "https://lecavist.com/#organization" },
+        "url": "https://lecavist.com/",
+        "image": "https://lecavist.com/cdn/shop/files/LeCavist-Wine-Cabinets---Logo-JPEG_d759e42f-08a8-44ee-a2f0-2e90c03161c9.jpg",
+        "telephone": "+61 2 9398 9933",
+        "email": "hello@lecavist.com",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "18/30 Maddox St",
+          "addressLocality": "Alexandria",
+          "addressRegion": "NSW",
+          "postalCode": "2015",
+          "addressCountry": "AU"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": -33.9069929,
+          "longitude": 151.1926691
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "09:00",
+          "closes": "17:00"
+        }
+      }
+    ]
+  }
+</script>

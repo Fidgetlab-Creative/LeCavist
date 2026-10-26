@@ -103,6 +103,11 @@
             >
               {{ article.content }}
             </div>
+            {%- if article.metafields.custom.faq.value.size > 0 -%}
+              <div class="container-min mt-50">
+                {%- render 'lc-article-faq', id: 'lc-article-faq' -%}
+              </div>
+            {%- endif -%}
           {%- when 'addons' -%}
             <div class="mt-40 flex flex-wrap gap-15 justify-between align-center container-min">
               {% if article.tags.size > 0 and block_st.show_tag == true %}

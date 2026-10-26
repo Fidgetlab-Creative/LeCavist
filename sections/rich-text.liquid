@@ -122,6 +122,14 @@
                 {% endif %}
               </div>
             {% endif %}
+          {%- when 'divider' -%}
+            <div
+              class="rich-text-divider"
+              style="padding-top: {{ block_st.padding_top }}px; padding-bottom: {{ block_st.padding_bottom }}px;"
+              {{ block.shopify_attributes }}
+            >
+              <hr class="m-0" style="border: 0; border-top: 1px solid {{ block_st.color }};">
+            </div>
           {%- when 'custom_html' -%}
             <div
               class="{{ mb_custom }}  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
@@ -585,6 +593,38 @@
           "unit": "px",
           "default": 10,
           "label": "t:sections.all.content_settings.spacing.mobile_spacing.label"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": [
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Color",
+          "default": "#dcd4c8"
+        },
+        {
+          "type": "range",
+          "id": "padding_top",
+          "label": "t:sections.all.section_padding.top.label",
+          "default": 20,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "range",
+          "id": "padding_bottom",
+          "label": "t:sections.all.section_padding.bottom.label",
+          "default": 20,
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
         }
       ]
     },

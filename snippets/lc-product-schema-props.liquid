@@ -1,0 +1,56 @@
+{%- comment -%}
+  LeCavist: extra Product JSON-LD properties, rendered inside the Product object.
+  Outputs "aggregateRating" (Judge.me, via Shopify's standard review metafields) and
+  "additionalProperty" (lecavist_specs metafields). Each fragment ends with a comma,
+  so render it before the last key of the Product object.
+{%- endcomment -%}
+{%- liquid
+  assign lc_rating_count = product.metafields.reviews.rating_count.value
+  assign lc_rating = product.metafields.reviews.rating.value
+  assign m = product.metafields.lecavist_specs
+
+  assign names = 'Bottle capacity|||Cooling zones|||Temperature range|||Noise level|||Dimensions (W x H x D)|||Installation' | split: '|||'
+  assign sep = '|||'
+
+  assign cap = m.bottle_capacity.value | strip
+  assign cap_rt = cap | plus: 0 | append: ''
+  if cap != blank and cap == cap_rt
+    assign cap = cap | append: ' Bordeaux bottles'
+  endif
+
+  assign noise = ''
+  if m.noise_level_db.value != blank
+    assign noise = m.noise_level_db.value | append: ' dB'
+  endif
+
+  assign dims = ''
+  if m.width_mm.value != blank and m.height_mm.value != blank and m.depth_mm.value != blank
+    assign dims = m.width_mm.value | append: ' x ' | append: m.height_mm.value | append: ' x ' | append: m.depth_mm.value | append: ' mm'
+  endif
+
+  assign values = cap | append: sep | append: m.cooling_zone.value | append: sep | append: m.temperature_range.value | append: sep | append: noise | append: sep | append: dims | append: sep | append: m.installation_type.value
+  assign values = values | split: sep
+
+  assign props = ''
+  for name in names
+    assign value = values[forloop.index0] | strip
+    if value != blank
+      assign jn = name | json
+      assign jv = value | json
+      assign item = '{ "@type": "PropertyValue", "name": ' | append: jn | append: ', "value": ' | append: jv | append: ' }'
+      assign props = props | append: item | append: sep
+    endif
+  endfor
+  assign props_list = props | split: sep
+-%}
+{%- if lc_rating_count != blank and lc_rating_count > 0 and lc_rating != blank -%}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": {{ lc_rating.rating | json }},
+    "bestRating": {{ lc_rating.scale_max | json }},
+    "reviewCount": {{ lc_rating_count | json }}
+  },
+{%- endif -%}
+{%- if props_list.size > 0 -%}
+  "additionalProperty": [{{ props_list | join: ',' }}],
+{%- endif -%}

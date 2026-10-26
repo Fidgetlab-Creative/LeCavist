@@ -1,0 +1,149 @@
+{%- comment -%}
+  LeCavist: blog post FAQ, rendered inside the article right after the content.
+  Same cards and smooth open/close as the collection FAQ, plus FAQPage JSON-LD
+  built from the same entries. Driven by article metafields, so posts without them render nothing:
+    custom.faq_title   single line text
+    custom.faq         list of blog_faq_item (question, answer; both single line text)
+  Accepts:
+    - id: {String} unique id for the accordion
+{%- endcomment -%}
+{%- liquid
+  assign faq_id = id | default: 'lc-article-faq'
+  assign faq_title = article.metafields.custom.faq_title.value | default: 'Frequently asked questions'
+  assign faq_items = article.metafields.custom.faq.value
+-%}
+{%- if faq_items.size > 0 -%}
+  {%- style -%}
+    .lc-faq__title {
+      margin: 0 0 15px;
+    }
+    .lc-faq__item {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 10px 14px;
+    }
+    .lc-faq__item + .lc-faq__item {
+      margin-top: 8px;
+    }
+    .lc-faq__question {
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--color-heading);
+    }
+    .lc-faq__answer {
+      margin-top: 8px;
+      max-width: 74ch;
+    }
+    .lc-faq__item summary {
+      cursor: pointer;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .lc-faq__item {
+        transition: none;
+      }
+    }
+  {%- endstyle -%}
+  <div class="lc-faq__inner" id="{{ faq_id }}" data-lc-faq>
+    {%- if faq_title != blank -%}
+      <h2 class="lc-faq__title heading-letter-spacing h4">{{ faq_title }}</h2>
+    {%- endif -%}
+    {%- for item in faq_items -%}
+      {%- if item.question != blank and item.answer != blank -%}
+        <details class="lc-faq__item"{% if forloop.first %} open{% endif %}>
+          <summary class="lc-faq__question">{{ item.question }}</summary>
+          <div class="lc-faq__answer rte rich__text-m0">{{ item.answer | escape | newline_to_br }}</div>
+        </details>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById('{{ faq_id }}');
+      if (!root || root.dataset.lcFaqReady) return;
+      root.dataset.lcFaqReady = 'true';
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var DURATION = 300;
+
+      // Height of the item with its answer hidden (summary + padding + border).
+      function closedHeight(item) {
+        var wasOpen = item.open;
+        item.open = false;
+        var height = item.offsetHeight;
+        item.open = wasOpen;
+        return height;
+      }
+
+      function animate(item, opening) {
+        var start = item.offsetHeight;
+        if (item.__anim) item.__anim.cancel();
+        var closed = closedHeight(item);
+        if (opening) {
+          item.open = true;
+        }
+        var end = opening ? item.offsetHeight : closed;
+        if (reduce) {
+          item.open = opening;
+          return;
+        }
+        item.style.overflow = 'hidden';
+        item.__anim = item.animate(
+          { height: [start + 'px', end + 'px'] },
+          { duration: DURATION, easing: 'ease', fill: 'forwards' }
+        );
+        var anim = item.__anim;
+        anim.onfinish = function () {
+          // The animation holds its final height (fill: forwards) until the
+          // open state is set, so the closed item never flashes at full height.
+          item.open = opening;
+          item.style.overflow = '';
+          if (item.__anim === anim) item.__anim = null;
+          anim.cancel();
+        };
+      }
+
+      root.addEventListener('click', function (event) {
+        var summary = event.target.closest('summary');
+        if (!summary || !root.contains(summary)) return;
+        event.preventDefault();
+        var item = summary.parentElement;
+        var opening = !item.open || (item.__anim && !item.__opening);
+        item.__opening = opening;
+        if (opening) {
+          root.querySelectorAll('details[open]').forEach(function (other) {
+            if (other !== item) {
+              other.__opening = false;
+              animate(other, false);
+            }
+          });
+        }
+        animate(item, opening);
+      });
+    })();
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- assign faq_first = true -%}
+        {%- for item in faq_items -%}
+          {%- if item.question != blank and item.answer != blank -%}
+            {%- unless faq_first %},{% endunless -%}
+            {%- assign faq_first = false -%}
+            {
+              "@type": "Question",
+              "name": {{ item.question | strip_html | json }},
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": {{ item.answer | strip_html | strip_newlines | json }}
+              }
+            }
+          {%- endif -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}

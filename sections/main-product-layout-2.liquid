@@ -1175,10 +1175,11 @@ endif
           {{ seo_media | image_url: width: 1920 | prepend: "https:" | json }}
         ],
       {%- endif %}
-      "description": {{ product.description | strip_html | json }},
+      "description": {{ page_description | default: product.description | strip_html | strip_newlines | truncate: 300 | json }},
       {% if lc_seo_sku != blank -%}
         "sku": {{ lc_seo_sku | json }},
       {%- endif %}
+      {%- render 'lc-product-schema-props', product: product -%}
       "brand": {
         "@type": "Brand",
         "name": {{ product.vendor | json }}

@@ -101,6 +101,57 @@
   </div>
 </section>
 
+{%- comment %} FAQPage JSON-LD: built from the same questions and answers shown above so the wording matches exactly. {%- endcomment %}
+{%- liquid
+  assign sep = '|||'
+  assign lc_faq_items = ''
+  if lc_has_dims
+    assign dim_q = 'What are the exact dimensions, and how much clearance does it need?'
+    assign dim_a = 'This cabinet measures W ' | append: lc_w | append: ' mm x H ' | append: lc_h | append: ' mm x D ' | append: lc_d | append: ' mm. For freestanding installation, allow at least 100 mm clearance on each side, top and back for ventilation. Built-in models only need the clearance listed on their spec sheet.'
+    assign lc_faq_items = dim_q | append: sep | append: dim_a | append: sep
+  endif
+  if lc_faq_shared
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q1 | append: sep | append: settings.faq_a1 | append: sep
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q2 | append: sep | append: settings.faq_a2 | append: sep
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q3 | append: sep | append: settings.faq_a3 | append: sep
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q4 | append: sep | append: settings.faq_a4 | append: sep
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q5 | append: sep | append: settings.faq_a5 | append: sep
+    assign lc_faq_items = lc_faq_items | append: settings.faq_q6 | append: sep | append: settings.faq_a6 | append: sep
+  else
+    for block in section.blocks
+      assign lc_faq_items = lc_faq_items | append: block.settings.question | append: sep | append: block.settings.answer | append: sep
+    endfor
+  endif
+  assign lc_faq_parts = lc_faq_items | split: sep
+-%}
+{%- if lc_faq_parts.size > 1 -%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- assign lc_faq_started = false -%}
+      {%- for part in lc_faq_parts -%}
+        {%- assign mod = forloop.index0 | modulo: 2 -%}
+        {%- if mod == 0 -%}
+          {%- assign q = part | strip_html | strip -%}
+          {%- assign a = lc_faq_parts[forloop.index] | strip_html | strip_newlines | strip -%}
+          {%- if q != blank and a != blank -%}
+            {%- if lc_faq_started %},{% endif -%}
+            {%- assign lc_faq_started = true -%}
+            {
+              "@type": "Question",
+              "name": {{ q | json }},
+              "acceptedAnswer": { "@type": "Answer", "text": {{ a | json }} }
+            }
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+{%- endif -%}
+
 <style>
   .lc-faq-bottom {
     background: transparent;
