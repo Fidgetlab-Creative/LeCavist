@@ -103,8 +103,8 @@
   }
 
   // Black Friday VIP hero: replaces every slideshow banner on the site (home, collections) for VIP visitors
-  var HERO_WEB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-web_banner_1920x701_869b7933-1511-403a-87b9-173c79accc27.jpg?v=1792666852';
-  var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/VIP_BF_Early_Access-mobile_banner_480x600_v2.jpg?v=1792715996';
+  var HERO_WEB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/WhatsApp_Image_2026-10-27_at_16.24.24.jpg?v=1793078762';
+  var HERO_MOB = 'https://cdn.shopify.com/s/files/1/0616/6554/2401/files/WhatsApp_Image_2026-10-27_at_11.02.42.jpg?v=1793065196';
   function hero(){
     var slides = document.querySelectorAll('.shopify-section[id*="__slideshow_"]');
     if (!slides.length) return;
@@ -116,7 +116,7 @@
       a.id = 'lc-vip-hero';
       a.href = CAMP.path;
       a.setAttribute('aria-label', 'Black Friday Early Access - VIP collection');
-      a.innerHTML = '<picture><source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Black Friday Early Access - for LeCavist owners only - up to 50% off + $50 wine voucher"></picture>';
+      a.innerHTML = '<picture><source media="(max-width: 767px)" srcset="' + HERO_MOB + '"><img src="' + HERO_WEB + '" alt="Black Friday Early Access - for LeCavist subscribers only - up to 50% off"></picture>';
       slide.parentNode.insertBefore(a, slide);
     });
   }
