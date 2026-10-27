@@ -49,7 +49,7 @@
         "slider_item_dyajjp": {
           "type": "slider_item",
           "settings": {
-            "image": "shopify://shop_images/bf-early-access-banner-desktop.jpg",
+            "image": "shopify://shop_images/bannernarrow.png",
             "image_mobile": "shopify://shop_images/WhatsApp_Image_2026-10-27_at_11.02.42.jpg",
             "slide_link": "",
             "overlay_opacity": 0,
