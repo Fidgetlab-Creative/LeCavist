@@ -1,0 +1,100 @@
+{%- comment -%}
+  lc-vip-cart-sync — keeps the cart in line with the VIP / Early Access price shown on the site.
+
+  Why: lc-vip-pricing only rewrites prices on product pages and product cards, from the
+  `discount_code` cookie. The cart drawer and cart page show Shopify's own cart prices, which
+  only include the campaign discount if the code is attached to the cart itself. When the cookie
+  holds the code but the cart doesn't, the cart shows the standard price while checkout (which
+  re-reads the cookie) shows the discount.
+
+  What it does: for visitors whose `discount_code` cookie is one of the campaign codes below,
+  it checks the cart on page load and after every add / change / update. If the code is missing
+  from the cart, it attaches it (/cart/update.js, keeping any other codes already on the cart)
+  and refreshes the mini-cart and the cart page so they show Shopify's real discounted price,
+  the same figure checkout will charge. Visitors without a campaign cookie are never touched.
+
+  Install: add {%- render 'lc-vip-cart-sync' -%} to layout/theme.liquid, just before </body>.
+  Edit CODES / END when the campaign changes (keep in step with lc-vip-pricing).
+{%- endcomment -%}
+<script>
+(function(){
+  if (window.__lcVipCartSync) return;
+  window.__lcVipCartSync = true;
+
+  var CODES = ['VIPACCESS', 'EARLYACCESS'];
+  var END = Date.parse('2026-11-01T23:59:00+11:00');
+  if (Date.now() > END) return;
+
+  function cookie(n){ var m = document.cookie.match('(?:^|; )' + n + '=([^;]*)'); return m ? decodeURIComponent(m[1]) : null; }
+  function code(){ var c = (cookie('discount_code') || '').toUpperCase(); return CODES.indexOf(c) !== -1 ? c : null; }
+  if (!code()) return;
+
+  var root = (window.Shopify && Shopify.routes && Shopify.routes.root) || '/';
+  var nativeFetch = window.fetch.bind(window);
+  var busy = false, again = false, timer;
+
+  function json(url, body){
+    return nativeFetch(root + url, body ? {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(body)
+    } : { headers: { 'Accept': 'application/json' } }).then(function(r){ return r.json(); });
+  }
+
+  // Swap the inner HTML of `id` on this page with the same element from a rendered section.
+  function swap(id, sectionId){
+    var el = document.getElementById(id);
+    if (!el || !sectionId) return Promise.resolve();
+    return nativeFetch(location.pathname + '?sections=' + encodeURIComponent(sectionId))
+      .then(function(r){ return r.json(); })
+      .then(function(s){
+        var html = s && s[sectionId]; if (!html) return;
+        var fresh = new DOMParser().parseFromString(html, 'text/html').getElementById(id);
+        if (fresh) el.innerHTML = fresh.innerHTML;
+      });
+  }
+
+  function refresh(){
+    var cartPage = document.getElementById('main-cart-items');
+    return Promise.all([
+      swap('minicart-form', 'minicart-form'),
+      cartPage ? swap('main-cart-items', cartPage.dataset.id) : null
+    ]).then(function(){
+      document.dispatchEvent(new CustomEvent('lc:vip-cart-synced'));
+    }).catch(function(){
+      // Section refresh failed for some reason: a reload on the cart page still shows the right price.
+      if (cartPage) location.reload();
+    });
+  }
+
+  function sync(){
+    var c = code(); if (!c) return;
+    if (busy) { again = true; return; }
+    busy = true;
+    json('cart.js').then(function(cart){
+      if (!cart || !cart.item_count) return;
+      var onCart = (cart.discount_codes || []).map(function(d){ return String(d.code).toUpperCase(); });
+      if (onCart.indexOf(c) !== -1) return;
+      return json('cart/update.js', { discount: onCart.concat(c).join(',') }).then(refresh);
+    }).catch(function(e){ console.warn('[lc-vip-cart-sync]', e); })
+      .then(function(){ busy = false; if (again) { again = false; schedule(); } });
+  }
+  function schedule(){ clearTimeout(timer); timer = setTimeout(sync, 250); }
+
+  // Re-check after the theme (or an app) changes the cart. Our own calls use nativeFetch, so no loop.
+  var CART_RE = /\/cart\/(add|change|update|clear)(\.js|\.json)?(\?|$)/;
+  window.fetch = function(input){
+    var url = typeof input === 'string' ? input : (input && input.url) || '';
+    var p = nativeFetch.apply(window, arguments);
+    if (CART_RE.test(url)) p.then(schedule, function(){});
+    return p;
+  };
+  var xhrOpen = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function(method, url){
+    if (CART_RE.test(String(url))) this.addEventListener('load', schedule);
+    return xhrOpen.apply(this, arguments);
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', sync); else sync();
+})();
+</script>
