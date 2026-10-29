@@ -141,7 +141,7 @@
     "lc_guidance": {
       "type": "lc-collection-guidance",
       "settings": {
-        "section_width": "container",
+        "section_width": "fluid_container",
         "padding_top": 30,
         "padding_bottom": 10
       }
